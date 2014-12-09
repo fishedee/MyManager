@@ -1,0 +1,5 @@
+/data/mysql/backup/*
+/data/log/*
+
+!/data/mysql/backup/.gitignore
+!/data/log/.gitignore

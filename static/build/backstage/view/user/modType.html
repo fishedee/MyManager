@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>烘焙帮后台管理系统</title>
+</head>
+<body class="definewidth m10">
+	<div id="container">
+	</div>
+	<script type="text/javascript" src="/js/fishstrap.js" charset="utf-8"></script>
+	<script type="text/javascript">
+		fishstrap.use(['core/global','ui/input','ui/dialog'],function($,input,dialog){
+			var userId = $.location.getQueryArgv('userId');
+			$.get('/user/get',{userId:userId},function(data){
+				data = $.JSON.parse(data);
+				if( data.code != 0 ){
+					dialog.message(data.msg);
+					return;
+				}
+				data = data.data;
+				input.verticalInput({
+					id:'container',
+					field:[
+						{id:'name',type:'read',name:'姓名'},
+						{id:'type',type:'enum',name:'类型',map:{'0':'管理员','1':'普通会员'}},
+					],
+					value:data,
+					submit:function(data){
+						data = {userId:userId,type:data.type};
+						$.post('/user/modType',data,function(data){
+							data = $.JSON.parse(data);
+							if( data.code != 0 ){
+								dialog.message(data.msg);
+								return;
+							}
+							location.href = 'index.html';
+							
+						});
+					},
+					cancel:function(){
+						location.href = 'index.html';
+					}
+				});
+			});
+		});
+	</script>
+ </body>
+</html>

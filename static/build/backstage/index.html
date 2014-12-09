@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>烘焙帮后台管理系统</title>
+</head>
+<body>
+	<script type="text/javascript" src="/js/fishstrap.js" charset="utf-8"></script>
+	<script type="text/javascript">
+		fishstrap.use(['page/indexPage','ui/dialog','core/global'],function(indexPage,dialog,$){
+			indexPage.use({
+				title:'烘焙帮后台管理系统',
+				init:function(){
+					$.get('/login/islogin?t='+Math.random(),{},function(data){
+						data = $.JSON.parse(data);
+						if( data.code != 0 ){
+							location.href = 'login.html';
+							return;
+						}
+					});
+				},
+				logout:function(){
+					$.get('/login/checkout?t='+Math.random(),{},function(data){
+						data = $.JSON.parse(data);
+						if( data.code != 0 ){
+							dialog.message(data.msg);
+							return;
+						}
+						location.href = 'login.html';
+					});
+				},
+				menu:{
+					'系统管理':[
+						{name:'帐号管理',url:'view/user/index.html'},
+						{name:'密码管理',url:'view/password/index.html'}
+					],
+					'社区管理':[
+						{name:'分类管理',url:'view/classify/index.html'},
+						{name:'栏目管理',url:'view/category/index.html'},
+						{name:'用户管理',url:'view/client/index.html'},
+						{name:'食谱管理',url:'view/recipe/index.html'},
+						{name:'文章管理',url:'view/article/index.html'},
+					],
+					'运营数据':[
+						{name:'PV/UV规则',url:'view/pagestatisticrule/index.html'},
+						{name:'PV/UV数据',url:'view/pagestatisticdata/index.html'},
+					],
+					'便捷工具':[
+						{name:'微社区评论抓取',url:'view/wsqsplider/index.html'},
+						{name:'代理服务器',url:'view/proxyserver/index.html'}
+					],
+				}
+			});
+		});
+	</script>
+ </body>
+</html>

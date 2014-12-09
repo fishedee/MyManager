@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>烘焙帮后台管理系统</title>
+</head>
+<body class="definewidth m10">
+	<div id="container">
+	</div>
+	<script type="text/javascript" src="/js/fishstrap.js" charset="utf-8"></script>
+	<script type="text/javascript">
+		fishstrap.use(['core/global','ui/query','ui/dialog'],function($,query,dialog){
+			query.simpleQuery({
+				id:'container',
+				url:'/client/search',
+				column:[
+					{id:'clientId',type:'text',name:'用户ID'},
+					{id:'name',type:'text',name:'姓名'},
+					{id:'gender',type:'enum',name:'性别',map:{'0':'未知','1':'男','2':'女'}},
+					{id:'district',type:'text',name:'地址'},
+					{id:'year',type:'text',name:'出生年份'},
+					{id:'type',type:'enum',name:'类型',map:{'0':"未知",'1':"QQ帐号",'2':"微信帐号"}},
+					{id:'createTime',type:'text',name:'创建时间'},
+					{id:'modifyTime',type:'text',name:'修改时间'},
+				],
+				queryColumn:['name','type','gender'],
+			});
+		});
+	</script>
+ </body>
+</html>

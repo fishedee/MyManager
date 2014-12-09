@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+    <title>烘焙帮后台管理系统</title>
+</head>
+<body>
+	<script type="text/javascript" src="/js/fishstrap.js" charset="utf-8"></script>
+	<script type="text/javascript">
+		fishstrap.use(['page/loginPage','ui/dialog','core/global'],function(loginPage,dialog,$){
+			loginPage.use({
+				title:'烘焙帮后台管理系统',
+				init:function(){
+					$.get('/login/islogin?t='+Math.random(),{},function(data){
+						data = $.JSON.parse(data);
+						if( data.code == 0 ){
+							location.href = 'index.html';
+							return;
+						}
+					});
+				},
+				login:function(data){
+					$.post('/login/checkin?t='+Math.random(),data,function(data){
+						data = $.JSON.parse(data);
+						if( data.code != 0 ){
+							dialog.message(data.msg);
+							return;
+						}
+						location.href = 'index.html';
+					});
+				}
+			});
+		});
+	</script>
+</body>
+</html>
