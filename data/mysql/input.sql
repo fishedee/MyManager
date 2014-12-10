@@ -34,7 +34,9 @@ create table t_card(
 	cardId integer not null auto_increment,	
 	userId integer not null,
 	name char(32) not null,
+	bank char(32) not null,
 	card varchar(32) not null,
+	money integer not null,
 	remark varchar(128) not null,
 	createTime timestamp not null default CURRENT_TIMESTAMP,
 	modifyTime timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP, 
@@ -81,14 +83,14 @@ insert into t_category(categoryId,userId,name,remark) values
 (10003,10001,"理财投资",''),
 (10004,10001,"薪酬工资",'');
 
-insert into t_card(cardId,userId,name,card,remark) values
-(10001,10001,"农业银行卡",'',''),
-(10002,10001,"工商银行卡",'',''),
-(10003,10001,"工商银行卡",'','');
+insert into t_card(cardId,userId,name,bank,card,money,remark) values
+(10001,10001,'工资卡',"农业银行卡",'',0,''),
+(10002,10001,'消费卡',"工商银行卡",'',0,''),
+(10003,10001,'理财卡',"工商银行卡",'',0,'');
 
 insert into t_account(accountId,userId,name,money,remark,categoryId,cardId,type) values
-(10001,10001,"日常支出",100,'',10001,10002,0),
-(10002,10001,"日常收入",100,'',10001,10002,0);
+(10001,10001,"日常支出",100,'',10001,10002,1),
+(10002,10001,"日常收入",100,'',10001,10002,1);
 
 #显示一下所有数据
 select * from t_user;

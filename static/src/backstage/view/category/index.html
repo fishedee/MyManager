@@ -14,7 +14,7 @@
 				id:'container',
 				url:'/category/search',
 				column:[
-					{id:'categoryId',type:'text',name:'栏目ID'},
+					{id:'categoryId',type:'text',name:'分类ID'},
 					{id:'name',type:'text',name:'名字'},
 					{id:'remark',type:'text',name:'备注'},
 					{id:'createTime',type:'text',name:'创建时间'},
@@ -31,7 +31,7 @@
 				{
 					name:'删除',
 					click:function(data){
-						dialog.confirm('确认删除该栏目，不可回退操作？!',function(){
+						dialog.confirm('确认删除该分类，不可回退操作？!',function(){
 							$.post('/category/del',{categoryId:data.categoryId},function(data){
 								data = $.JSON.parse(data);
 								if( data.code != 0 ){
@@ -45,7 +45,7 @@
 				}],
 				button:[
 				{
-					name:'添加栏目',
+					name:'添加分类',
 					click:function(){
 						location.href = 'view.html';
 					}

@@ -12,10 +12,11 @@
 		fishstrap.use(['core/global','ui/query','ui/dialog'],function($,query,dialog){
 			query.simpleQuery({
 				id:'container',
-				url:'/category/search',
+				url:'/card/search',
 				column:[
-					{id:'categoryId',type:'text',name:'分类ID'},
-					{id:'name',type:'text',name:'名字'},
+					{id:'cardId',type:'text',name:'银行卡ID'},
+					{id:'name',type:'text',name:'名称'},
+					{id:'bank',type:'text',name:'银行'},
 					{id:'remark',type:'text',name:'备注'},
 					{id:'createTime',type:'text',name:'创建时间'},
 					{id:'modifyTime',type:'text',name:'修改时间'},
@@ -25,14 +26,14 @@
 				{
 					name:'编辑',
 					click:function(data){
-						location.href = 'view.html?categoryId='+data.categoryId;
+						location.href = 'view.html?cardId='+data.cardId;
 					}
 				},
 				{
 					name:'删除',
 					click:function(data){
-						dialog.confirm('确认删除该分类，不可回退操作？!',function(){
-							$.post('/category/del',{categoryId:data.categoryId},function(data){
+						dialog.confirm('确认删除该栏目，不可回退操作？!',function(){
+							$.post('/card/del',{cardId:data.cardId},function(data){
 								data = $.JSON.parse(data);
 								if( data.code != 0 ){
 									dialog.message(data.msg);
@@ -45,7 +46,7 @@
 				}],
 				button:[
 				{
-					name:'添加分类',
+					name:'添加银行卡',
 					click:function(){
 						location.href = 'view.html';
 					}
