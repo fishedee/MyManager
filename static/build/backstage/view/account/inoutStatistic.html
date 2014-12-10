@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>烘焙帮后台管理系统</title>
+</head>
+<body class="definewidth m10">
+	<div id="chart" style="height:400px">
+	</div>
+	<div id="container">
+	</div>
+	<script type="text/javascript" src="/js/fishstrap.js" charset="utf-8"></script>
+	<script type="text/javascript">
+		fishstrap.use(['core/global','ui/table','ui/dialog','ui/chart'],function($,table,dialog,chart){
+			var statistic = {};
+			function getData( nextStep ){
+				$.get('/account/getMonthTypeStatistic',{},function(data){
+					data = $.JSON.parse(data);
+					if( data.code != 0 ){
+						dialog.message(data.msg);
+						return;
+					}
+					statistic = data.data;
+					nextStep();
+				});
+			}
+			function go(){
+				table.staticSimpleTable({
+					id:'container',
+					data:statistic,
+					column:[
+						{id:'name',type:'text',name:'时间'},
+						{id:'typeName',type:'text',name:'类型'},
+						{id:'money',type:'text',name:'金额'},
+						{id:'year',type:'hidden',name:'年份'},
+						{id:'month',type:'hidden',name:'月份'},
+						{id:'type',type:'hidden',name:'类型'},
+					],
+					operate:[
+					{
+						name:'详细信息',
+						click:function(data){
+							location.href = 'viewInoutStatistic.html?year='+data.year+'&month='+data.month+'&type='+data.type;
+						}
+					}
+					],
+				});
+				chart.simpleBrokeLine({
+					id:'chart',
+					data:statistic,
+					xAxis:'name',
+					yAxis:'money',
+					category:'typeName'
+				});
+			}
+			getData(function(){
+				go();
+			});
+		});
+	</script>
+ </body>
+</html>

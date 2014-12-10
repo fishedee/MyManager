@@ -15,7 +15,7 @@ class CategoryAo extends CI_Model {
 
 	public function get($userId,$categoryId){
 		//获取数据
-		$result = $this->categoryDb->get($cardId);
+		$result = $this->categoryDb->get($categoryId);
 		if( $result['code'] != 0 )
 			return $result;
 		

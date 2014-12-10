@@ -103,7 +103,7 @@ class AccountAo extends CI_Model {
 			return $result;
 			
 		//检查权限
-		$result = $this->get($userId,$categoryId);
+		$result = $this->get($userId,$accountId);
 		if( $result['code'] != 0 )
 			return $result;
 		

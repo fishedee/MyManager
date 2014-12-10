@@ -9,6 +9,7 @@ class Account extends CI_Controller {
     {
         parent::__construct();
 		$this->load->model('account/accountAo','accountAo');
+		$this->load->model('account/accountStatistic','accountStatistic');
 		$this->load->model('user/loginAo','loginAo');
 		$this->load->library('argv','argv');
     }
@@ -155,6 +156,67 @@ class Account extends CI_Controller {
 			$userId,
 			$accountId,
 			$data
+		);
+		$this->load->view('json',$data);
+	}
+	
+	public function getMonthTypeStatistic(){
+		//检查权限
+		$result = $this->loginAo->islogin();
+		if( $result["code"] != 0 ){
+			$this->load->view('json',$result);
+			return $result;
+		}
+		$userId = $result['data'];
+		
+		//执行业务逻辑
+		$data = $this->accountStatistic->getMonthTypeStatistic(
+			$userId
+		);
+		$this->load->view('json',$data);
+	}
+	
+	public function getDetailTypeStatistic(){
+		//检查权限
+		$result = $this->loginAo->islogin();
+		if( $result["code"] != 0 ){
+			$this->load->view('json',$result);
+			return $result;
+		}
+		$userId = $result['data'];
+		
+		//检查输入参数
+		$result = $this->argv->getRequireInput(array('year','month','type'));
+		if( $result["code"] != 0 ){
+			$this->load->view('json',$result);
+			return $result;
+		}
+		$year = $result["data"]["year"];
+		$month = $result["data"]["month"];
+		$type = $result["data"]["type"];
+		
+		//执行业务逻辑
+		$data = $this->accountStatistic->getDetailTypeStatistic(
+			$userId,
+			$year,
+			$month,
+			$type
+		);
+		$this->load->view('json',$data);
+	}
+	
+	public function getMonthCardStatistic(){
+		//检查权限
+		$result = $this->loginAo->islogin();
+		if( $result["code"] != 0 ){
+			$this->load->view('json',$result);
+			return $result;
+		}
+		$userId = $result['data'];
+		
+		//执行业务逻辑
+		$data = $this->accountStatistic->getMonthCardStatistic(
+			$userId
 		);
 		$this->load->view('json',$data);
 	}

@@ -3,6 +3,81 @@ define('ui/table',['core/global','ui/dialog','ui/gri/griTable'], function(requir
 	var dialog = require('ui/dialog');
 	var GRI = require('ui/gri/griTable');
 	return	{
+		staticSimpleTable:function(option){
+			//执行Option
+			var defaultOption = {
+				id:'',
+				data:'',
+				column:[],
+				operate:[]
+			};
+			for( var i in option )
+				defaultOption[i] = option[i];
+			//显示数据
+			function showData(data){
+				var div = '';
+				var operateDiv = '';
+				div += '<div class="mod-basic">';
+				div += '<table class="mod_table" style="table-layout: auto;">';
+				//构造操作
+				for( var i in defaultOption.operate ){
+					defaultOption.operate[i].id = $.uniqueNum();
+					operateDiv += "<a href='#' class=operate_"+defaultOption.operate[i].id
+						+">"+defaultOption.operate[i].name+"</a>&nbsp;";
+				}
+				//显示列表头数据
+				div += '<thead><tr>';
+				for( var i in defaultOption.column ){
+					var column = defaultOption.column[i];
+					var style = '';
+					if( column.type == 'hidden')
+						style = 'style="display:none;"';
+					div += '<th '+style+' ><span class="label">'+column.name+'</span></th>';
+				}
+				if( defaultOption.operate.length != 0 ){
+					div += '<th><span class="label">操作</span></th>';
+				}
+				div += '</tr></thead>';
+				//显示列表身数据
+				div += '<tbody>';
+				for( var i in data ){
+					var item = data[i];
+					div += '<tr>';
+					for( var j in defaultOption.column ){
+						var column = defaultOption.column[j];
+						var style = '';
+						if( column.type == 'hidden')
+							style = 'style="display:none;"';
+						div += '<td '+style+' class="'+column.id+'">'+item[column.id]+'</td>';
+					}
+					if( defaultOption.operate.length != 0 ){
+						div += '<td>'+operateDiv+'</td>';
+					}
+					div += '</tr>';
+				}
+				div += '</tbody>';
+				div += '</table>';
+				div += '</div>';
+				div = $(div);
+				$('#'+defaultOption.id).append(div);
+				//挂载事件
+				for( var i in defaultOption.operate ){
+					(function(i){
+						$('.operate_'+defaultOption.operate[i].id).unbind("click").click(function(){
+							var tr = $(this);
+							while( tr.is('tr') == false )
+								tr = tr.parent();
+							var data = {};
+							tr.find('td').each(function(){
+								data[$(this).attr('class')] = $(this).text();
+							});
+							defaultOption.operate[i].click(data);
+						});
+					})(i);
+				}
+			}
+			showData(defaultOption.data);
+		},
 		staticTable:function(option){
 			//执行Option
 			var defaultOption = {
@@ -128,8 +203,6 @@ define('ui/table',['core/global','ui/dialog','ui/gri/griTable'], function(requir
 					}
 				});
 			});
-		},
-		interactTable:function(){
 		},
 		
 	};

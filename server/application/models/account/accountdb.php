@@ -109,5 +109,49 @@ class AccountDb extends CI_Model {
 				"data"=>""
 			    );
 	}
+	
+	public function getMonthTypeStatisticByUser( $userId ){
+		$sql = "select DATE_FORMAT(createTime,'%Y') as year,DATE_FORMAT(createTime,'%m') as month,type,SUM(money) as money ".
+			'from '.$this->tableName.' '.
+			'where userId = ? '.
+			'group by year,month,type '.
+			'order by year desc,month desc';
+		$argv = array($userId);
+		$query = $this->db->query($sql,$argv)->result_array();
+		return array(
+			'code'=>0,
+			'msg'=>'',
+			'data'=>$query
+		);
+	}
+	
+	public function getDetailTypeStatisticByUser( $userId ,$month,$year,$type){
+		$sql = "select categoryId , sum(money) as money ".
+			'from '.$this->tableName.' '.
+			"where DATE_FORMAT(createTime,'%Y') = ? and DATE_FORMAT(createTime,'%m') = ? and userId = ? and type = ? ".
+			'group by categoryId';
+		$argv = array($year,$month,$userId,$type);
+		$query = $this->db->query($sql,$argv)->result_array();
+		return array(
+			'code'=>0,
+			'msg'=>'',
+			'data'=>$query
+		);
+	}
+	
+	public function getMonthCardStatisticByUser( $userId ){
+		$sql = "select DATE_FORMAT(createTime,'%Y') as year,DATE_FORMAT(createTime,'%m') as month,cardId,type,SUM(money) as money ".
+			'from '.$this->tableName.' '.
+			'where userId = ? '.
+			'group by year,month,cardId,type '.
+			'order by year asc,month asc';
+		$argv = array($userId);
+		$query = $this->db->query($sql,$argv)->result_array();
+		return array(
+			'code'=>0,
+			'msg'=>'',
+			'data'=>$query
+		);
+	}
 
 }

@@ -88,9 +88,10 @@ insert into t_card(cardId,userId,name,bank,card,money,remark) values
 (10002,10001,'消费卡',"工商银行卡",'',0,''),
 (10003,10001,'理财卡',"工商银行卡",'',0,'');
 
-insert into t_account(accountId,userId,name,money,remark,categoryId,cardId,type) values
-(10001,10001,"日常支出",100,'',10001,10002,1),
-(10002,10001,"日常收入",100,'',10001,10002,1);
+insert into t_account(accountId,userId,name,money,remark,categoryId,cardId,type,createTime,modifyTime) values
+(10001,10001,"日常支出",100,'',10001,10002,1,now(),now()),
+(10002,10001,"日常收入",100,'',10001,10002,2,'2014-11-10 12:0:0','2014-11-10 12:0:0'),
+(10003,10001,"日常收入",100,'',10001,10002,3,'2014-10-10 12:0:0','2014-10-10 12:0:0');
 
 #显示一下所有数据
 select * from t_user;

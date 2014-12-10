@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>烘焙帮后台管理系统</title>
+</head>
+<body class="definewidth m10">
+	<div id="chart" style="height:400px">
+	</div>
+	<div id="container">
+	</div>
+	<script type="text/javascript" src="/js/fishstrap.js" charset="utf-8"></script>
+	<script type="text/javascript">
+		fishstrap.use(['core/global','ui/table','ui/dialog','ui/chart'],function($,table,dialog,chart){
+			var statistic = {};
+			function getData( nextStep ){
+				$.get('/account/getMonthCardStatistic',{},function(data){
+					data = $.JSON.parse(data);
+					if( data.code != 0 ){
+						dialog.message(data.msg);
+						return;
+					}
+					statistic = data.data;
+					nextStep();
+				});
+			}
+			function go(){
+				table.staticSimpleTable({
+					id:'container',
+					data:statistic,
+					column:[
+						{id:'name',type:'text',name:'时间'},
+						{id:'cardName',type:'text',name:'银行卡'},
+						{id:'money',type:'text',name:'结余金额'},
+					],
+					operate:[],
+				});
+				chart.simpleBrokeLine({
+					id:'chart',
+					data:statistic,
+					xAxis:'name',
+					yAxis:'money',
+					category:'cardName'
+				});
+			}
+			getData(function(){
+				go();
+			});
+		});
+	</script>
+ </body>
+</html>

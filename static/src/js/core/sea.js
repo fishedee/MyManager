@@ -12,13 +12,19 @@ var fishstrap = {};
 		seajs.config({
 			charset: 'utf-8',
 			timeout: 20000,
-			preload:['http://cdnjscn.b0.upaiyun.com/libs/jquery/1.11.1/jquery.min.js']
+			preload:['http://libs.baidu.com/jquery/1.11.1/jquery.min.js']
 		});
 		//加载underscore
 		seajs.config({
 			charset: 'utf-8',
 			timeout: 20000,
 			preload:['http://libs.baidu.com/underscore/1.3.3/underscore-min.js']
+		});
+		//加载echarts
+		seajs.config({
+			charset: 'utf-8',
+			timeout: 20000,
+			preload:['ui/echarts/echarts']
 		});
 		//加载uedit
 		var hasUIInput = false;
