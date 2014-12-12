@@ -220,6 +220,35 @@ class Account extends CI_Controller {
 		);
 		$this->load->view('json',$data);
 	}
+	
+	public function getDetailCardStatistic(){
+		//检查权限
+		$result = $this->loginAo->islogin();
+		if( $result["code"] != 0 ){
+			$this->load->view('json',$result);
+			return $result;
+		}
+		$userId = $result['data'];
+		
+		//检查输入参数
+		$result = $this->argv->getRequireInput(array('year','month','cardId'));
+		if( $result["code"] != 0 ){
+			$this->load->view('json',$result);
+			return $result;
+		}
+		$year = $result["data"]["year"];
+		$month = $result["data"]["month"];
+		$cardId = $result["data"]["cardId"];
+		
+		//执行业务逻辑
+		$data = $this->accountStatistic->getDetailCardStatistic(
+			$userId,
+			$year,
+			$month,
+			$cardId
+		);
+		$this->load->view('json',$data);
+	}
 
 }
 

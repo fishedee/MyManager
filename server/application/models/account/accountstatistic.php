@@ -29,7 +29,14 @@ class AccountStatistic extends CI_Model {
 		
 		return $result;
 	}
-	private function arrangeStatistic( $userId,$statistic ){
+	
+	public function getDetailTypeStatistic($userId,$year,$month,$type){
+		//获取分析数据
+		$result = $this->accountDb->getDetailTypeStatisticByUser($userId ,$month,$year,$type);
+		if( $result['code'] != 0 )
+			return $result;
+		$statistic = $result['data'];
+		
 		//获取类目数据
 		$result = $this->categoryAo->search($userId,array(),array());
 		if( $result['code'] != 0 )
@@ -56,15 +63,6 @@ class AccountStatistic extends CI_Model {
 			'msg'=>'',
 			'data'=>$statistic
 		);
-	}
-	
-	public function getDetailTypeStatistic($userId,$year,$month,$type){
-		//获取分析数据
-		$result = $this->accountDb->getDetailTypeStatisticByUser($userId ,$month,$year,$type);
-		if( $result['code'] != 0 )
-			return $result;
-		
-		return $this->arrangeStatistic($userId,$result['data']);
 	}
 	
 	public function getMonthCardStatistic($userId){
@@ -144,6 +142,35 @@ class AccountStatistic extends CI_Model {
 			'code'=>0,
 			'msg'=>'',
 			'data'=>$statistic3
+		);
+	}
+	
+	public function getDetailCardStatistic($userId,$year,$month,$cardId){
+		//获取分析数据
+		$result = $this->accountDb->getDetailCardStatisticByUser($userId ,$month,$year,$cardId);
+		if( $result['code'] != 0 )
+			return $result;
+		$statistic = $result['data'];
+		
+		//整理数据
+		$totalMoney = 0;
+		foreach( $statistic as $key=>$value ){
+			$totalMoney += $value['money'];
+		}
+		foreach( $statistic as $key=>&$value ){
+			$typeMap = array(
+				$this->accountDb->TYPE_IN =>'收入',
+				$this->accountDb->TYPE_OUT =>'支出',
+				$this->accountDb->TYPE_TRANSFER_IN =>'转账收入',
+				$this->accountDb->TYPE_TRANSFER_OUT =>'转账支出',
+			);
+			$value['typeName'] = $typeMap[$value['type']];
+			$value['precent'] = ceil($value['money']/$totalMoney*100).'%';
+		}
+		return array(
+			'code'=>0,
+			'msg'=>'',
+			'data'=>$statistic
 		);
 	}
 

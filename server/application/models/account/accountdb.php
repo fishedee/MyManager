@@ -153,5 +153,19 @@ class AccountDb extends CI_Model {
 			'data'=>$query
 		);
 	}
+	
+	public function getDetailCardStatisticByUser( $userId ,$month,$year,$cardId){
+		$sql = "select type , sum(money) as money ".
+			'from '.$this->tableName.' '.
+			"where DATE_FORMAT(createTime,'%Y') = ? and DATE_FORMAT(createTime,'%m') = ? and userId = ? and cardId = ? ".
+			'group by type';
+		$argv = array($year,$month,$userId,$cardId);
+		$query = $this->db->query($sql,$argv)->result_array();
+		return array(
+			'code'=>0,
+			'msg'=>'',
+			'data'=>$query
+		);
+	}
 
 }

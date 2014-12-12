@@ -14,10 +14,10 @@
 		fishstrap.use(['core/global','ui/table','ui/dialog','ui/chart'],function($,table,dialog,chart){
 			var year = $.location.getQueryArgv('year');
 			var month = $.location.getQueryArgv('month');
-			var type = $.location.getQueryArgv('type');
+			var cardId = $.location.getQueryArgv('cardId');
 			var statistic = {};
 			function getData( nextStep ){
-				$.get('/account/getDetailTypeStatistic',{year:year,month:month,type:type},function(data){
+				$.get('/account/getDetailCardStatistic',{year:year,month:month,cardId:cardId},function(data){
 					data = $.JSON.parse(data);
 					if( data.code != 0 ){
 						dialog.message(data.msg);
@@ -32,23 +32,27 @@
 				chart.simpleSector({
 					id:'chart',
 					data:statistic,
-					xAxis:'categoryName',
+					xAxis:'typeName',
 					yAxis:'money',
 				});
 				
 				//表格
 				var total = {};
-				total.precent = '100%';
-				total.categoryName = '合计';
+				total.precent = '';
+				total.typeName = '合计挣钱';
 				total.money = 0;
-				for( var i in statistic )
-					total.money = total.money + parseInt(statistic[i].money);
+				for( var i in statistic ){
+					if( statistic[i].type == 1 || statistic[i].type == 3 )
+						total.money = total.money + parseInt(statistic[i].money);
+					else
+						total.money = total.money - parseInt(statistic[i].money);
+				}
 				statistic.push(total);
 				table.staticSimpleTable({
 					id:'container',
 					data:statistic,
 					column:[
-						{id:'categoryName',type:'text',name:'分类'},
+						{id:'typeName',type:'text',name:'类型'},
 						{id:'money',type:'text',name:'金额'},
 						{id:'precent',type:'text',name:'占比'},
 					],
