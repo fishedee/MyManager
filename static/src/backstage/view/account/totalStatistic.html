@@ -11,7 +11,7 @@
 	</div>
 	<script type="text/javascript" src="/fishstrap/js/fishstrap.js" charset="utf-8"></script>
 	<script type="text/javascript">
-		fishstrap.use(['core/global','ui/table','ui/dialog','ui/chart'],function($,table,dialog,chart){
+		fishstrap.use(['core/global','ui/table','ui/dialog','ui/chart','echart'],function($,table,dialog,chart){
 			var statistic = {};
 			function getData( nextStep ){
 				$.get('/account/getMonthCardStatistic',{},function(data){
