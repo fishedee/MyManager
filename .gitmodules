@@ -1,6 +1,6 @@
 [submodule "third-party/FishCI"]
 	path = third-party/FishCI
-	url = https://github.com/fishedee/FishCI
+	url = git@github.com:fishedee/FishCI.git
 [submodule "third-party/FishStrap"]
 	path = third-party/FishStrap
-	url = https://github.com/fishedee/FishStrap
+	url = git@github.com:fishedee/FishStrap.git
