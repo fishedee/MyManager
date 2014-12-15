@@ -23,7 +23,7 @@
 					_.each(data.data.data,function(single){
 						categorys[single.categoryId] = single.name;
 					});
-					nextStep();
+					setTimeout(nextStep,1);
 				});
 			}
 			function getCard(nextStep){
@@ -36,7 +36,7 @@
 					_.each(data.data.data,function(single){
 						cards[single.cardId] = single.name;
 					});
-					nextStep();
+					setTimeout(nextStep,1);
 				});
 			}
 			function go(){
