@@ -3,7 +3,7 @@ server {
 	listen   [::]:80 default ipv6only=on; ## listen for ipv6
 
 	root /var/www/MyManager/;
-	server_name localhost;
+	server_name me.fishedee.com me.test.fishedee.com;
 
 	rewrite ^/data/upload/(.*) /data/upload/$1 last;
 	rewrite ^/(.*\.html) /static/build/backstage/$1 last;
