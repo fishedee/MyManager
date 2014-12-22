@@ -25,11 +25,11 @@
 		var table = require('fishstrap/ui/table.js');
 		var chart = require('fishstrap/ui/chart.js');
 		var year = $.location.getQueryArgv('year');
-		var month = $.location.getQueryArgv('month');
+		var week = $.location.getQueryArgv('week');
 		var cardId = $.location.getQueryArgv('cardId');
 		var statistic = {};
 		function getData( nextStep ){
-			$.get('/account/getDetailCardStatistic',{year:year,month:month,cardId:cardId},function(data){
+			$.get('/account/getWeekDetailCardStatistic',{year:year,week:week,cardId:cardId},function(data){
 				data = $.JSON.parse(data);
 				if( data.code != 0 ){
 					dialog.message(data.msg);

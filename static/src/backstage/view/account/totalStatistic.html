@@ -17,7 +17,7 @@
 		var chart = require('/fishstrap/ui/chart.js');
 		var statistic = {};
 		function getData( nextStep ){
-			$.get('/account/getMonthCardStatistic',{},function(data){
+			$.get('/account/getWeekCardStatistic',{},function(data){
 				data = $.JSON.parse(data);
 				if( data.code != 0 ){
 					dialog.message(data.msg);
@@ -37,13 +37,13 @@
 					{id:'money',type:'text',name:'结余金额'},
 					{id:'cardId',type:'hidden',name:'银行卡ID'},
 					{id:'year',type:'hidden',name:'年份'},
-					{id:'month',type:'hidden',name:'月份'},
+					{id:'week',type:'hidden',name:'周份'},
 				],
 				operate:[
 				{
 					name:'详细信息',
 					click:function(data){
-						location.href = 'viewTotalStatistic.html?year='+data.year+'&month='+data.month+'&cardId='+data.cardId;
+						location.href = 'viewTotalStatistic.html?year='+data.year+'&week='+data.week+'&cardId='+data.cardId;
 					}
 				}
 				],

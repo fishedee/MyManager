@@ -26,7 +26,7 @@
 		var chart = require('fishstrap/ui/chart.js');
 		var statistic = {};
 		function getData( nextStep ){
-			$.get('/account/getMonthTypeStatistic',{},function(data){
+			$.get('/account/getWeekTypeStatistic',{},function(data){
 				data = $.JSON.parse(data);
 				if( data.code != 0 ){
 					dialog.message(data.msg);
@@ -45,14 +45,14 @@
 					{id:'typeName',type:'text',name:'类型'},
 					{id:'money',type:'text',name:'金额'},
 					{id:'year',type:'hidden',name:'年份'},
-					{id:'month',type:'hidden',name:'月份'},
+					{id:'week',type:'hidden',name:'周份'},
 					{id:'type',type:'hidden',name:'类型'},
 				],
 				operate:[
 				{
 					name:'详细信息',
 					click:function(data){
-						location.href = 'viewInoutStatistic.html?year='+data.year+'&month='+data.month+'&type='+data.type;
+						location.href = 'viewInoutStatistic.html?year='+data.year+'&week='+data.week+'&type='+data.type;
 					}
 				}
 				],

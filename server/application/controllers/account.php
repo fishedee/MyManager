@@ -160,7 +160,7 @@ class Account extends CI_Controller {
 		$this->load->view('json',$data);
 	}
 	
-	public function getMonthTypeStatistic(){
+	public function getWeekTypeStatistic(){
 		//检查权限
 		$result = $this->loginAo->islogin();
 		if( $result["code"] != 0 ){
@@ -170,13 +170,13 @@ class Account extends CI_Controller {
 		$userId = $result['data'];
 		
 		//执行业务逻辑
-		$data = $this->accountStatistic->getMonthTypeStatistic(
+		$data = $this->accountStatistic->getWeekTypeStatistic(
 			$userId
 		);
 		$this->load->view('json',$data);
 	}
 	
-	public function getDetailTypeStatistic(){
+	public function getWeekDetailTypeStatistic(){
 		//检查权限
 		$result = $this->loginAo->islogin();
 		if( $result["code"] != 0 ){
@@ -186,26 +186,25 @@ class Account extends CI_Controller {
 		$userId = $result['data'];
 		
 		//检查输入参数
-		$result = $this->argv->getRequireInput(array('year','month','type'));
+		$result = $this->argv->getRequireInput(array('year','week','type'));
 		if( $result["code"] != 0 ){
 			$this->load->view('json',$result);
 			return $result;
 		}
 		$year = $result["data"]["year"];
-		$month = $result["data"]["month"];
+		$week = $result["data"]["week"];
 		$type = $result["data"]["type"];
-		
 		//执行业务逻辑
-		$data = $this->accountStatistic->getDetailTypeStatistic(
+		$data = $this->accountStatistic->getWeekDetailTypeStatistic(
 			$userId,
 			$year,
-			$month,
+			$week,
 			$type
 		);
 		$this->load->view('json',$data);
 	}
 	
-	public function getMonthCardStatistic(){
+	public function getWeekCardStatistic(){
 		//检查权限
 		$result = $this->loginAo->islogin();
 		if( $result["code"] != 0 ){
@@ -215,13 +214,13 @@ class Account extends CI_Controller {
 		$userId = $result['data'];
 		
 		//执行业务逻辑
-		$data = $this->accountStatistic->getMonthCardStatistic(
+		$data = $this->accountStatistic->getWeekCardStatistic(
 			$userId
 		);
 		$this->load->view('json',$data);
 	}
 	
-	public function getDetailCardStatistic(){
+	public function getWeekDetailCardStatistic(){
 		//检查权限
 		$result = $this->loginAo->islogin();
 		if( $result["code"] != 0 ){
@@ -231,20 +230,20 @@ class Account extends CI_Controller {
 		$userId = $result['data'];
 		
 		//检查输入参数
-		$result = $this->argv->getRequireInput(array('year','month','cardId'));
+		$result = $this->argv->getRequireInput(array('year','week','cardId'));
 		if( $result["code"] != 0 ){
 			$this->load->view('json',$result);
 			return $result;
 		}
 		$year = $result["data"]["year"];
-		$month = $result["data"]["month"];
+		$week = $result["data"]["week"];
 		$cardId = $result["data"]["cardId"];
 		
 		//执行业务逻辑
-		$data = $this->accountStatistic->getDetailCardStatistic(
+		$data = $this->accountStatistic->getWeekDetailCardStatistic(
 			$userId,
 			$year,
-			$month,
+			$week,
 			$cardId
 		);
 		$this->load->view('json',$data);

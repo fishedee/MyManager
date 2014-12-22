@@ -110,6 +110,35 @@ class AccountDb extends CI_Model {
 			    );
 	}
 	
+	public function getWeekTypeStatisticByUser( $userId ){
+		$sql = "select DATE_FORMAT(createTime,'%x') as year,DATE_FORMAT(createTime,'%v') as week,type,SUM(money) as money ".
+			'from '.$this->tableName.' '.
+			'where userId = ? '.
+			'group by year,week,type '.
+			'order by year desc,week desc';
+		$argv = array($userId);
+		$query = $this->db->query($sql,$argv)->result_array();
+		return array(
+			'code'=>0,
+			'msg'=>'',
+			'data'=>$query
+		);
+	}
+	
+	public function getWeekDetailTypeStatisticByUser( $userId ,$year,$week,$type){
+		$sql = "select categoryId , sum(money) as money ".
+			'from '.$this->tableName.' '.
+			"where DATE_FORMAT(createTime,'%x') = ? and DATE_FORMAT(createTime,'%v') = ? and userId = ? and type = ? ".
+			'group by categoryId';
+		$argv = array($year,$week,$userId,$type);
+		$query = $this->db->query($sql,$argv)->result_array();
+		return array(
+			'code'=>0,
+			'msg'=>'',
+			'data'=>$query
+		);
+	}
+	
 	public function getMonthTypeStatisticByUser( $userId ){
 		$sql = "select DATE_FORMAT(createTime,'%Y') as year,DATE_FORMAT(createTime,'%m') as month,type,SUM(money) as money ".
 			'from '.$this->tableName.' '.
@@ -125,12 +154,41 @@ class AccountDb extends CI_Model {
 		);
 	}
 	
-	public function getDetailTypeStatisticByUser( $userId ,$month,$year,$type){
+	public function getMonthDetailTypeStatisticByUser( $userId ,$month,$year,$type){
 		$sql = "select categoryId , sum(money) as money ".
 			'from '.$this->tableName.' '.
 			"where DATE_FORMAT(createTime,'%Y') = ? and DATE_FORMAT(createTime,'%m') = ? and userId = ? and type = ? ".
 			'group by categoryId';
 		$argv = array($year,$month,$userId,$type);
+		$query = $this->db->query($sql,$argv)->result_array();
+		return array(
+			'code'=>0,
+			'msg'=>'',
+			'data'=>$query
+		);
+	}
+	
+	public function getWeekCardStatisticByUser( $userId ){
+		$sql = "select DATE_FORMAT(createTime,'%x') as year,DATE_FORMAT(createTime,'%v') as week,cardId,type,SUM(money) as money ".
+			'from '.$this->tableName.' '.
+			'where userId = ? '.
+			'group by year,week,cardId,type '.
+			'order by year asc,week asc';
+		$argv = array($userId);
+		$query = $this->db->query($sql,$argv)->result_array();
+		return array(
+			'code'=>0,
+			'msg'=>'',
+			'data'=>$query
+		);
+	}
+	
+	public function getWeekDetailCardStatisticByUser( $userId ,$year,$week,$cardId){
+		$sql = "select type , sum(money) as money ".
+			'from '.$this->tableName.' '.
+			"where DATE_FORMAT(createTime,'%x') = ? and DATE_FORMAT(createTime,'%v') = ? and userId = ? and cardId = ? ".
+			'group by type';
+		$argv = array($year,$week,$userId,$cardId);
 		$query = $this->db->query($sql,$argv)->result_array();
 		return array(
 			'code'=>0,
@@ -154,7 +212,7 @@ class AccountDb extends CI_Model {
 		);
 	}
 	
-	public function getDetailCardStatisticByUser( $userId ,$month,$year,$cardId){
+	public function getMonthDetailCardStatisticByUser( $userId ,$month,$year,$cardId){
 		$sql = "select type , sum(money) as money ".
 			'from '.$this->tableName.' '.
 			"where DATE_FORMAT(createTime,'%Y') = ? and DATE_FORMAT(createTime,'%m') = ? and userId = ? and cardId = ? ".
