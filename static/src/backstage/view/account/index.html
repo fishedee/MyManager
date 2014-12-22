@@ -3,94 +3,95 @@
 <head>
 	<meta charset="UTF-8">
 	<title>烘焙帮后台管理系统</title>
+	<script type="text/javascript" src="/fishstrap/lib/mod.js"></script>
 </head>
 <body class="definewidth m10">
 	<div id="container">
 	</div>
-	<script type="text/javascript" src="/fishstrap/js/fishstrap.js" charset="utf-8"></script>
 	<script type="text/javascript">
-		fishstrap.use(['core/global','ui/dialog','ui/query'],function($,dialog,query){
-			var categorys = {0:'未分类'};
-			var cards = {0:'无银行卡'};
-			var types = {1:'收入',2:'支出',3:'转账收入',4:'转账支出'};
-			function getCategory(nextStep){
-				$.get('/category/search',{},function(data){
-					data = $.JSON.parse(data);
-					if( data.code != 0 ){
-						dialog.message( data.msg );
-						return;
-					}
-					_.each(data.data.data,function(single){
-						categorys[single.categoryId] = single.name;
-					});
-					setTimeout(nextStep,1);
+		var $ = require('/fishstrap/core/global.js');
+		var dialog = require('/fishstrap/ui/dialog.js');
+		var query = require('/fishstrap/ui/query.js');
+		var categorys = {0:'未分类'};
+		var cards = {0:'无银行卡'};
+		var types = {1:'收入',2:'支出',3:'转账收入',4:'转账支出'};
+		function getCategory(nextStep){
+			$.get('/category/search',{},function(data){
+				data = $.JSON.parse(data);
+				if( data.code != 0 ){
+					dialog.message( data.msg );
+					return;
+				}
+				_.each(data.data.data,function(single){
+					categorys[single.categoryId] = single.name;
 				});
-			}
-			function getCard(nextStep){
-				$.get('/card/search',{},function(data){
-					data = $.JSON.parse(data);
-					if( data.code != 0 ){
-						dialog.message( data.msg );
-						return;
-					}
-					_.each(data.data.data,function(single){
-						cards[single.cardId] = single.name;
-					});
-					setTimeout(nextStep,1);
+				nextStep();
+			});
+		}
+		function getCard(nextStep){
+			$.get('/card/search',{},function(data){
+				data = $.JSON.parse(data);
+				if( data.code != 0 ){
+					dialog.message( data.msg );
+					return;
+				}
+				_.each(data.data.data,function(single){
+					cards[single.cardId] = single.name;
 				});
-			}
-			function go(){
-				query.simpleQuery({
-					id:'container',
-					url:'/account/search',
-					column:[
-						{id:'accountId',type:'text',name:'账务ID'},
-						{id:'name',type:'text',name:'名称'},
-						{id:'money',type:'text',name:'金额'},
-						{id:'type',type:'enum',name:'类型',map:types},
-						{id:'categoryId',type:'enum',name:'分类',map:categorys},
-						{id:'cardId',type:'enum',name:'银行卡',map:cards},
-						{id:'remark',type:'text',name:'备注'},
-						{id:'createTime',type:'text',name:'创建时间'},
-						{id:'modifyTime',type:'text',name:'修改时间'},
-					],
-					queryColumn:['name','remark','categoryId','cardId','type'],
-					operate:[
-					{
-						name:'编辑',
-						click:function(data){
-							location.href = 'view.html?accountId='+data.accountId;
-						}
-					},
-					{
-						name:'删除',
-						click:function(data){
-							dialog.confirm('确认删除该账务，不可回退操作？!',function(){
-								$.post('/account/del',{accountId:data.accountId},function(data){
-									data = $.JSON.parse(data);
-									if( data.code != 0 ){
-										dialog.message(data.msg);
-										return;
-									}
-									location.href = 'index.html';
-								});
+				nextStep();
+			});
+		}
+		function go(){
+			query.simpleQuery({
+				id:'container',
+				url:'/account/search',
+				column:[
+					{id:'accountId',type:'text',name:'账务ID'},
+					{id:'name',type:'text',name:'名称'},
+					{id:'money',type:'text',name:'金额'},
+					{id:'type',type:'enum',name:'类型',map:types},
+					{id:'categoryId',type:'enum',name:'分类',map:categorys},
+					{id:'cardId',type:'enum',name:'银行卡',map:cards},
+					{id:'remark',type:'text',name:'备注'},
+					{id:'createTime',type:'text',name:'创建时间'},
+					{id:'modifyTime',type:'text',name:'修改时间'},
+				],
+				queryColumn:['name','remark','categoryId','cardId','type'],
+				operate:[
+				{
+					name:'编辑',
+					click:function(data){
+						location.href = 'view.html?accountId='+data.accountId;
+					}
+				},
+				{
+					name:'删除',
+					click:function(data){
+						dialog.confirm('确认删除该账务，不可回退操作？!',function(){
+							$.post('/account/del',{accountId:data.accountId},function(data){
+								data = $.JSON.parse(data);
+								if( data.code != 0 ){
+									dialog.message(data.msg);
+									return;
+								}
+								location.href = 'index.html';
 							});
-						}
-					}],
-					button:[
-					{
-						name:'添加账务',
-						click:function(){
-							location.href = 'view.html';
-						}
+						});
 					}
-					],
-				});
-			}
-			getCategory(function(){
-				getCard(function(){
-					go();
-				});
+				}],
+				button:[
+				{
+					name:'添加账务',
+					click:function(){
+						location.href = 'view.html';
+					}
+				}
+				],
+			});
+		}
+		getCategory(function(){
+			getCard(function(){
+				go();
 			});
 		});
 	</script>

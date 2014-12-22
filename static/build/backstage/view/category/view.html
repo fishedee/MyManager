@@ -3,62 +3,73 @@
 <head>
 	<meta charset="UTF-8">
 	<title>烘焙帮后台管理系统</title>
+	<script type="text/javascript" src="/fishstrap/lib/mod_df9079e.js"></script>
+<link rel="stylesheet" type="text/css" href="/fishstrap/lib/gri/gri_e181dce.css">
+
+<script type="text/javascript" src="http://apps.bdimg.com/libs/underscore.js/1.7.0/underscore-min.js"></script>
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="/pkg/backstageBase_9cae708.js"></script>
+<script type="text/javascript" src="/fishstrap/lib/uedit/ueditor.config_90dbfe3.js"></script>
+<script type="text/javascript" src="/fishstrap/lib/uedit/ueditor.all.min_f031cc9.js"></script>
+<script type="text/javascript" src="/pkg/uiBase_c74b22c.js"></script>
+<script type="text/javascript" src="/pkg/upload_b06f6af.js"></script>
+
 </head>
 <body class="definewidth m10">
 	<div id="container">
 	</div>
-	<script type="text/javascript" src="/fishstrap/js/fishstrap.js" charset="utf-8"></script>
 	<script type="text/javascript">
-		fishstrap.use(['core/global','ui/input','ui/dialog'],function($,input,dialog){
-			var categoryId = $.location.getQueryArgv('categoryId');
-			function go(value){
-				input.verticalInput({
-					id:'container',
-					field:[
-						{id:'name',type:'text',name:'名字'},
-						{id:'remark',type:'text',name:'备注'},
-					],
-					value:value,
-					submit:function(data){
-						if( categoryId != null ){
-							data = $.extend({categoryId:categoryId},data);
-							$.post('/category/mod',data,function(data){
-								data = $.JSON.parse(data);
-								if( data.code != 0 ){
-									dialog.message(data.msg);
-									return;
-								}
-								location.href = 'index.html';
-							});
-						}else{
-							$.post('/category/add',data,function(data){
-								data = $.JSON.parse(data);
-								if( data.code != 0 ){
-									dialog.message(data.msg);
-									return;
-								}
-								location.href = 'index.html';
-							});
-						}
-					},
-					cancel:function(){
-						location.href = 'index.html';
+		var $ = require('fishstrap/core/global.js');
+		var input = require('fishstrap/ui/input.js');
+		var dialog = require('fishstrap/ui/dialog.js');
+		var categoryId = $.location.getQueryArgv('categoryId');
+		function go(value){
+			input.verticalInput({
+				id:'container',
+				field:[
+					{id:'name',type:'text',name:'名字'},
+					{id:'remark',type:'text',name:'备注'},
+				],
+				value:value,
+				submit:function(data){
+					if( categoryId != null ){
+						data = $.extend({categoryId:categoryId},data);
+						$.post('/category/mod',data,function(data){
+							data = $.JSON.parse(data);
+							if( data.code != 0 ){
+								dialog.message(data.msg);
+								return;
+							}
+							location.href = 'index.html';
+						});
+					}else{
+						$.post('/category/add',data,function(data){
+							data = $.JSON.parse(data);
+							if( data.code != 0 ){
+								dialog.message(data.msg);
+								return;
+							}
+							location.href = 'index.html';
+						});
 					}
-				});
-			}
-			if( categoryId != null ){
-				$.get('/category/get',{categoryId:categoryId},function(data){
-					data = $.JSON.parse(data);
-					if( data.code != 0 ){
-						dialog.message(data.msg);
-						return;
-					}
-					go(data.data);
-				});
-			}else{
-				go({});
-			}
-		});
+				},
+				cancel:function(){
+					location.href = 'index.html';
+				}
+			});
+		}
+		if( categoryId != null ){
+			$.get('/category/get',{categoryId:categoryId},function(data){
+				data = $.JSON.parse(data);
+				if( data.code != 0 ){
+					dialog.message(data.msg);
+					return;
+				}
+				go(data.data);
+			});
+		}else{
+			go({});
+		}
 	</script>
  </body>
 </html>

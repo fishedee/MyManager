@@ -3,46 +3,47 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Fish个人管理系统</title>
+	<script type="text/javascript" src="/fishstrap/lib/mod.js"></script>
 </head>
 <body>
-	<script type="text/javascript" src="/fishstrap/js/fishstrap.js" charset="utf-8"></script>
 	<script type="text/javascript">
-		fishstrap.use(['page/indexPage','ui/dialog','core/global'],function(indexPage,dialog,$){
-			indexPage.use({
-				title:'Fish个人管理系统',
-				init:function(){
-					$.get('/login/islogin?t='+Math.random(),{},function(data){
-						data = $.JSON.parse(data);
-						if( data.code != 0 ){
-							location.href = 'login.html';
-							return;
-						}
-					});
-				},
-				logout:function(){
-					$.get('/login/checkout?t='+Math.random(),{},function(data){
-						data = $.JSON.parse(data);
-						if( data.code != 0 ){
-							dialog.message(data.msg);
-							return;
-						}
+		var indexPage = require('/fishstrap/page/indexPage.js');
+		var dialog = require('/fishstrap/ui/dialog.js');
+		var $ = require('/fishstrap/core/global.js');
+		indexPage.use({
+			title:'Fish个人管理系统',
+			init:function(){
+				$.get('/login/islogin?t='+Math.random(),{},function(data){
+					data = $.JSON.parse(data);
+					if( data.code != 0 ){
 						location.href = 'login.html';
-					});
-				},
-				menu:{
-					'系统管理':[
-						{name:'帐号管理',url:'view/user/index.html'},
-						{name:'密码管理',url:'view/password/index.html'}
-					],
-					'财务管理':[
-						{name:'分类管理',url:'view/category/index.html'},
-						{name:'银卡管理',url:'view/card/index.html'},
-						{name:'账务管理',url:'view/account/index.html'},
-						{name:'收支统计',url:'view/account/inoutStatistic.html'},
-						{name:'结余统计',url:'view/account/totalStatistic.html'},
-					],
-				}
-			});
+						return;
+					}
+				});
+			},
+			logout:function(){
+				$.get('/login/checkout?t='+Math.random(),{},function(data){
+					data = $.JSON.parse(data);
+					if( data.code != 0 ){
+						dialog.message(data.msg);
+						return;
+					}
+					location.href = 'login.html';
+				});
+			},
+			menu:{
+				'系统管理':[
+					{name:'帐号管理',url:'view/user/index.html'},
+					{name:'密码管理',url:'view/password/index.html'}
+				],
+				'财务管理':[
+					{name:'分类管理',url:'view/category/index.html'},
+					{name:'银卡管理',url:'view/card/index.html'},
+					{name:'账务管理',url:'view/account/index.html'},
+					{name:'收支统计',url:'view/account/inoutStatistic.html'},
+					{name:'结余统计',url:'view/account/totalStatistic.html'},
+				],
+			}
 		});
 	</script>
  </body>

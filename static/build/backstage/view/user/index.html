@@ -3,63 +3,73 @@
 <head>
 	<meta charset="UTF-8">
 	<title>烘焙帮后台管理系统</title>
+	<script type="text/javascript" src="/fishstrap/lib/mod_df9079e.js"></script>
+<link rel="stylesheet" type="text/css" href="/fishstrap/lib/gri/gri_e181dce.css">
+
+<script type="text/javascript" src="http://apps.bdimg.com/libs/underscore.js/1.7.0/underscore-min.js"></script>
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="/pkg/backstageBase_9cae708.js"></script>
+<script type="text/javascript" src="/pkg/uiBase_c74b22c.js"></script>
+<script type="text/javascript" src="/fishstrap/lib/uedit/ueditor.config_90dbfe3.js"></script>
+<script type="text/javascript" src="/fishstrap/lib/uedit/ueditor.all.min_f031cc9.js"></script>
+<script type="text/javascript" src="/pkg/upload_b06f6af.js"></script>
+
 </head>
 <body class="definewidth m10">
 	<div id="container">
 	</div>
-	<script type="text/javascript" src="/fishstrap/js/fishstrap.js" charset="utf-8"></script>
 	<script type="text/javascript">
-		fishstrap.use(['core/global','ui/query','ui/dialog'],function($,query,dialog){
-			query.simpleQuery({
-				id:'container',
-				url:'/user/search',
-				column:[
-					{id:'userId',type:'text',name:'用户ID'},
-					{id:'name',type:'text',name:'姓名'},
-					{id:'type',type:'enum',name:'类型',map:{'0':'管理员','1':'普通会员'}},
-					{id:'createTime',type:'text',name:'创建时间'},
-					{id:'modifyTime',type:'text',name:'修改时间'},
-				],
-				queryColumn:['name','type'],
-				operate:[
-				{
-					name:'修改类型',
-					click:function(data){
-						location.href = 'modType.html?userId='+data.userId;
-					}
-				},
-				{
-					name:'修改密码',
-					click:function(data){
-						location.href = 'modPassword.html?userId='+data.userId;
-					}
-				},
-				{
-					name:'删除',
-					click:function(data){
-						dialog.confirm('确认删除该用户，不可回退操作？!',function(){
-							$.post('/user/del',{userId:data.userId},function(data){
-								data = $.JSON.parse(data);
-								if( data.code != 0 ){
-									dialog.message(data.msg);
-									return;
-								}
-								location.href = 'index.html';
-							});
-						});
-					}
-				}],
-				button:[
-				{
-					name:'添加用户',
-					click:function(){
-						location.href = 'add.html';
-					}
+		var $ = require('fishstrap/core/global.js');
+		var query = require('fishstrap/ui/query.js');
+		var dialog = require('fishstrap/ui/dialog.js');
+		query.simpleQuery({
+			id:'container',
+			url:'/user/search',
+			column:[
+				{id:'userId',type:'text',name:'用户ID'},
+				{id:'name',type:'text',name:'姓名'},
+				{id:'type',type:'enum',name:'类型',map:{'0':'管理员','1':'普通会员'}},
+				{id:'createTime',type:'text',name:'创建时间'},
+				{id:'modifyTime',type:'text',name:'修改时间'},
+			],
+			queryColumn:['name','type'],
+			operate:[
+			{
+				name:'修改类型',
+				click:function(data){
+					location.href = 'modType.html?userId='+data.userId;
 				}
-				],
-			});
+			},
+			{
+				name:'修改密码',
+				click:function(data){
+					location.href = 'modPassword.html?userId='+data.userId;
+				}
+			},
+			{
+				name:'删除',
+				click:function(data){
+					dialog.confirm('确认删除该用户，不可回退操作？!',function(){
+						$.post('/user/del',{userId:data.userId},function(data){
+							data = $.JSON.parse(data);
+							if( data.code != 0 ){
+								dialog.message(data.msg);
+								return;
+							}
+							location.href = 'index.html';
+						});
+					});
+				}
+			}],
+			button:[
+			{
+				name:'添加用户',
+				click:function(){
+					location.href = 'add.html';
+				}
+			}
+			],
 		});
-		
 	</script>
  </body>
 </html>

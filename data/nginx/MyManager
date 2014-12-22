@@ -14,8 +14,12 @@ server {
 		fastcgi_pass localhost:9000;
 		include fastcgi_params;
 	}
+	location ~ \.html{
+		try_files $uri =404;
+	}
 
 	location / {
+		expires max;
 		try_files $uri =404;
 	}
 

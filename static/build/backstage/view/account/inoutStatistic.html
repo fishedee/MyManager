@@ -3,59 +3,70 @@
 <head>
 	<meta charset="UTF-8">
 	<title>烘焙帮后台管理系统</title>
+	<script type="text/javascript" src="/fishstrap/lib/mod_df9079e.js"></script>
+<link rel="stylesheet" type="text/css" href="/fishstrap/lib/gri/gri_e181dce.css">
+
+<script type="text/javascript" src="http://apps.bdimg.com/libs/underscore.js/1.7.0/underscore-min.js"></script>
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="/pkg/backstageBase_9cae708.js"></script>
+<script type="text/javascript" src="/pkg/uiBase_c74b22c.js"></script>
+<script type="text/javascript" src="http://apps.bdimg.com/libs/echarts/2.0.4/echarts-plain.js"></script>
+<script type="text/javascript" src="/fishstrap/ui/chart_6d1b004.js"></script>
+
 </head>
 <body class="definewidth m10">
 	<div id="chart" style="height:400px">
 	</div>
 	<div id="container">
 	</div>
-	<script type="text/javascript" src="/fishstrap/js/fishstrap.js" charset="utf-8"></script>
 	<script type="text/javascript">
-		fishstrap.use(['core/global','ui/dialog','ui/table','ui/chart','echart'],function($,dialog,table,chart){
-			var statistic = {};
-			function getData( nextStep ){
-				$.get('/account/getMonthTypeStatistic',{},function(data){
-					data = $.JSON.parse(data);
-					if( data.code != 0 ){
-						dialog.message(data.msg);
-						return;
-					}
-					statistic = data.data;
-					nextStep();
-				});
-			}
-			function go(){
-				table.staticSimpleTable({
-					id:'container',
-					data:statistic,
-					column:[
-						{id:'name',type:'text',name:'时间'},
-						{id:'typeName',type:'text',name:'类型'},
-						{id:'money',type:'text',name:'金额'},
-						{id:'year',type:'hidden',name:'年份'},
-						{id:'month',type:'hidden',name:'月份'},
-						{id:'type',type:'hidden',name:'类型'},
-					],
-					operate:[
-					{
-						name:'详细信息',
-						click:function(data){
-							location.href = 'viewInoutStatistic.html?year='+data.year+'&month='+data.month+'&type='+data.type;
-						}
-					}
-					],
-				});
-				chart.simpleBrokeLine({
-					id:'chart',
-					data:statistic,
-					xAxis:'name',
-					yAxis:'money',
-					category:'typeName'
-				});
-			}
-			getData(function(){
-				go();
+		var $ = require('fishstrap/core/global.js');
+		var dialog = require('fishstrap/ui/dialog.js');
+		var table = require('fishstrap/ui/table.js');
+		var chart = require('fishstrap/ui/chart.js');
+		var statistic = {};
+		function getData( nextStep ){
+			$.get('/account/getMonthTypeStatistic',{},function(data){
+				data = $.JSON.parse(data);
+				if( data.code != 0 ){
+					dialog.message(data.msg);
+					return;
+				}
+				statistic = data.data;
+				nextStep();
 			});
+		}
+		function go(){
+			table.staticSimpleTable({
+				id:'container',
+				data:statistic,
+				column:[
+					{id:'name',type:'text',name:'时间'},
+					{id:'typeName',type:'text',name:'类型'},
+					{id:'money',type:'text',name:'金额'},
+					{id:'year',type:'hidden',name:'年份'},
+					{id:'month',type:'hidden',name:'月份'},
+					{id:'type',type:'hidden',name:'类型'},
+				],
+				operate:[
+				{
+					name:'详细信息',
+					click:function(data){
+						location.href = 'viewInoutStatistic.html?year='+data.year+'&month='+data.month+'&type='+data.type;
+					}
+				}
+				],
+			});
+			chart.simpleBrokeLine({
+				id:'chart',
+				data:statistic,
+				xAxis:'name',
+				yAxis:'money',
+				category:'typeName'
+			});
+		}
+		getData(function(){
+			go();
 		});
 	</script>
  </body>
