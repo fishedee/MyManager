@@ -42,7 +42,7 @@ class AccountAo extends CI_Model {
 		}
 		
 		//校验金额
-		if( $data['money'] <= 0 ){
+		if( $data['money'] < 0 ){
 			return array(
 				'code'=>1,
 				'msg'=>'金额必须大于或等于0',
