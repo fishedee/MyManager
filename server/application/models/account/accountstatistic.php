@@ -61,7 +61,7 @@ class AccountStatistic extends CI_Model {
 						$this->accountDb->TYPE_TRANSFER_OUT =>'转账支出',
 					);
 					$data[] = array(
-						'name'=>$year.'年'.$week.'周',
+						'name'=>$year.'年'.sprintf('%02d',$week).'周',
 						'year'=>$year,
 						'week'=>$week,
 						'type'=>$type,
@@ -203,7 +203,7 @@ class AccountStatistic extends CI_Model {
 						$money = $statistic2[$lastYear][$lastWeek][$cardId] + $money;
 					}
 					$data[] = array(
-						'name'=>$year.'年'.$week.'周',
+						'name'=>$year.'年'.sprintf('%02d',$week).'周',
 						'year'=>$year,
 						'week'=>$week,
 						'cardId'=>$cardId,
