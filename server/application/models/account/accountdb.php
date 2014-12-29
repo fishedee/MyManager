@@ -111,7 +111,7 @@ class AccountDb extends CI_Model {
 	}
 	
 	public function getWeekTypeStatisticByUser( $userId ){
-		$sql = "select DATE_FORMAT(createTime,'%x') as year,DATE_FORMAT(createTime,'%v') as week,type,SUM(money) as money ".
+		$sql = "select DATE_FORMAT(createTime,'%x') as year,TRIM( LEADING '0' From DATE_FORMAT(createTime,'%v')) as week,type,SUM(money) as money ".
 			'from '.$this->tableName.' '.
 			'where userId = ? '.
 			'group by year,week,type '.
@@ -128,7 +128,7 @@ class AccountDb extends CI_Model {
 	public function getWeekDetailTypeStatisticByUser( $userId ,$year,$week,$type){
 		$sql = "select categoryId , sum(money) as money ".
 			'from '.$this->tableName.' '.
-			"where DATE_FORMAT(createTime,'%x') = ? and DATE_FORMAT(createTime,'%v') = ? and userId = ? and type = ? ".
+			"where DATE_FORMAT(createTime,'%x') = ? and TRIM( LEADING '0' From DATE_FORMAT(createTime,'%v')) = ? and userId = ? and type = ? ".
 			'group by categoryId';
 		$argv = array($year,$week,$userId,$type);
 		$query = $this->db->query($sql,$argv)->result_array();
@@ -140,7 +140,7 @@ class AccountDb extends CI_Model {
 	}
 	
 	public function getMonthTypeStatisticByUser( $userId ){
-		$sql = "select DATE_FORMAT(createTime,'%Y') as year,DATE_FORMAT(createTime,'%m') as month,type,SUM(money) as money ".
+		$sql = "select DATE_FORMAT(createTime,'%Y') as year,TRIM( LEADING '0' From DATE_FORMAT(createTime,'%m')) as month,type,SUM(money) as money ".
 			'from '.$this->tableName.' '.
 			'where userId = ? '.
 			'group by year,month,type '.
@@ -157,7 +157,7 @@ class AccountDb extends CI_Model {
 	public function getMonthDetailTypeStatisticByUser( $userId ,$month,$year,$type){
 		$sql = "select categoryId , sum(money) as money ".
 			'from '.$this->tableName.' '.
-			"where DATE_FORMAT(createTime,'%Y') = ? and DATE_FORMAT(createTime,'%m') = ? and userId = ? and type = ? ".
+			"where DATE_FORMAT(createTime,'%Y') = ? and TRIM( LEADING '0' From DATE_FORMAT(createTime,'%m')) = ? and userId = ? and type = ? ".
 			'group by categoryId';
 		$argv = array($year,$month,$userId,$type);
 		$query = $this->db->query($sql,$argv)->result_array();
@@ -169,7 +169,7 @@ class AccountDb extends CI_Model {
 	}
 	
 	public function getWeekCardStatisticByUser( $userId ){
-		$sql = "select DATE_FORMAT(createTime,'%x') as year,DATE_FORMAT(createTime,'%v') as week,cardId,type,SUM(money) as money ".
+		$sql = "select DATE_FORMAT(createTime,'%x') as year,TRIM( LEADING '0' From DATE_FORMAT(createTime,'%v')) as week,cardId,type,SUM(money) as money ".
 			'from '.$this->tableName.' '.
 			'where userId = ? '.
 			'group by year,week,cardId,type '.
@@ -186,7 +186,7 @@ class AccountDb extends CI_Model {
 	public function getWeekDetailCardStatisticByUser( $userId ,$year,$week,$cardId){
 		$sql = "select type , sum(money) as money ".
 			'from '.$this->tableName.' '.
-			"where DATE_FORMAT(createTime,'%x') = ? and DATE_FORMAT(createTime,'%v') = ? and userId = ? and cardId = ? ".
+			"where DATE_FORMAT(createTime,'%x') = ? and TRIM( LEADING '0' From DATE_FORMAT(createTime,'%v')) = ? and userId = ? and cardId = ? ".
 			'group by type';
 		$argv = array($year,$week,$userId,$cardId);
 		$query = $this->db->query($sql,$argv)->result_array();
@@ -198,7 +198,7 @@ class AccountDb extends CI_Model {
 	}
 	
 	public function getMonthCardStatisticByUser( $userId ){
-		$sql = "select DATE_FORMAT(createTime,'%Y') as year,DATE_FORMAT(createTime,'%m') as month,cardId,type,SUM(money) as money ".
+		$sql = "select DATE_FORMAT(createTime,'%Y') as year,TRIM( LEADING '0' From DATE_FORMAT(createTime,'%m')) as month,cardId,type,SUM(money) as money ".
 			'from '.$this->tableName.' '.
 			'where userId = ? '.
 			'group by year,month,cardId,type '.
@@ -215,7 +215,7 @@ class AccountDb extends CI_Model {
 	public function getMonthDetailCardStatisticByUser( $userId ,$month,$year,$cardId){
 		$sql = "select type , sum(money) as money ".
 			'from '.$this->tableName.' '.
-			"where DATE_FORMAT(createTime,'%Y') = ? and DATE_FORMAT(createTime,'%m') = ? and userId = ? and cardId = ? ".
+			"where DATE_FORMAT(createTime,'%Y') = ? and TRIM( LEADING '0' From DATE_FORMAT(createTime,'%m')) = ? and userId = ? and cardId = ? ".
 			'group by type';
 		$argv = array($year,$month,$userId,$cardId);
 		$query = $this->db->query($sql,$argv)->result_array();

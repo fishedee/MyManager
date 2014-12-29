@@ -8,7 +8,6 @@ class AccountStatistic extends CI_Model {
 		$this->load->model('category/categoryAo','categoryAo');
 		$this->load->model('card/cardAo','cardAo');
 	}
-	
 	public function getWeekTypeStatistic($userId){
 		//获取分析数据
 		$result = $this->accountDb->getWeekTypeStatisticByUser($userId);
@@ -45,7 +44,7 @@ class AccountStatistic extends CI_Model {
 		$data = array();
 		for( $year = $maxTime['year'] ; $year >= $minTime['year'] ; $year -- ){
 			$minWeek = 1;
-			$maxWeek = 53;
+			$maxWeek = 52;
 			if( $year == $minTime['year'])
 				$minWeek = $minTime['week'];
 			if( $year == $maxTime['year'])
@@ -180,7 +179,7 @@ class AccountStatistic extends CI_Model {
 		$statistic2 = array();
 		for( $year = $minTime['year'] ; $year <= $maxTime['year'] ; $year ++ ){
 			$minWeek = 1;
-			$maxWeek = 53;
+			$maxWeek = 52;
 			if( $year == $minTime['year'])
 				$minWeek = $minTime['week'];
 			if( $year == $maxTime['year'])
@@ -199,7 +198,7 @@ class AccountStatistic extends CI_Model {
 						$lastWeek = $week - 1 ;
 						if( $lastWeek == 0 ){
 							$lastYear = $lastYear - 1;
-							$lastWeek = 53;
+							$lastWeek = 52;
 						}
 						$money = $statistic2[$lastYear][$lastWeek][$cardId] + $money;
 					}
