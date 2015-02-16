@@ -27,7 +27,7 @@ class AccountDb extends CI_Model {
 				$this->db->where($key,$value);
 		}
 			
-		$this->db->order_by('createTime','desc');
+		$this->db->order_by('accountId','desc');
 		
 		if( isset($limit["pageIndex"]) && isset($limit["pageSize"]))
 			$this->db->limit($limit["pageSize"],$limit["pageIndex"]);
