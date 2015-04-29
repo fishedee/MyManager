@@ -1,7 +1,7 @@
 /*
 *加载依赖的ueditor
-*@require ../lib/uedit/ueditor.config.js
-*@require ../lib/uedit/ueditor.all.min.js
+*@require ../lib/ueditor/ueditor.config.js
+*@require ../lib/ueditor/ueditor.all.min.js
 */
 var $ = require('../core/global.js');
 module.exports = {
@@ -22,14 +22,6 @@ module.exports = {
 		var ue = UE.getEditor(editorId, {
 			serverUrl:defaultOption.url,
 			autoHeightEnabled: true,
-			toolbars: [
-			['fullscreen', 'source', '|', 'undo', 'redo'] ,
-			['bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc','|','rowspacingtop', 'rowspacingbottom', 'lineheight', '|','customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
-				'directionalityltr', 'directionalityrtl', 'indent', '|',
-				'simpleupload', 'insertimage','pagebreak', 'template', 'background'],
-			['justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
-				'link', 'unlink', 'anchor', '|', 'imagenone', 'imageleft', 'imageright', 'imagecenter'],
-			['inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', 'charts']],
 		});
 		//计算editor的函数
 		return {

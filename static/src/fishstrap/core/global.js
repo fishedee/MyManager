@@ -3,24 +3,74 @@
 * @require ../lib/underscore.js
 * @require ../lib/jquery.js
 */
+//加入格式扩展
+$ = window['jQuery'];
+_ = window._;
+$.format = {
+	intval:function(){
+		var value = arguments[0] ? arguments[0] : 0;
+		var defaultValue = arguments[1] ? arguments[1] : 0;
+		var value = parseInt(value);
+		if(_.isNaN(value))
+			value = defaultValue;
+		return value;
+	},
+	floatval:function(){
+		var value = arguments[0] ? arguments[0] : 0;
+		var defaultValue = arguments[1] ? arguments[1] : 0;
+		var value = parseFloat(value);
+		if(_.isNaN(value))
+			value = defaultValue;
+		return value;
+	}
+};
+//加入log扩展
+$.log = {
+	fatal:function(msg){
+		if( window.console )
+			window.console.log('fatal: '+msg);
+	},
+	error:function(msg){
+		if( window.console )
+			window.console.log('error: '+msg);
+	},
+	info:function(msg){
+		if( window.console )
+			window.console.log('info: '+msg);
+	},
+	debug:function(msg){
+		if( window.console )
+			window.console.log('debug: '+msg);
+	},
+	
+};
 //加入console扩展
 $.console = {
 	log:function(msg){
 		if( window.console )
 			window.console.log('log: '+msg);
 	},
+	fatal:function(msg){
+		if( window.console )
+			window.console.log('fatal: '+msg);
+	},
+	error:function(msg){
+		if( window.console )
+			window.console.log('error: '+msg);
+	},
 	warn:function(msg){
 		if( window.console )
 			window.console.log('warn: '+msg);
+	},
+	info:function(msg){
+		if( window.console )
+			window.console.log('info: '+msg);
 	},
 	debug:function(msg){
 		if( window.console )
 			window.console.log('debug: '+msg);
 	},
-	info:function(msg){
-		if( window.console )
-			window.console.log('info: '+msg);
-	}
+	
 };
 //加入自动加时间戳扩展
 $._ajax = $.ajax;
@@ -54,6 +104,78 @@ $.security = {
 		return escape(value);
 	}
 };
+//加入日期扩展
+(function(){
+	Date.prototype.format =function(format)
+    {
+        var o = {
+			"M+" : this.getMonth()+1, //month
+			"d+" : this.getDate(),    //day
+			"h+" : this.getHours(),   //hour
+			"m+" : this.getMinutes(), //minute
+			"s+" : this.getSeconds(), //second
+			"q+" : Math.floor((this.getMonth()+3)/3),  //quarter
+			"S" : this.getMilliseconds() //millisecond
+        }
+        if(/(y+)/.test(format)) format=format.replace(RegExp.$1,
+        (this.getFullYear()+"").substr(4- RegExp.$1.length));
+        for(var k in o)if(new RegExp("("+ k +")").test(format))
+        format = format.replace(RegExp.$1,
+        RegExp.$1.length==1? o[k] :
+        ("00"+ o[k]).substr((""+ o[k]).length));
+        return format;
+    }
+	Date.parseByFormat = function(format,string){
+		//抽取所有整数
+		var digits = string.match(/\d+/g);
+		for( var i = 0 ; i != digits.length ; ++i )
+			digits[i] = parseInt(digits[i]);
+		var data = {
+			year:0,
+			month:0,
+			day:0,
+			hour:0,
+			minute:0,
+			second:0
+		};
+
+		//分析匹配规则
+		var o = {
+			'y+':'year',
+			'M+':'month',
+			"d+" :'day',
+			"h+" :'hour',
+			"m+" :'minute',
+			"s+" : 'second'
+		};
+		finder = [];
+		for( var i in o ){
+			var temp = format.match(i);
+			if( temp == null )
+				continue;
+			finder.push({
+				index:temp.index,
+				rule:o[i]
+			});
+		}
+		finder.sort(function(a,b){
+			return a.index - b.index;
+		});
+		//填充数据
+		for( var i = 0 ; i != finder.length ; ++i ){
+			var item = finder[i];
+			data[item.rule] = digits[i];
+		}
+		return new Date(
+			data.year,
+			data.month-1,
+			data.day,
+			data.hour,
+			data.minute,
+			data.second
+		);
+	}
+})();
 //加入动态添加样式表扩展
 $.addCssToHead = function(str_css) {
 	try { 
@@ -131,7 +253,7 @@ $.addCssToHead = function(str_css) {
 (function(jQuery) {
 	jQuery.extend({os: {ios: false,android: false,version: false}});
 	var ua = navigator.userAgent;
-	var browser = {}, weixin = ua.match(/MicroMessenger\/([^\s]+)/), webkit = ua.match(/WebKit\/([\d.]+)/), android = ua.match(/(Android)\s+([\d.]+)/), ipad = ua.match(/(iPad).*OS\s([\d_]+)/), ipod = ua.match(/(iPod).*OS\s([\d_]+)/), iphone = !ipod && !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/), webos = ua.match(/(webOS|hpwOS)[\s\/]([\d.]+)/), touchpad = webos && ua.match(/TouchPad/), kindle = ua.match(/Kindle\/([\d.]+)/), silk = ua.match(/Silk\/([\d._]+)/), blackberry = ua.match(/(BlackBerry).*Version\/([\d.]+)/), mqqbrowser = ua.match(/MQQBrowser\/([\d.]+)/), chrome = ua.match(/CriOS\/([\d.]+)/), opera = ua.match(/Opera\/([\d.]+)/), safari = ua.match(/Safari\/([\d.]+)/),ie = ua.match(/MSIE ([\d.]+)/),gecko = ua.match(/Gecko\/([\d.]+)/),opera = ua.match(/Opera\/([\d.]+)/);
+	var browser = {}, weixin = ua.match(/MicroMessenger\/([^\s]+)/),  qq = ua.match(/QQ\/([^\s]+)/),webkit = ua.match(/WebKit\/([\d.]+)/), android = ua.match(/(Android)\s+([\d.]+)/), ipad = ua.match(/(iPad).*OS\s([\d_]+)/), ipod = ua.match(/(iPod).*OS\s([\d_]+)/), iphone = !ipod && !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/), webos = ua.match(/(webOS|hpwOS)[\s\/]([\d.]+)/), touchpad = webos && ua.match(/TouchPad/), kindle = ua.match(/Kindle\/([\d.]+)/), silk = ua.match(/Silk\/([\d._]+)/), blackberry = ua.match(/(BlackBerry).*Version\/([\d.]+)/), mqqbrowser = ua.match(/MQQBrowser\/([\d.]+)/), chrome = ua.match(/CriOS\/([\d.]+)/), opera = ua.match(/Opera\/([\d.]+)/), safari = ua.match(/Safari\/([\d.]+)/),ie = ua.match(/MSIE ([\d.]+)/),gecko = ua.match(/Gecko\/([\d.]+)/),opera = ua.match(/Opera\/([\d.]+)/);
 	//浏览器内核判断
 	if( gecko ){
 		jQuery.os.gecko = true;
@@ -171,6 +293,10 @@ $.addCssToHead = function(str_css) {
 		jQuery.os.wx = true;
 		jQuery.os.wxVersion = weixin[1];
 	}
+	if( qq ){
+		jQuery.os.qq = true;
+		jQuery.os.qqVersion = qq[1];
+	}
 	window.htmlEncode = function(text) {
 		return text.replace(/&/g, '&amp').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 	}
@@ -185,16 +311,6 @@ $.addCssToHead = function(str_css) {
 	window.NETTYPE_DEFAULT = 0;
 	$.console.log($.JSON.stringify(jQuery.os));
 })($);
-//加入FastClick扩展
-(function(){
-	if( $.os.android == true || $.os.ios == true ){
-		$(document).ready(function(){
-			require.async('lib/fastclick',function(fastclick){
-				fastclick.FastClick.attach(document.body);
-			});
-		});
-	}
-})();
 //加入base64扩展
 (function($){
 	$.base64 = {
@@ -324,6 +440,21 @@ $.addCssToHead = function(str_css) {
 		}
 	};
 })($);
+//加入算法扩展
+(function($){
+	$.algo = {
+		hashCode:function(str){
+			var hash = 0;
+			if (str.length == 0) return hash;
+			for (i = 0; i < str.length; i++) {
+				char = str.charCodeAt(i);
+				hash = ((hash<<5)-hash)+char;
+				hash = hash & hash; // Convert to 32bit integer
+			}
+			return hash;
+		}
+	}
+}($));
 //加入cookie扩展
 (function($){
 	$.cookie = function(name, value, options) {
@@ -365,25 +496,44 @@ $.addCssToHead = function(str_css) {
 		}
 	};
 })($);
+//加入URL扩展
+(function($){
+	$.url = {
+		buildQueryUrl:function(url,urlArgv){
+			for( var i in urlArgv ){
+				if( url.indexOf('?') == -1 )
+					url += '?';
+				else
+					url += '&';
+				url += i + '='+ encodeURIComponent(urlArgv[i]);
+			}
+			return encodeURI(url);
+		}
+	};
+}($));
 //加入地址栏扩展
 (function($){
 	$.location = {
 		getQueryArgv:function(name){
-			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-			var r = decodeURI(window.location.search).substr(1).match(reg);
+			var reg = new RegExp("(^|[?&])" + name + "=([^&]*)(&|$)", "i");
+			var r = decodeURI(window.location.search).match(reg);
 			if (r != null) 
-				return unescape(r[2]); 
+				return decodeURIComponent(r[2]);
 			return null;
 		},
 		getHashArgv:function( name ){
-			var reg = new RegExp("(^|&|#)" + name + "=([^&]*)(&|$)", "i");
-			var r = decodeURI(window.location.hash).substr(1).match(reg);
+			var reg = new RegExp("(^|[#&])" + name + "=([^&]*)(&|$)", "i");
+			var r = decodeURI(window.location.hash).match(reg);
 			if (r != null) 
-				return unescape(r[2]); 
+				return decodeURIComponent(r[2]); 
 			return null;
 		},
-		setHashArgv:function(name,value){
-			window.location.hash = '#'+name+'='+value;
+		setHashArgv:function(argv){
+			var hash = '';
+			for( var i in argv ){
+				hash += i+'='+encodeURIComponent(argv[i])+'&';
+			}
+			window.location.hash = '#'+encodeURI(hash);
 		},
 		redirect:function(a){
 			location.href = a;
@@ -399,5 +549,33 @@ $.addCssToHead = function(str_css) {
 		}
 	};
 })($);
-
+//调试模式
+(function(){
+	function enable(callback){
+		window.onerror = function(errorMessage, scriptURI, lineNumber,columnNumber,error) {
+			var stack = '';
+			var msgs = [];
+			var userAgent = '';
+			if( error.stack )
+				stack = error.stack;
+			userAgent = navigator.userAgent;
+			
+			msgs.push("额，代码有错。。。");
+			msgs.push("\n错误信息：" , errorMessage);
+			msgs.push("\n出错文件：" , scriptURI);
+			msgs.push("\n出错位置：" , lineNumber + '行，' + columnNumber + '列');
+			msgs.push("\n调用栈："+stack);
+			msgs.push("\n客户端："+userAgent);
+			msgs.push("\n地址："+location.href);
+			msgs = msgs.join('');
+			if( callback ){
+				callback(msgs);
+			}
+			alert(msgs);
+		}
+	}
+	$.debug = {
+		enable:enable
+	};
+})();
 return $;

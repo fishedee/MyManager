@@ -1,18 +1,7 @@
 {
     "res": {
-        "fishstrap/api/netType.js": {
-            "uri": "/fishstrap/api/netType_5384810.js",
-            "type": "js",
-            "deps": [
-                "lib/netType"
-            ]
-        },
-        "fishstrap/api/weixinApi.js": {
-            "uri": "/fishstrap/api/weixinApi_1322501.js",
-            "type": "js"
-        },
         "fishstrap/core/global.js": {
-            "uri": "/fishstrap/core/global_2a4c4a5.js",
+            "uri": "/fishstrap/core/global_276e642.js",
             "type": "js",
             "deps": [
                 "fishstrap/lib/underscore.js",
@@ -22,7 +11,7 @@
             "id": "fishstrap/core/global.js"
         },
         "fishstrap/core/html5.js": {
-            "uri": "/fishstrap/core/html5_0314c31.js",
+            "uri": "/fishstrap/core/html5_2b9b79e.js",
             "type": "js",
             "deps": [
                 "fishstrap/core/global.js"
@@ -36,7 +25,7 @@
             "id": "fishstrap/lib/echarts/echarts.js"
         },
         "fishstrap/lib/fastclick.js": {
-            "uri": "/fishstrap/lib/fastclick_7b7889c.js",
+            "uri": "/fishstrap/lib/fastclick_af9f5cd.js",
             "type": "js"
         },
         "fishstrap/lib/gri/bootstrap.css": {
@@ -94,9 +83,16 @@
             "uri": "/fishstrap/lib/gri/style_ffa846a.css",
             "type": "css"
         },
+        "fishstrap/lib/iscroll.css": {
+            "uri": "/fishstrap/lib/iscroll_a4f989d.css",
+            "type": "css"
+        },
         "fishstrap/lib/iscroll.js": {
-            "uri": "/fishstrap/lib/iscroll_71e04ba.js",
-            "type": "js"
+            "uri": "/fishstrap/lib/iscroll_1d16e05.js",
+            "type": "js",
+            "deps": [
+                "fishstrap/lib/iscroll.css"
+            ]
         },
         "fishstrap/lib/jquery.js": {
             "uri": "http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js",
@@ -107,438 +103,449 @@
             "uri": "/fishstrap/lib/mod_df9079e.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/dialogs/attachment/attachment.css": {
-            "uri": "/fishstrap/lib/uedit/dialogs/attachment/attachment_3a370a8.css",
+        "fishstrap/lib/swipe.css": {
+            "uri": "/fishstrap/lib/swipe_78b0b66.css",
             "type": "css"
         },
-        "fishstrap/lib/uedit/dialogs/attachment/attachment.js": {
-            "uri": "/fishstrap/lib/uedit/dialogs/attachment/attachment_31c509b.js",
+        "fishstrap/lib/swipe.js": {
+            "uri": "/fishstrap/lib/swipe_bbd1012.js",
             "type": "js",
             "deps": [
-                "fishstrap/lib/uedit/dialogs/attachment/attachment.css"
+                "fishstrap/lib/swipe.css"
             ]
         },
-        "fishstrap/lib/uedit/dialogs/background/background.css": {
-            "uri": "/fishstrap/lib/uedit/dialogs/background/background_f33d53b.css",
+        "fishstrap/lib/ueditor/dialogs/attachment/attachment.css": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/attachment/attachment_2f2e0de.css",
             "type": "css"
         },
-        "fishstrap/lib/uedit/dialogs/background/background.js": {
-            "uri": "/fishstrap/lib/uedit/dialogs/background/background_4357eaf.js",
+        "fishstrap/lib/ueditor/dialogs/attachment/attachment.js": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/attachment/attachment_31c509b.js",
             "type": "js",
             "deps": [
-                "fishstrap/lib/uedit/dialogs/background/background.css"
+                "fishstrap/lib/ueditor/dialogs/attachment/attachment.css"
             ]
         },
-        "fishstrap/lib/uedit/dialogs/charts/chart.config.js": {
-            "uri": "/fishstrap/lib/uedit/dialogs/charts/chart.config_79c87e3.js",
+        "fishstrap/lib/ueditor/dialogs/background/background.css": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/background/background_2227bb3.css",
+            "type": "css"
+        },
+        "fishstrap/lib/ueditor/dialogs/background/background.js": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/background/background_4357eaf.js",
+            "type": "js",
+            "deps": [
+                "fishstrap/lib/ueditor/dialogs/background/background.css"
+            ]
+        },
+        "fishstrap/lib/ueditor/dialogs/charts/chart.config.js": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/charts/chart.config_79c87e3.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/dialogs/charts/charts.css": {
-            "uri": "/fishstrap/lib/uedit/dialogs/charts/charts_99c9f9e.css",
+        "fishstrap/lib/ueditor/dialogs/charts/charts.css": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/charts/charts_99c9f9e.css",
             "type": "css"
         },
-        "fishstrap/lib/uedit/dialogs/charts/charts.js": {
-            "uri": "/fishstrap/lib/uedit/dialogs/charts/charts_fb97ba6.js",
+        "fishstrap/lib/ueditor/dialogs/charts/charts.js": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/charts/charts_fb97ba6.js",
             "type": "js",
             "deps": [
-                "fishstrap/lib/uedit/dialogs/charts/charts.css"
+                "fishstrap/lib/ueditor/dialogs/charts/charts.css"
             ]
         },
-        "fishstrap/lib/uedit/dialogs/emotion/emotion.css": {
-            "uri": "/fishstrap/lib/uedit/dialogs/emotion/emotion_a91ab8e.css",
+        "fishstrap/lib/ueditor/dialogs/emotion/emotion.css": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/emotion/emotion_2c6d58c.css",
             "type": "css"
         },
-        "fishstrap/lib/uedit/dialogs/emotion/emotion.js": {
-            "uri": "/fishstrap/lib/uedit/dialogs/emotion/emotion_eba67e2.js",
+        "fishstrap/lib/ueditor/dialogs/emotion/emotion.js": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/emotion/emotion_eba67e2.js",
             "type": "js",
             "deps": [
-                "fishstrap/lib/uedit/dialogs/emotion/emotion.css"
+                "fishstrap/lib/ueditor/dialogs/emotion/emotion.css"
             ]
         },
-        "fishstrap/lib/uedit/dialogs/help/help.css": {
-            "uri": "/fishstrap/lib/uedit/dialogs/help/help_654ba04.css",
+        "fishstrap/lib/ueditor/dialogs/help/help.css": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/help/help_654ba04.css",
             "type": "css"
         },
-        "fishstrap/lib/uedit/dialogs/help/help.js": {
-            "uri": "/fishstrap/lib/uedit/dialogs/help/help_46ab320.js",
+        "fishstrap/lib/ueditor/dialogs/help/help.js": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/help/help_46ab320.js",
             "type": "js",
             "deps": [
-                "fishstrap/lib/uedit/dialogs/help/help.css"
+                "fishstrap/lib/ueditor/dialogs/help/help.css"
             ]
         },
-        "fishstrap/lib/uedit/dialogs/image/image.css": {
-            "uri": "/fishstrap/lib/uedit/dialogs/image/image_0484db5.css",
+        "fishstrap/lib/ueditor/dialogs/image/image.css": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/image/image_269507a.css",
             "type": "css"
         },
-        "fishstrap/lib/uedit/dialogs/image/image.js": {
-            "uri": "/fishstrap/lib/uedit/dialogs/image/image_2e9a522.js",
+        "fishstrap/lib/ueditor/dialogs/image/image.js": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/image/image_2e9a522.js",
             "type": "js",
             "deps": [
-                "fishstrap/lib/uedit/dialogs/image/image.css"
+                "fishstrap/lib/ueditor/dialogs/image/image.css"
             ]
         },
-        "fishstrap/lib/uedit/dialogs/internal.js": {
-            "uri": "/fishstrap/lib/uedit/dialogs/internal_c0f9b68.js",
+        "fishstrap/lib/ueditor/dialogs/internal.js": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/internal_c0f9b68.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/dialogs/music/music.css": {
-            "uri": "/fishstrap/lib/uedit/dialogs/music/music_ae6a7ae.css",
+        "fishstrap/lib/ueditor/dialogs/music/music.css": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/music/music_ae6a7ae.css",
             "type": "css"
         },
-        "fishstrap/lib/uedit/dialogs/music/music.js": {
-            "uri": "/fishstrap/lib/uedit/dialogs/music/music_71b802c.js",
+        "fishstrap/lib/ueditor/dialogs/music/music.js": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/music/music_71b802c.js",
             "type": "js",
             "deps": [
-                "fishstrap/lib/uedit/dialogs/music/music.css"
+                "fishstrap/lib/ueditor/dialogs/music/music.css"
             ]
         },
-        "fishstrap/lib/uedit/dialogs/scrawl/scrawl.css": {
-            "uri": "/fishstrap/lib/uedit/dialogs/scrawl/scrawl_3a3341d.css",
+        "fishstrap/lib/ueditor/dialogs/scrawl/scrawl.css": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/scrawl/scrawl_386bf26.css",
             "type": "css"
         },
-        "fishstrap/lib/uedit/dialogs/scrawl/scrawl.js": {
-            "uri": "/fishstrap/lib/uedit/dialogs/scrawl/scrawl_62ebf8e.js",
+        "fishstrap/lib/ueditor/dialogs/scrawl/scrawl.js": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/scrawl/scrawl_62ebf8e.js",
             "type": "js",
             "deps": [
-                "fishstrap/lib/uedit/dialogs/scrawl/scrawl.css"
+                "fishstrap/lib/ueditor/dialogs/scrawl/scrawl.css"
             ]
         },
-        "fishstrap/lib/uedit/dialogs/searchreplace/searchreplace.js": {
-            "uri": "/fishstrap/lib/uedit/dialogs/searchreplace/searchreplace_56deb06.js",
+        "fishstrap/lib/ueditor/dialogs/searchreplace/searchreplace.js": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/searchreplace/searchreplace_56deb06.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/dialogs/spechars/spechars.js": {
-            "uri": "/fishstrap/lib/uedit/dialogs/spechars/spechars_90cc2b7.js",
+        "fishstrap/lib/ueditor/dialogs/spechars/spechars.js": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/spechars/spechars_90cc2b7.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/dialogs/table/edittable.css": {
-            "uri": "/fishstrap/lib/uedit/dialogs/table/edittable_c34dd22.css",
+        "fishstrap/lib/ueditor/dialogs/table/edittable.css": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/table/edittable_c34dd22.css",
             "type": "css"
         },
-        "fishstrap/lib/uedit/dialogs/table/edittable.js": {
-            "uri": "/fishstrap/lib/uedit/dialogs/table/edittable_0251efa.js",
+        "fishstrap/lib/ueditor/dialogs/table/edittable.js": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/table/edittable_0251efa.js",
             "type": "js",
             "deps": [
-                "fishstrap/lib/uedit/dialogs/table/edittable.css"
+                "fishstrap/lib/ueditor/dialogs/table/edittable.css"
             ]
         },
-        "fishstrap/lib/uedit/dialogs/template/config.js": {
-            "uri": "/fishstrap/lib/uedit/dialogs/template/config_b6e07e9.js",
+        "fishstrap/lib/ueditor/dialogs/template/config.js": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/template/config_b6e07e9.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/dialogs/template/template.css": {
-            "uri": "/fishstrap/lib/uedit/dialogs/template/template_817a5bf.css",
+        "fishstrap/lib/ueditor/dialogs/template/template.css": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/template/template_804eb78.css",
             "type": "css"
         },
-        "fishstrap/lib/uedit/dialogs/template/template.js": {
-            "uri": "/fishstrap/lib/uedit/dialogs/template/template_05ca432.js",
+        "fishstrap/lib/ueditor/dialogs/template/template.js": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/template/template_05ca432.js",
             "type": "js",
             "deps": [
-                "fishstrap/lib/uedit/dialogs/template/template.css"
+                "fishstrap/lib/ueditor/dialogs/template/template.css"
             ]
         },
-        "fishstrap/lib/uedit/dialogs/video/video.css": {
-            "uri": "/fishstrap/lib/uedit/dialogs/video/video_29fefd7.css",
+        "fishstrap/lib/ueditor/dialogs/video/video.css": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/video/video_a9af68f.css",
             "type": "css"
         },
-        "fishstrap/lib/uedit/dialogs/video/video.js": {
-            "uri": "/fishstrap/lib/uedit/dialogs/video/video_aea0dbe.js",
+        "fishstrap/lib/ueditor/dialogs/video/video.js": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/video/video_aea0dbe.js",
             "type": "js",
             "deps": [
-                "fishstrap/lib/uedit/dialogs/video/video.css"
+                "fishstrap/lib/ueditor/dialogs/video/video.css"
             ]
         },
-        "fishstrap/lib/uedit/dialogs/wordimage/tangram.js": {
-            "uri": "/fishstrap/lib/uedit/dialogs/wordimage/tangram_06b3fb8.js",
+        "fishstrap/lib/ueditor/dialogs/wordimage/tangram.js": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/wordimage/tangram_06b3fb8.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/dialogs/wordimage/wordimage.js": {
-            "uri": "/fishstrap/lib/uedit/dialogs/wordimage/wordimage_65c2103.js",
+        "fishstrap/lib/ueditor/dialogs/wordimage/wordimage.js": {
+            "uri": "/fishstrap/lib/ueditor/dialogs/wordimage/wordimage_65c2103.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/lang/en/en.js": {
-            "uri": "/fishstrap/lib/uedit/lang/en/en_b97ef4b.js",
+        "fishstrap/lib/ueditor/lang/en/en.js": {
+            "uri": "/fishstrap/lib/ueditor/lang/en/en_b97ef4b.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/lang/zh-cn/zh-cn.js": {
-            "uri": "/fishstrap/lib/uedit/lang/zh-cn/zh-cn_324d921.js",
+        "fishstrap/lib/ueditor/lang/zh-cn/zh-cn.js": {
+            "uri": "/fishstrap/lib/ueditor/lang/zh-cn/zh-cn_324d921.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/themes/default/css/ueditor.css": {
-            "uri": "/fishstrap/lib/uedit/themes/default/css/ueditor_0985c10.css",
+        "fishstrap/lib/ueditor/themes/default/css/ueditor.css": {
+            "uri": "/fishstrap/lib/ueditor/themes/default/css/ueditor_2d6b028.css",
             "type": "css"
         },
-        "fishstrap/lib/uedit/themes/default/css/ueditor.min.css": {
-            "uri": "/fishstrap/lib/uedit/themes/default/css/ueditor.min_9f2edbd.css",
+        "fishstrap/lib/ueditor/themes/default/css/ueditor.min.css": {
+            "uri": "/fishstrap/lib/ueditor/themes/default/css/ueditor.min_9b8d4d8.css",
             "type": "css"
         },
-        "fishstrap/lib/uedit/themes/default/dialogbase.css": {
-            "uri": "/fishstrap/lib/uedit/themes/default/dialogbase_2a1b1db.css",
+        "fishstrap/lib/ueditor/themes/default/dialogbase.css": {
+            "uri": "/fishstrap/lib/ueditor/themes/default/dialogbase_d669962.css",
             "type": "css"
         },
-        "fishstrap/lib/uedit/themes/iframe.css": {
-            "uri": "/fishstrap/lib/uedit/themes/iframe_04bcb76.css",
+        "fishstrap/lib/ueditor/themes/iframe.css": {
+            "uri": "/fishstrap/lib/ueditor/themes/iframe_04bcb76.css",
             "type": "css"
         },
-        "fishstrap/lib/uedit/third-party/SyntaxHighlighter/shCore.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/SyntaxHighlighter/shCore_8e8a57d.js",
+        "fishstrap/lib/ueditor/third-party/SyntaxHighlighter/shCore.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/SyntaxHighlighter/shCore_8e8a57d.js",
             "type": "js",
             "deps": [
                 "XRegExp",
                 "shCore"
             ]
         },
-        "fishstrap/lib/uedit/third-party/SyntaxHighlighter/shCoreDefault.css": {
-            "uri": "/fishstrap/lib/uedit/third-party/SyntaxHighlighter/shCoreDefault_2fa6f41.css",
+        "fishstrap/lib/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css": {
+            "uri": "/fishstrap/lib/ueditor/third-party/SyntaxHighlighter/shCoreDefault_2fa6f41.css",
             "type": "css"
         },
-        "fishstrap/lib/uedit/third-party/codemirror/codemirror.css": {
-            "uri": "/fishstrap/lib/uedit/third-party/codemirror/codemirror_ef4745a.css",
+        "fishstrap/lib/ueditor/third-party/codemirror/codemirror.css": {
+            "uri": "/fishstrap/lib/ueditor/third-party/codemirror/codemirror_ef4745a.css",
             "type": "css"
         },
-        "fishstrap/lib/uedit/third-party/codemirror/codemirror.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/codemirror/codemirror_caadadf.js",
+        "fishstrap/lib/ueditor/third-party/codemirror/codemirror.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/codemirror/codemirror_caadadf.js",
             "type": "js",
             "deps": [
-                "fishstrap/lib/uedit/third-party/codemirror/codemirror.css"
+                "fishstrap/lib/ueditor/third-party/codemirror/codemirror.css"
             ]
         },
-        "fishstrap/lib/uedit/third-party/highcharts/adapters/mootools-adapter.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/adapters/mootools-adapter_07a2c43.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/adapters/mootools-adapter.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/adapters/mootools-adapter_07a2c43.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/adapters/mootools-adapter.src.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/adapters/mootools-adapter.src_b882172.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/adapters/mootools-adapter.src.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/adapters/mootools-adapter.src_b882172.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/adapters/prototype-adapter.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/adapters/prototype-adapter_4e3ae4a.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/adapters/prototype-adapter.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/adapters/prototype-adapter_4e3ae4a.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/adapters/prototype-adapter.src.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/adapters/prototype-adapter.src_0808035.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/adapters/prototype-adapter.src.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/adapters/prototype-adapter.src_0808035.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/adapters/standalone-framework.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/adapters/standalone-framework_6bd0069.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/adapters/standalone-framework.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/adapters/standalone-framework_6bd0069.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/adapters/standalone-framework.src.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/adapters/standalone-framework.src_ad1e86b.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/adapters/standalone-framework.src.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/adapters/standalone-framework.src_ad1e86b.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/highcharts-more.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/highcharts-more_46bb3a1.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/highcharts-more.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/highcharts-more_46bb3a1.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/highcharts-more.src.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/highcharts-more.src_f1a879e.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/highcharts-more.src.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/highcharts-more.src_f1a879e.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/highcharts.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/highcharts_0c74f44.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/highcharts.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/highcharts_0c74f44.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/highcharts.src.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/highcharts.src_ec4ff47.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/highcharts.src.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/highcharts.src_ec4ff47.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/modules/annotations.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/modules/annotations_5b7c4cc.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/modules/annotations.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/modules/annotations_5b7c4cc.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/modules/annotations.src.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/modules/annotations.src_9fefe16.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/modules/annotations.src.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/modules/annotations.src_9fefe16.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/modules/canvas-tools.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/modules/canvas-tools_bc9f691.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/modules/canvas-tools.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/modules/canvas-tools_bc9f691.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/modules/canvas-tools.src.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/modules/canvas-tools.src_2ee61b6.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/modules/canvas-tools.src.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/modules/canvas-tools.src_2ee61b6.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/modules/data.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/modules/data_cdec311.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/modules/data.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/modules/data_cdec311.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/modules/data.src.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/modules/data.src_4931105.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/modules/data.src.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/modules/data.src_4931105.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/modules/drilldown.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/modules/drilldown_f2d705a.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/modules/drilldown.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/modules/drilldown_f2d705a.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/modules/drilldown.src.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/modules/drilldown.src_58a7472.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/modules/drilldown.src.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/modules/drilldown.src_58a7472.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/modules/exporting.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/modules/exporting_8b2991d.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/modules/exporting.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/modules/exporting_8b2991d.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/modules/exporting.src.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/modules/exporting.src_cca7f65.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/modules/exporting.src.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/modules/exporting.src_cca7f65.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/modules/funnel.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/modules/funnel_2f35639.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/modules/funnel.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/modules/funnel_2f35639.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/modules/funnel.src.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/modules/funnel.src_7d359c5.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/modules/funnel.src.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/modules/funnel.src_7d359c5.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/modules/heatmap.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/modules/heatmap_1a647de.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/modules/heatmap.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/modules/heatmap_1a647de.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/modules/heatmap.src.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/modules/heatmap.src_95fbc93.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/modules/heatmap.src.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/modules/heatmap.src_95fbc93.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/modules/map.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/modules/map_ea52401.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/modules/map.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/modules/map_ea52401.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/modules/map.src.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/modules/map.src_a78f0ec.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/modules/map.src.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/modules/map.src_a78f0ec.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/modules/no-data-to-display.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/modules/no-data-to-display_467cc40.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/modules/no-data-to-display.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/modules/no-data-to-display_467cc40.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/modules/no-data-to-display.src.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/modules/no-data-to-display.src_b4ddf12.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/modules/no-data-to-display.src.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/modules/no-data-to-display.src_b4ddf12.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/themes/dark-blue.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/themes/dark-blue_5d3b15b.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/themes/dark-blue.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/themes/dark-blue_5d3b15b.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/themes/dark-green.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/themes/dark-green_734f6e4.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/themes/dark-green.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/themes/dark-green_734f6e4.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/themes/gray.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/themes/gray_21a76bf.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/themes/gray.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/themes/gray_21a76bf.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/themes/grid.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/themes/grid_cb24059.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/themes/grid.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/themes/grid_cb24059.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/highcharts/themes/skies.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/highcharts/themes/skies_133590f.js",
+        "fishstrap/lib/ueditor/third-party/highcharts/themes/skies.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/highcharts/themes/skies_133590f.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/jquery-1.10.2.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/jquery-1.10.2_7b89c0e.js",
+        "fishstrap/lib/ueditor/third-party/jquery-1.10.2.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/jquery-1.10.2_7b89c0e.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/jquery-1.10.2.min.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/jquery-1.10.2.min_1146860.js",
+        "fishstrap/lib/ueditor/third-party/jquery-1.10.2.min.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/jquery-1.10.2.min_1146860.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/video-js/video-js.css": {
-            "uri": "/fishstrap/lib/uedit/third-party/video-js/video-js_0c51a08.css",
+        "fishstrap/lib/ueditor/third-party/video-js/video-js.css": {
+            "uri": "/fishstrap/lib/ueditor/third-party/video-js/video-js_320c8ea.css",
             "type": "css"
         },
-        "fishstrap/lib/uedit/third-party/video-js/video-js.min.css": {
-            "uri": "/fishstrap/lib/uedit/third-party/video-js/video-js.min_f9fa4df.css",
+        "fishstrap/lib/ueditor/third-party/video-js/video-js.min.css": {
+            "uri": "/fishstrap/lib/ueditor/third-party/video-js/video-js.min_5ceb7f6.css",
             "type": "css"
         },
-        "fishstrap/lib/uedit/third-party/video-js/video.dev.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/video-js/video.dev_9699c73.js",
+        "fishstrap/lib/ueditor/third-party/video-js/video.dev.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/video-js/video.dev_9699c73.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/video-js/video.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/video-js/video_be2ae95.js",
+        "fishstrap/lib/ueditor/third-party/video-js/video.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/video-js/video_be2ae95.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/webuploader/webuploader.css": {
-            "uri": "/fishstrap/lib/uedit/third-party/webuploader/webuploader_62435bf.css",
+        "fishstrap/lib/ueditor/third-party/webuploader/webuploader.css": {
+            "uri": "/fishstrap/lib/ueditor/third-party/webuploader/webuploader_62435bf.css",
             "type": "css"
         },
-        "fishstrap/lib/uedit/third-party/webuploader/webuploader.custom.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/webuploader/webuploader.custom_336a7e8.js",
-            "type": "js",
-            "deps": [
-                "webuploader"
-            ]
-        },
-        "fishstrap/lib/uedit/third-party/webuploader/webuploader.custom.min.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/webuploader/webuploader.custom.min_8a33b84.js",
-            "type": "js"
-        },
-        "fishstrap/lib/uedit/third-party/webuploader/webuploader.flashonly.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/webuploader/webuploader.flashonly_ae716f6.js",
+        "fishstrap/lib/ueditor/third-party/webuploader/webuploader.custom.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/webuploader/webuploader.custom_336a7e8.js",
             "type": "js",
             "deps": [
                 "webuploader"
             ]
         },
-        "fishstrap/lib/uedit/third-party/webuploader/webuploader.flashonly.min.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/webuploader/webuploader.flashonly.min_cd17266.js",
+        "fishstrap/lib/ueditor/third-party/webuploader/webuploader.custom.min.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/webuploader/webuploader.custom.min_8a33b84.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/webuploader/webuploader.html5only.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/webuploader/webuploader.html5only_d656db9.js",
+        "fishstrap/lib/ueditor/third-party/webuploader/webuploader.flashonly.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/webuploader/webuploader.flashonly_ae716f6.js",
             "type": "js",
             "deps": [
                 "webuploader"
             ]
         },
-        "fishstrap/lib/uedit/third-party/webuploader/webuploader.html5only.min.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/webuploader/webuploader.html5only.min_1c4df3b.js",
+        "fishstrap/lib/ueditor/third-party/webuploader/webuploader.flashonly.min.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/webuploader/webuploader.flashonly.min_cd17266.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/webuploader/webuploader.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/webuploader/webuploader_460dad6.js",
+        "fishstrap/lib/ueditor/third-party/webuploader/webuploader.html5only.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/webuploader/webuploader.html5only_d656db9.js",
+            "type": "js",
+            "deps": [
+                "webuploader"
+            ]
+        },
+        "fishstrap/lib/ueditor/third-party/webuploader/webuploader.html5only.min.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/webuploader/webuploader.html5only.min_1c4df3b.js",
+            "type": "js"
+        },
+        "fishstrap/lib/ueditor/third-party/webuploader/webuploader.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/webuploader/webuploader_460dad6.js",
             "type": "js",
             "deps": [
                 "webuploader",
-                "fishstrap/lib/uedit/third-party/webuploader/webuploader.css"
+                "fishstrap/lib/ueditor/third-party/webuploader/webuploader.css"
             ]
         },
-        "fishstrap/lib/uedit/third-party/webuploader/webuploader.min.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/webuploader/webuploader.min_70a6418.js",
+        "fishstrap/lib/ueditor/third-party/webuploader/webuploader.min.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/webuploader/webuploader.min_70a6418.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/webuploader/webuploader.withoutimage.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/webuploader/webuploader.withoutimage_4acf5d1.js",
+        "fishstrap/lib/ueditor/third-party/webuploader/webuploader.withoutimage.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/webuploader/webuploader.withoutimage_4acf5d1.js",
             "type": "js",
             "deps": [
                 "webuploader"
             ]
         },
-        "fishstrap/lib/uedit/third-party/webuploader/webuploader.withoutimage.min.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/webuploader/webuploader.withoutimage.min_fd7bce1.js",
+        "fishstrap/lib/ueditor/third-party/webuploader/webuploader.withoutimage.min.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/webuploader/webuploader.withoutimage.min_fd7bce1.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/zeroclipboard/ZeroClipboard.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/zeroclipboard/ZeroClipboard_52f00fd.js",
+        "fishstrap/lib/ueditor/third-party/zeroclipboard/ZeroClipboard.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/zeroclipboard/ZeroClipboard_52f00fd.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/third-party/zeroclipboard/ZeroClipboard.min.js": {
-            "uri": "/fishstrap/lib/uedit/third-party/zeroclipboard/ZeroClipboard.min_8dd802b.js",
+        "fishstrap/lib/ueditor/third-party/zeroclipboard/ZeroClipboard.min.js": {
+            "uri": "/fishstrap/lib/ueditor/third-party/zeroclipboard/ZeroClipboard.min_8dd802b.js",
             "type": "js"
         },
-        "fishstrap/lib/uedit/ueditor.all.min.js": {
-            "uri": "/fishstrap/lib/uedit/ueditor.all.min_f031cc9.js",
+        "fishstrap/lib/ueditor/ueditor.all.min.js": {
+            "uri": "/fishstrap/lib/ueditor/ueditor.all.min_f031cc9.js",
             "type": "js",
-            "id": "fishstrap/lib/uedit/ueditor.all.min.js"
+            "id": "fishstrap/lib/ueditor/ueditor.all.min.js"
         },
-        "fishstrap/lib/uedit/ueditor.config.js": {
-            "uri": "/fishstrap/lib/uedit/ueditor.config_90dbfe3.js",
+        "fishstrap/lib/ueditor/ueditor.config.js": {
+            "uri": "/fishstrap/lib/ueditor/ueditor.config_12be84c.js",
             "type": "js",
-            "id": "fishstrap/lib/uedit/ueditor.config.js"
+            "id": "fishstrap/lib/ueditor/ueditor.config.js"
         },
-        "fishstrap/lib/uedit/ueditor.parse.min.js": {
-            "uri": "/fishstrap/lib/uedit/ueditor.parse.min_b58abee.js",
+        "fishstrap/lib/ueditor/ueditor.parse.min.js": {
+            "uri": "/fishstrap/lib/ueditor/ueditor.parse.min_b58abee.js",
             "type": "js"
         },
         "fishstrap/lib/underscore.js": {
@@ -554,12 +561,12 @@
             ]
         },
         "fishstrap/page/indexPage.css": {
-            "uri": "/fishstrap/page/indexPage_fbafffd.css",
+            "uri": "/fishstrap/page/indexPage_f358ca4.css",
             "type": "css",
             "id": "fishstrap/page/indexPage.css"
         },
         "fishstrap/page/indexPage.js": {
-            "uri": "/fishstrap/page/indexPage_7669ca9.js",
+            "uri": "/fishstrap/page/indexPage_9f63df1.js",
             "type": "js",
             "deps": [
                 "fishstrap/page/indexPage.css",
@@ -568,7 +575,7 @@
             "id": "fishstrap/page/indexPage.js"
         },
         "fishstrap/page/loginPage.js": {
-            "uri": "/fishstrap/page/loginPage_4e6127e.js",
+            "uri": "/fishstrap/page/loginPage_e284b2d.js",
             "type": "js",
             "deps": [
                 "fishstrap/lib/gri/gri.css",
@@ -577,14 +584,30 @@
             "id": "fishstrap/page/loginPage.js"
         },
         "fishstrap/page/subPage.js": {
-            "uri": "/fishstrap/page/subPage_4f3b2ce.js",
+            "uri": "/fishstrap/page/subPage_9825bdc.js",
             "type": "js",
             "deps": [
-                "core/global"
+                "fishstrap/core/global.js"
+            ],
+            "id": "fishstrap/page/subPage.js"
+        },
+        "fishstrap/sdk/netType.js": {
+            "uri": "/fishstrap/sdk/netType_5384810.js",
+            "type": "js",
+            "deps": [
+                "lib/netType"
             ]
         },
+        "fishstrap/sdk/wxSdk2.js": {
+            "uri": "/fishstrap/sdk/wxSdk2_196f436.js",
+            "type": "js"
+        },
+        "fishstrap/sdk/wxsdk.js": {
+            "uri": "/fishstrap/sdk/wxsdk_ad51857.js",
+            "type": "js"
+        },
         "fishstrap/ui/chart.js": {
-            "uri": "/fishstrap/ui/chart_6d1b004.js",
+            "uri": "/fishstrap/ui/chart_371dfb1.js",
             "type": "js",
             "deps": [
                 "fishstrap/lib/echarts/echarts.js",
@@ -593,7 +616,7 @@
             "id": "fishstrap/ui/chart.js"
         },
         "fishstrap/ui/dialog.js": {
-            "uri": "/fishstrap/ui/dialog_4074175.js",
+            "uri": "/fishstrap/ui/dialog_9f12f4c.js",
             "type": "js",
             "deps": [
                 "fishstrap/lib/gri/gri.js",
@@ -603,30 +626,33 @@
             "id": "fishstrap/ui/dialog.js"
         },
         "fishstrap/ui/editor.js": {
-            "uri": "/fishstrap/ui/editor_631db0f.js",
+            "uri": "/fishstrap/ui/editor_f1ac0d3.js",
             "type": "js",
             "deps": [
-                "fishstrap/lib/uedit/ueditor.config.js",
-                "fishstrap/lib/uedit/ueditor.all.min.js",
+                "fishstrap/lib/ueditor/ueditor.config.js",
+                "fishstrap/lib/ueditor/ueditor.all.min.js",
                 "fishstrap/core/global.js"
             ],
             "pkg": "p2",
             "id": "fishstrap/ui/editor.js"
         },
         "fishstrap/ui/input.js": {
-            "uri": "/fishstrap/ui/input_dac344d.js",
+            "uri": "/fishstrap/ui/input_5a5abc6.js",
             "type": "js",
             "deps": [
                 "fishstrap/core/global.js",
                 "fishstrap/ui/dialog.js",
                 "fishstrap/ui/editor.js",
-                "fishstrap/util/upload.js"
+                "fishstrap/ui/table.js",
+                "fishstrap/util/upload.js",
+                "fishstrap/page/subPage.js",
+                "fishstrap/util/jqueryDatetimePicker.js"
             ],
             "pkg": "p2",
             "id": "fishstrap/ui/input.js"
         },
         "fishstrap/ui/query.js": {
-            "uri": "/fishstrap/ui/query_8a5093b.js",
+            "uri": "/fishstrap/ui/query_74bde8f.js",
             "type": "js",
             "deps": [
                 "fishstrap/core/global.js",
@@ -638,7 +664,7 @@
             "id": "fishstrap/ui/query.js"
         },
         "fishstrap/ui/table.js": {
-            "uri": "/fishstrap/ui/table_4bf303d.js",
+            "uri": "/fishstrap/ui/table_e666f4b.js",
             "type": "js",
             "deps": [
                 "fishstrap/lib/gri/griTable.js",
@@ -649,14 +675,14 @@
             "id": "fishstrap/ui/table.js"
         },
         "fishstrap/ui/tree.js": {
-            "uri": "/fishstrap/ui/tree_c7ebb8c.js",
+            "uri": "/fishstrap/ui/tree_fdc12bd.js",
             "type": "js",
             "deps": [
                 "fishstrap/core/global.js"
             ]
         },
         "fishstrap/util/imageCompresser.js": {
-            "uri": "/fishstrap/util/imageCompresser_8f0129e.js",
+            "uri": "/fishstrap/util/imageCompresser_65af856.js",
             "type": "js",
             "deps": [
                 "fishstrap/core/global.js",
@@ -666,31 +692,44 @@
             "id": "fishstrap/util/imageCompresser.js"
         },
         "fishstrap/util/jpegEncoder.js": {
-            "uri": "/fishstrap/util/jpegEncoder_2630213.js",
+            "uri": "/fishstrap/util/jpegEncoder_cf4ecca.js",
             "type": "js",
             "pkg": "p1",
             "id": "fishstrap/util/jpegEncoder.js"
         },
         "fishstrap/util/jpegMeta.js": {
-            "uri": "/fishstrap/util/jpegMeta_fd86478.js",
+            "uri": "/fishstrap/util/jpegMeta_88c0c44.js",
             "type": "js",
             "pkg": "p1",
             "id": "fishstrap/util/jpegMeta.js"
         },
+        "fishstrap/util/jquery.datetimepicker.css": {
+            "uri": "/fishstrap/util/jquery.datetimepicker_22baa8a.css",
+            "type": "css",
+            "id": "fishstrap/util/jquery.datetimepicker.css"
+        },
         "fishstrap/util/jqueryDatetimePicker.js": {
-            "uri": "/fishstrap/util/jqueryDatetimePicker_3a5e437.js",
-            "type": "js"
+            "uri": "/fishstrap/util/jqueryDatetimePicker_b40f91a.js",
+            "type": "js",
+            "deps": [
+                "fishstrap/util/jquery.datetimepicker.css"
+            ],
+            "id": "fishstrap/util/jqueryDatetimePicker.js"
         },
         "fishstrap/util/jqueryLazyload.js": {
-            "uri": "/fishstrap/util/jqueryLazyload_b17a50b.js",
+            "uri": "/fishstrap/util/jqueryLazyload_15b9445.js",
             "type": "js"
         },
         "fishstrap/util/jqueryValidate.js": {
-            "uri": "/fishstrap/util/jqueryValidate_07c0b55.js",
+            "uri": "/fishstrap/util/jqueryValidate_535d1a9.js",
+            "type": "js"
+        },
+        "fishstrap/util/uedit.js": {
+            "uri": "/fishstrap/util/uedit_6608200.js",
             "type": "js"
         },
         "fishstrap/util/upload.js": {
-            "uri": "/fishstrap/util/upload_d9d358d.js",
+            "uri": "/fishstrap/util/upload_02cd051.js",
             "type": "js",
             "deps": [
                 "fishstrap/core/global.js",
@@ -704,7 +743,7 @@
     },
     "pkg": {
         "p0": {
-            "uri": "/pkg/backstageBase_9cae708.js",
+            "uri": "/pkg/backstageBase_5820c8f.js",
             "type": "js",
             "has": [
                 "fishstrap/lib/gri/gri.js",
@@ -720,7 +759,7 @@
             ]
         },
         "p1": {
-            "uri": "/pkg/upload_b06f6af.js",
+            "uri": "/pkg/upload_b4418ea.js",
             "type": "js",
             "has": [
                 "fishstrap/util/upload.js",
@@ -734,7 +773,7 @@
             ]
         },
         "p2": {
-            "uri": "/pkg/uiBase_c74b22c.js",
+            "uri": "/pkg/uiBase_2a2281c.js",
             "type": "js",
             "has": [
                 "fishstrap/ui/query.js",
@@ -746,9 +785,11 @@
                 "fishstrap/core/global.js",
                 "fishstrap/ui/dialog.js",
                 "fishstrap/util/upload.js",
+                "fishstrap/page/subPage.js",
+                "fishstrap/util/jqueryDatetimePicker.js",
                 "fishstrap/lib/gri/griTable.js",
-                "fishstrap/lib/uedit/ueditor.config.js",
-                "fishstrap/lib/uedit/ueditor.all.min.js"
+                "fishstrap/lib/ueditor/ueditor.config.js",
+                "fishstrap/lib/ueditor/ueditor.all.min.js"
             ]
         }
     }

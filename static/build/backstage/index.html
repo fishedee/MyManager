@@ -4,13 +4,13 @@
 	<meta charset="UTF-8">
 	<title>Fish个人管理系统</title>
 	<script type="text/javascript" src="/fishstrap/lib/mod_df9079e.js"></script>
-<link rel="stylesheet" type="text/css" href="/fishstrap/page/indexPage_fbafffd.css">
+<link rel="stylesheet" type="text/css" href="/fishstrap/page/indexPage_f358ca4.css">
 <link rel="stylesheet" type="text/css" href="/fishstrap/lib/gri/gri_e181dce.css">
 
 <script type="text/javascript" src="http://apps.bdimg.com/libs/underscore.js/1.7.0/underscore-min.js"></script>
 <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
-<script type="text/javascript" src="/pkg/backstageBase_9cae708.js"></script>
-<script type="text/javascript" src="/fishstrap/page/indexPage_7669ca9.js"></script>
+<script type="text/javascript" src="/pkg/backstageBase_5820c8f.js"></script>
+<script type="text/javascript" src="/fishstrap/page/indexPage_9f63df1.js"></script>
 
 </head>
 <body>
@@ -40,17 +40,26 @@
 				});
 			},
 			menu:{
-				'系统管理':[
-					{name:'帐号管理',url:'view/user/index.html'},
-					{name:'密码管理',url:'view/password/index.html'}
-				],
-				'财务管理':[
-					{name:'分类管理',url:'view/category/index.html'},
-					{name:'银卡管理',url:'view/card/index.html'},
-					{name:'账务管理',url:'view/account/index.html'},
-					{name:'收支统计',url:'view/account/inoutStatistic.html'},
-					{name:'结余统计',url:'view/account/totalStatistic.html'},
-				],
+				'系统管理':{
+					'系统管理':[
+						{name:'帐号管理',url:'view/user/index.html'},
+						{name:'密码管理',url:'view/password/index.html'}
+					],
+				},
+				'财务管理':{
+					'财务管理':[
+						{name:'分类管理',url:'view/category/index.html'},
+						{name:'银卡管理',url:'view/card/index.html'},
+						{name:'账务管理',url:'view/account/index.html'},
+						{name:'收支统计',url:'view/account/inoutStatistic.html'},
+						{name:'结余统计',url:'view/account/totalStatistic.html'},
+					],
+				},
+				'便捷工具':{
+					'便捷工具':[
+						{name:'优惠卷工具',url:'view/coupon/view.html'},
+					]
+				}
 			}
 		});
 	</script>

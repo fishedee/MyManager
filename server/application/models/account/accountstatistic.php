@@ -39,6 +39,12 @@ class AccountStatistic extends CI_Model {
 				$maxTime['week'] = $value['week'];
 			}
 		}
+		if( $minTime == null || $maxTime == null )
+			return array(
+				'code'=>0,
+				'msg'=>'',
+				'data'=>array()
+			);
 		
 		//计算结果
 		$data = array();
@@ -173,6 +179,12 @@ class AccountStatistic extends CI_Model {
 				$maxTime['week'] = $value['week'];
 			}
 		}
+		if( $minTime == null || $maxTime == null )
+			return array(
+				'code'=>0,
+				'msg'=>'',
+				'data'=>array()
+			);
 
 		//计算结果
 		$data = array();

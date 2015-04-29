@@ -65,6 +65,75 @@ self.localStorage = function(name, value, options) {
 		
 	}
 };
+//加入history扩展
+self.history = {
+	pushState:function(data,state,url){
+		if(window.history.pushState){
+			window.history.pushState(data,state,url);
+		}else{
+			location.href = url;
+		}
+
+	},
+	replaceState:function(data,state,url){
+		if(window.history.replaceState){
+			window.history.replaceState(data,state,url);
+		}else{
+			location.href = url;
+		}
+	},
+};
+//加入ArrayBuffer扩展
+self.arraybuffer = {
+	fromString:function(data){
+		var arraybuffer = new ArrayBuffer(data.length);
+		var longInt8View = new Uint8Array(arraybuffer);
+
+		for (var i=0; i< longInt8View.length; i++) {
+			longInt8View[i] = data.charCodeAt(i);
+		}
+		return arraybuffer;
+	}
+};
+//加入Blob扩展
+self.blob = {
+	fromArray:function(array){
+		try{
+		  var jpeg = new Blob( [array],{type:"image/jpeg"});
+		}
+		catch(e){
+			alert(e.name);
+			alert(e);
+		    // TypeError old chrome and FF
+		    window.BlobBuilder = window.BlobBuilder || 
+		                         window.WebKitBlobBuilder || 
+		                         window.MozBlobBuilder || 
+		                         window.MSBlobBuilder;
+		    alert(window.BlobBuilder);
+		    if(e.name == 'TypeError' && window.BlobBuilder){
+		    	alert('TypeError!');
+		        var bb = new BlobBuilder();
+		        bb.append(array.buffer);
+		        var jpeg = bb.getBlob("image/jpeg");
+		        alert(jpeg.size);
+		    }
+		    else if(e.name == "InvalidStateError"){
+		        var jpeg = new Blob( [array.buffer], {type : "image/jpeg"});
+		    }
+		    else{
+		       	var jpeg = null;
+		    }
+		}
+		return jpeg;
+	},
+	fromString:function(data){
+		var arr = new Uint8Array(data.length);
+	    for(var i = 0, l = data.length; i < l; i++) {
+	        arr[i] = data.charCodeAt(i);
+	    }
+	    return this.fromArray(arr);
+	}
+};
 //加入FileReader扩展
 self.fileReader = {
 	open:function(option){
