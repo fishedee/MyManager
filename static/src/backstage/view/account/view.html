@@ -76,7 +76,7 @@
 								dialog.message(data.msg);
 								return;
 							}
-							location.href = 'index.html';
+							history.back();
 						});
 					}else{
 						$.post('/account/add',data,function(data){
@@ -85,12 +85,12 @@
 								dialog.message(data.msg);
 								return;
 							}
-							location.href = 'index.html';
+							history.back();
 						});
 					}
 				},
 				cancel:function(){
-					location.href = 'index.html';
+					history.back();
 				}
 			});
 		}
