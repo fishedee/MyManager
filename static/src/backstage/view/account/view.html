@@ -16,7 +16,7 @@
 		var accountId = $.location.getQueryArgv('accountId');
 		var categorys = {0:'未分类'};
 		var cards = {0:'无银行卡'};
-		var types = {1:'收入',2:'支出',3:'转账收入',4:'转账支出'};
+		var types = {1:'收入',2:'支出',3:'转账收入',4:'转账支出',5:'借还账收入',6:'借还账支出'};
 		var account = {};
 		function getCategory(nextStep){
 			$.get('/category/search',{},function(data){

@@ -56,7 +56,7 @@ class AccountStatistic extends CI_Model {
 			if( $year == $maxTime['year'])
 				$maxWeek = $maxTime['week'];
 			for( $week = $maxWeek ; $week >= $minWeek ; $week -- ){
-				for( $type = 1 ; $type <= 4 ; $type++){
+				for( $type = 1 ; $type <= 6 ; $type++){
 					$money = 0;
 					if( isset($statistic[$year][$week][$type]))
 						$money = $statistic[$year][$week][$type];
@@ -65,6 +65,8 @@ class AccountStatistic extends CI_Model {
 						$this->accountDb->TYPE_OUT =>'支出',
 						$this->accountDb->TYPE_TRANSFER_IN =>'转账收入',
 						$this->accountDb->TYPE_TRANSFER_OUT =>'转账支出',
+						$this->accountDb->TYPE_BORROW_IN=>'借还账收入',
+						$this->accountDb->TYPE_BORROW_OUT=>'借还账支出'
 					);
 					$data[] = array(
 						'name'=>$year.'年'.sprintf('%02d',$week).'周',
@@ -154,7 +156,8 @@ class AccountStatistic extends CI_Model {
 			$cardId = $value['cardId'];
 			$money = 0;
 			if( $value['type'] == $this->accountDb->TYPE_IN ||
-				$value['type'] == $this->accountDb->TYPE_TRANSFER_IN )
+				$value['type'] == $this->accountDb->TYPE_TRANSFER_IN ||
+				$value['type'] == $this->accountDb->TYPE_BORROW_IN )
 				$money = $value['money'];
 			else
 				$money = -$value['money'];
@@ -252,6 +255,8 @@ class AccountStatistic extends CI_Model {
 				$this->accountDb->TYPE_OUT =>'支出',
 				$this->accountDb->TYPE_TRANSFER_IN =>'转账收入',
 				$this->accountDb->TYPE_TRANSFER_OUT =>'转账支出',
+				$this->accountDb->TYPE_BORROW_IN=>'借还账收入',
+				$this->accountDb->TYPE_BORROW_OUT=>'借还账支出'
 			);
 			$value['typeName'] = $typeMap[$value['type']];
 			$value['precent'] = ceil($value['money']/$totalMoney*100).'%';

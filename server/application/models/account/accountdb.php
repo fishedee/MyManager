@@ -6,6 +6,8 @@ class AccountDb extends CI_Model {
 	var $TYPE_OUT = 2;
 	var $TYPE_TRANSFER_IN = 3;
 	var $TYPE_TRANSFER_OUT = 4;
+	var $TYPE_BORROW_IN = 5;
+	var $TYPE_BORROW_OUT = 6;
 	public function __construct(){
 		parent::__construct();
 	}

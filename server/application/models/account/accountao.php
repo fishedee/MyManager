@@ -33,7 +33,9 @@ class AccountAo extends CI_Model {
 		if( $data['type'] != $this->accountDb->TYPE_IN
 			&& $data['type'] != $this->accountDb->TYPE_OUT
 			&& $data['type'] != $this->accountDb->TYPE_TRANSFER_IN
-			&& $data['type'] != $this->accountDb->TYPE_TRANSFER_OUT	){
+			&& $data['type'] != $this->accountDb->TYPE_TRANSFER_OUT	
+			&& $data['type'] != $this->accountDb->TYPE_BORROW_IN 
+			&& $data['type'] != $this->accountDb->TYPE_BORROW_OUT ){
 			return array(
 				'code'=>1,
 				'msg'=>'类型ID不合法',
