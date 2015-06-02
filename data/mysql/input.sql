@@ -63,14 +63,13 @@ create table t_account(
 alter table t_account add index userIdIndex(userId);
 
 #创建session表
-create table ci_sessions (
-  session_id char(40) default '0' not null,
-  ip_address char(45) default '0' not null,
-  user_agent char(120) not null,
-  last_activity int(10) unsigned default 0 not null,
-  user_data text default '' not null,
-  primary key (session_id),
-  key `last_activity_idx` (`last_activity`)
+CREATE TABLE IF NOT EXISTS `ci_sessions` (
+    `id` varchar(40) NOT NULL,
+    `ip_address` varchar(45) NOT NULL,
+    `timestamp` int(10) unsigned DEFAULT 0 NOT NULL,
+    `data` blob NOT NULL,
+    PRIMARY KEY (id),
+    KEY `ci_sessions_timestamp` (`timestamp`)
 );
 
 #创建初始数据
