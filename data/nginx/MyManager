@@ -11,7 +11,7 @@ server {
 	rewrite ^/(.*) /server/index.php?/$1 last;
 
 	location ~ \.php {
-		fastcgi_pass localhost:9000;
+		fastcgi_pass fastcgi_backend;
 		include fastcgi_params;
 	}
 	location ~ \.html{

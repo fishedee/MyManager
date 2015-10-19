@@ -19,10 +19,10 @@ copy_common:
 			fi \
 		fi \
 	done
-debug:copy_common
+debug:
 	-rm $(OUT) -rf
-	fis release --md5 --pack --domains --dest $(OUT)
-release:copy_common
+	fis release --pack --domains --dest $(OUT)
+release:
 	-rm $(OUT) -rf
 	fis release --md5 --pack --domains --optimize --dest $(OUT)
 watch:debug
