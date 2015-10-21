@@ -1,6 +1,0 @@
-[submodule "third-party/FishCI"]
-	path = third-party/FishCI
-	url = git@github.com:fishedee/FishCI.git
-[submodule "third-party/FishStrap"]
-	path = third-party/FishStrap
-	url = git@github.com:fishedee/FishStrap.git
