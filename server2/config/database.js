@@ -21,6 +21,7 @@ function releaseConnection(connection){
 }
 function query(connection,sql){
 	return new Promise(function(resolve,reject){
+		console.log(sql);
 		connection.query(sql,function(error,rows){
 			if( !!error )
 				reject(error);
@@ -29,15 +30,14 @@ function query(connection,sql){
 		});
 	});
 }
-function buildWhereSql(whereSql = null){
-	var sql = '';
+function buildWhereSql(whereSql = null){	var sql = '';
 	if( whereSql ){
 		if( typeof whereSql == 'string'){
 			sql += 'where ';
 			sql += whereSql;
 		}else{
 			sql += 'where ';
-			var temp = whereSql.map(function(value,index){
+			var temp = _.map(whereSql,function(value,index){
 				return index + ' = "' + value + '"'; 
 			});
 			sql += temp.join(' and ');
@@ -51,9 +51,11 @@ function buildValueSql(valueSql=null){
 		if( typeof valueSql == 'string'){
 			sql += valueSql;
 		}else{
-			sql += '('+valueSql[0].keys().join(',')+')';
-			var tempSql = valueSql.map(function(value,index){
-				return '('+value.values().join(',')+')';
+			sql += '('+_.keys(valueSql[0]).join(',')+')';
+			var tempSql = _.map(valueSql,function(value,index){
+				return '('+_.map(value,function(singleValue){
+					return "'"+singleValue+"'";
+				}).join(',')+')';
 			});
 			sql += 'values' + tempSql.join(',');
 		}
@@ -67,8 +69,8 @@ function buildSetSql(setSql = null){
 			sql += setSql;
 		}else{
 			sql += 'set ';
-			sql += setSql.map(function(value,index){
-				return index + ' = ' + value;
+			sql += _.map(setSql,function(value,index){
+				return index + " = '" + value + "'";
 			}).join(',');
 		}
 	}
@@ -95,7 +97,7 @@ function buildOrderSql(orderSql=null){
 			sql += orderSql;
 		}else{
 			sql += 'order by ';
-			var tempSql = orderSql.map(function(value,index){
+			var tempSql = _.map(orderSql,function(value,index){
 				return index+' '+value;
 			});
 			sql += tempSql.join(',');
@@ -106,7 +108,7 @@ function buildOrderSql(orderSql=null){
 function buildLimitSql(limitSql=null){
 	var sql = '';
 	if( limitSql && limitSql.pageIndex && limitSql.pageSize )
-		sql += ' limit '+limitSql.pageSize+','+limitSql.pageIndex;
+		sql += ' limit '+limitSql.pageIndex+','+limitSql.pageSize;
 	return sql+' ';
 }
 module.exports = {
@@ -162,7 +164,7 @@ module.exports = {
 		var sql = 'select ';
 		sql += buildSelectSql(selectSql);
 		sql += ' from '+tableName+' ';
-		sql += buildWhereSql(selectSql);
+		sql += buildWhereSql(whereSql);
 		sql += buildOrderSql(orderSql);
 		sql += buildLimitSql(limitSql);
 		return sql;

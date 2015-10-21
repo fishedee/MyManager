@@ -15,10 +15,10 @@ module.exports = {
 				whereSql += 'type = "'+where[i]+'"';
 		}
 
-		var sql = database.buildSelectSql(tableName,whereSql,'count(*) as count');
-		var count = await database.select(sql)[0]['count'];
+		var sql = database.buildSelect(tableName,whereSql,'count(*) as count');
+		var count = (await database.select(sql))[0]['count'];
 
-		var sql = database.buildSelectSql(tableName,whereSql,'*','createTime desc',limit);
+		var sql = database.buildSelect(tableName,whereSql,'*','createTime desc',limit);
 		var data = await database.select(sql);
 
 		return {
@@ -27,40 +27,40 @@ module.exports = {
 		}
 	},
 	async get(userId){
-		var sql = database.buildSelectSql(tableName,{userId:userId});
+		var sql = database.buildSelect(tableName,{userId:userId});
 		var data = await database.select(sql);
 		if( data.length == 0 )
 			throw new Error('找不到用户数据'+userId);
 		return data[0];
 	},
 	async add(data){
-		var sql = database.buildInsertSql(tableName,[data]);
-		return await database.insert(data);
+		var sql = database.buildInsert(tableName,[data]);
+		return await database.insert(sql);
 	},
 	async mod(userId,data){
-		var sql = database.buildUpdateSql(tableName,data,{userId:userId});
-		return await database.insert(data);
+		var sql = database.buildUpdate(tableName,data,{userId:userId});
+		return await database.update(sql);
 	},
 	async del(userId){
-		var sql = database.buildDeleteSql(tableName,{userId:userId});
+		var sql = database.buildDelete(tableName,{userId:userId});
 		return await database.delete(sql);
 	},
 	async modPassword(userId , oldPassword , newPassword ){
-		var sql = database.buildUpdateSql(tableName,{password:newPassword},{userId:userId,password:oldPassword});
+		var sql = database.buildUpdate(tableName,{password:newPassword},{userId:userId,password:oldPassword});
 		var affectedRows = await database.update(sql);
 		if( affectedRows <= 0 )
 			throw new Error('密码错误');
 	},
-	async getByIdAndPass(userId,password)){
-		var sql = database.buildSelectSql({userId:userId,password:password});
+	async getByIdAndPass(userId,password){
+		var sql = database.buildSelect(tableName,{userId:userId,password:password});
 		return await database.select(sql);
 	},
-	async getByNameAndPass(name,password)){
-		var sql = database.buildSelectSql({name:name,password:password});
+	async getByNameAndPass(name,password){
+		var sql = database.buildSelect(tableName,{name:name,password:password});
 		return await database.select(sql);
 	},
 	async getByName(name){
-		var sql = database.buildSelectSql({name:name});
+		var sql = database.buildSelect(tableName,{name:name});
 		return await database.select(sql);
 	}
 };

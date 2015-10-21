@@ -8,9 +8,11 @@ module.exports = function(handler){
 				data:result
 			}));
 		}catch(e){
+			//if( e.stack )
+			//	console.log(e.stack);
 			res.send(JSON.stringify({
 				code:1,
-				msg:e,
+				msg:e.message,
 				data:null
 			}));
 		}

@@ -1,4 +1,5 @@
 var userdb = require('./userdb');
+var hash = require('../../config/hash');
 
 module.exports = {
 	search:userdb.search,
@@ -9,18 +10,19 @@ module.exports = {
 		if( result.length != 0 )
 			throw new Error('存在重复的用户名');
 
-		return await this.userdb.add(data);
+		data.password = hash.sha1(data.password);
+		return await userdb.add(data);
 	},
 	async modType(userId,type){
 		await userdb.mod(userId,{type:type});
 	},
 	async modPassword(userId,password){
-		await userdb.mod(userId,{password:password});
+		await userdb.mod(userId,{password:hash.sha1(password)});
 	},
 	async modPasswordByOld(userId,oldPassword,newPassword){
-		var data = await this.userdb.getByIdAndPass(userId,oldPassword);
+		var data = await userdb.getByIdAndPass(userId,hash.sha1(oldPassword));
 		if( data.length == 0 )
 			throw new Error('原密码错误');
-		await userdb.mod(userId,{password:newPassword});
+		await userdb.mod(userId,{password:hash.sha1(newPassword)});
 	}
 };

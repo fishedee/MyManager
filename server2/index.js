@@ -1,11 +1,14 @@
 var express = require('express');
+var util = require('./config/util');
 var session = require('./config/session');
-var indexRouter = require('./router/index');
+var bodyParser = require('body-parser');
+var loginRouter = require('./router/login');
 var userRouter = require('./router/user');
 
 var app = express();
 app.use(session.getMiddleware());
-app.use('/',indexRouter);
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use('/login',loginRouter);
 app.use('/user',userRouter);
 app.use(function(err, req, res, next) {
   console.error(err.stack);
