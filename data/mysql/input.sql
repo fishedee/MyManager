@@ -4,17 +4,17 @@ create database FishMoney;
 use FishMoney;
 
 #创建用户表
-create table t_user(
-	userId integer not null auto_increment,
+create table users(
+	user_id integer not null auto_increment,
 	name char(32) not null,
 	password char(48) not null,
 	type integer not null,
-	createTime timestamp not null default CURRENT_TIMESTAMP,
-	modifyTime timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP, 
-	primary key( userId )
+	create_time timestamp not null default CURRENT_TIMESTAMP,
+	modify_time timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP, 
+	primary key( user_id )
 )engine=innodb default charset=utf8 auto_increment = 10001;
 
-alter table t_user add index nameIndex(name,password);
+alter table users add index nameIndex(name,password);
 
 #创建类目表
 create table t_category(
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
 );
 
 #创建初始数据
-insert into t_user(userId,name,password,type) values
+insert into users(user_id,name,password,type) values
 (10001,"fish",SHA1("123"),0);
 
 insert into t_category(categoryId,userId,name,remark) values
@@ -93,7 +93,7 @@ insert into t_account(accountId,userId,name,money,remark,categoryId,cardId,type,
 (10003,10001,"日常收入",100,'',10001,10002,3,'2014-10-10 12:0:0','2014-10-10 12:0:0');
 
 #显示一下所有数据
-select * from t_user;
+select * from users;
 select * from t_category;
 select * from t_card;
 select * from t_account;
