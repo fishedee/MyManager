@@ -1,51 +1,115 @@
 package router
 
 import (
-	_ "github.com/Go-SQL-Driver/MySQL" 
     "github.com/gin-gonic/gin"
-    "github.com/jinzhu/gorm"
-    "net/http"
-    "fmt"
-    "time"
+    "errors"
+   	"../view"
+   	"../service/user"
+   	"../config"
 )
 
-type User struct{
-	UserId int `sql:"AUTO_INCREMENT"`
-	Name string `sql:"size:32"`
-	Password string `sql:"size:48"`
-	Type int
-	CreateTime time.Time
-	ModifyTime time.Time 
-}
-
-var DB gorm.DB;
-
-func init(){
-	var err error
-	if DB,err = gorm.Open("mysql", "root:1@/FishMoney?charset=utf8&parseTime=True") ; err != nil {
-		fmt.Println("open mysql error!");
-	}	
-	fmt.Println(DB.DB());
-	err = DB.DB().Ping()
-	if err != nil {
-		fmt.Println("open ping error!");
+func checkAdmin(c *gin.Context)(error){
+	userinfo,error := user.LoginAo.IsLogin(c);
+	if error != nil{
+		return error;
 	}
-	DB.DB().SetMaxIdleConns(10)
-	DB.DB().SetMaxOpenConns(100)
-}
 
+	if userinfo.Type != user.Type.ADMIN{
+		return errors.New("你没有权限执行此操作");
+	}
+
+	return nil;
+}
 func SetUserRoute(router *gin.RouterGroup){
-	router.GET("/search", func(c *gin.Context) {
-		var users []User;
-		DB.Find(&users);
-		fmt.Println(len(users));
-		fmt.Println(users);
-		c.String(http.StatusOK, "search");
-	});
-	router.GET("/get", func(c *gin.Context) {
-		c.String(http.StatusOK, "get");
-	});
-	router.GET("/add", func(c *gin.Context) {
-		c.String(http.StatusOK, "add");
-	});
+
+	router.GET("/search", view.Json( func(c *gin.Context)(interface{},error){
+		/*
+		error := checkAdmin(c);
+		if error != nil {
+			return nil,error;
+		}
+		*/
+
+		userInfo := &user.User{
+			Name:c.Query("Name"),
+			Type:config.Atoi(c.Query("Type")),
+		};
+		pageIndex := config.Atoi(c.Query("PageIndex"));
+		pageSize := config.Atoi(c.Query("PageSize"));
+
+		return user.UserAo.Search(userInfo,pageIndex,pageSize);
+	}));
+
+	router.POST("/get", view.Json( func(c *gin.Context)(interface{},error){
+		error := checkAdmin(c);
+		if error != nil{
+			return nil,error;
+		}
+
+		return user.UserAo.Get(
+			config.Atoi(c.Query("UserId")),
+		);
+	}));
+
+	router.GET("/add", view.Json( func(c *gin.Context)(interface{},error) {
+		error := checkAdmin(c);
+		if error != nil {
+			return nil,error;
+		}
+
+		userInfo := &user.User{
+			Name:c.PostForm("Name"),
+			Type:config.Atoi(c.PostForm("Type")),
+			Password:c.PostForm("Password"),
+		}
+		return nil,user.UserAo.Add(userInfo);
+	}));
+
+	router.GET("/del", view.Json( func(c *gin.Context)(interface{},error) {
+		error := checkAdmin(c);
+		if error != nil {
+			return nil,error;
+		}
+
+		return nil,user.UserAo.Del(
+			config.Atoi(c.PostForm("UserId")),
+		);
+	}));
+
+	router.GET("/modType", view.Json( func(c *gin.Context)(interface{},error) {
+		error := checkAdmin(c);
+		if error != nil {
+			return nil,error;
+		}
+
+		return nil,user.UserAo.ModType(
+			config.Atoi(c.PostForm("UserId")),
+			config.Atoi(c.PostForm("Type")),
+		);
+	}));
+
+	router.GET("/modPassword", view.Json( func(c *gin.Context)(interface{},error) {
+		error := checkAdmin(c);
+		if error != nil {
+			return nil,error;
+		}
+
+		return nil,user.UserAo.ModPassword(
+			config.Atoi(c.PostForm("UserId")),
+			c.PostForm("Password"),
+		);
+	}));
+
+	router.GET("/modMyPassword", view.Json( func(c *gin.Context)(interface{},error) {
+		userinfo,error := user.LoginAo.IsLogin(c);
+		if error != nil{
+			return nil,error;
+		}
+
+		return nil,user.UserAo.ModPasswordByOld(
+			userinfo.UserId,
+			c.PostForm("OldPassword"),
+			c.PostForm("NewPassword"),
+		);
+	}));
 }
