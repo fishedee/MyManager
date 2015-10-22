@@ -2,20 +2,28 @@
 
 ## 开发体验
 php最爽，session想用就用，不需要将request传来传去，sha1与md5直接调用
+
 nodejs次爽，session使用时需要先传入req，严格的包管理系统，使用很多基础函数都需要先包含才能用，错误处理比较麻烦。
+
 go次一点爽，包管理器没有版本控制，比较坑爹。开发效率上跟nodejs差不多，有了强类型系统，很多错误在编译时就确定下来。但是，编译器对代码格式要求比较多，刚开始比较不习惯（if必须带括号，分行参数末尾要带逗号等等）。
 
 ## 性能
 9线程 php
+
 /login/islogin 299request/s
+
 /user/search 283request/s
 
 1线程 nodejs
+
 /login/islogin 1061request/s
+
 /user/search 419request/s
 
 2线程 go
+
 /login/islogin 4500request/s
+
 /user/search 1500request/s
 
 ## 总结
