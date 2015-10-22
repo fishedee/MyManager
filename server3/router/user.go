@@ -23,84 +23,82 @@ func checkAdmin(c *gin.Context)(error){
 func SetUserRoute(router *gin.RouterGroup){
 
 	router.GET("/search", view.Json( func(c *gin.Context)(interface{},error){
-		/*
 		error := checkAdmin(c);
 		if error != nil {
 			return nil,error;
 		}
-		*/
 
 		userInfo := &user.User{
-			Name:c.Query("Name"),
-			Type:config.Atoi(c.Query("Type")),
+			Name:c.Query("name"),
+			Type:config.Atoi(c.Query("type")),
 		};
-		pageIndex := config.Atoi(c.Query("PageIndex"));
-		pageSize := config.Atoi(c.Query("PageSize"));
+		pageIndex := config.Atoi(c.Query("pageIndex"));
+		pageSize := config.Atoi(c.Query("pageSize"));
 
 		return user.UserAo.Search(userInfo,pageIndex,pageSize);
 	}));
 
-	router.POST("/get", view.Json( func(c *gin.Context)(interface{},error){
+	router.GET("/get", view.Json( func(c *gin.Context)(interface{},error){
 		error := checkAdmin(c);
 		if error != nil{
 			return nil,error;
 		}
 
 		return user.UserAo.Get(
-			config.Atoi(c.Query("UserId")),
+			config.Atoi(c.Query("userId")),
 		);
 	}));
 
-	router.GET("/add", view.Json( func(c *gin.Context)(interface{},error) {
+	router.POST("/add", view.Json( func(c *gin.Context)(interface{},error) {
 		error := checkAdmin(c);
 		if error != nil {
 			return nil,error;
 		}
 
 		userInfo := &user.User{
-			Name:c.PostForm("Name"),
-			Type:config.Atoi(c.PostForm("Type")),
-			Password:c.PostForm("Password"),
+			Name:c.PostForm("name"),
+			Type:config.Atoi(c.PostForm("type")),
+			Password:c.PostForm("password"),
 		}
 		return nil,user.UserAo.Add(userInfo);
 	}));
 
-	router.GET("/del", view.Json( func(c *gin.Context)(interface{},error) {
+	router.POST("/del", view.Json( func(c *gin.Context)(interface{},error) {
 		error := checkAdmin(c);
 		if error != nil {
 			return nil,error;
 		}
 
 		return nil,user.UserAo.Del(
-			config.Atoi(c.PostForm("UserId")),
+			config.Atoi(c.PostForm("userId")),
 		);
 	}));
 
-	router.GET("/modType", view.Json( func(c *gin.Context)(interface{},error) {
+	router.POST("/modType", view.Json( func(c *gin.Context)(interface{},error) {
 		error := checkAdmin(c);
 		if error != nil {
 			return nil,error;
 		}
 
 		return nil,user.UserAo.ModType(
-			config.Atoi(c.PostForm("UserId")),
-			config.Atoi(c.PostForm("Type")),
+			config.Atoi(c.PostForm("userId")),
+			config.Atoi(c.PostForm("type")),
 		);
 	}));
 
-	router.GET("/modPassword", view.Json( func(c *gin.Context)(interface{},error) {
+	router.POST("/modPassword", view.Json( func(c *gin.Context)(interface{},error) {
 		error := checkAdmin(c);
 		if error != nil {
 			return nil,error;
 		}
 
 		return nil,user.UserAo.ModPassword(
-			config.Atoi(c.PostForm("UserId")),
-			c.PostForm("Password"),
+			config.Atoi(c.PostForm("userId")),
+			c.PostForm("password"),
 		);
 	}));
 
-	router.GET("/modMyPassword", view.Json( func(c *gin.Context)(interface{},error) {
+	router.POST("/modMyPassword", view.Json( func(c *gin.Context)(interface{},error) {
 		userinfo,error := user.LoginAo.IsLogin(c);
 		if error != nil{
 			return nil,error;
@@ -108,8 +106,8 @@ func SetUserRoute(router *gin.RouterGroup){
 
 		return nil,user.UserAo.ModPasswordByOld(
 			userinfo.UserId,
-			c.PostForm("OldPassword"),
-			c.PostForm("NewPassword"),
+			c.PostForm("oldPassword"),
+			c.PostForm("newPassword"),
 		);
 	}));
 }

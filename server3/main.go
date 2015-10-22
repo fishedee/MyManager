@@ -16,5 +16,5 @@ func main() {
     userRouter := server.Group("/user");
     router.SetUserRoute(userRouter);
 
-    server.Run(":30001")
+    server.Run(":3001")
 }

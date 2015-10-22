@@ -5,10 +5,14 @@ import (
 )
 
 type User struct{
-	UserId int `sql:"AUTO_INCREMENT"`
-	Name string `sql:"size:32"`
-	Password string `sql:"size:48"`
-	Type int
-	CreateTime time.Time
-	ModifyTime time.Time 
+	UserId int `json:"userId" gorm:"column:userId"`
+	Name string `json:"name" gorm:"column:name"`
+	Password string `json:"password" gorm:"column:password"`
+	Type int `json:"type" gorm:"column:type"`
+	CreateTime time.Time `json:"createTime" gorm:"column:createTime"`
+	ModifyTime time.Time `json:"modifyTime" gorm:"column:modifyTime"`
+}
+
+func (this *User) TableName() string {
+    return "t_user"
 }

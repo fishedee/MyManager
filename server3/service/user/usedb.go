@@ -22,8 +22,7 @@ func (this *UserDbData) Search(user *User,pageIndex int,pageSize int)(*Users,err
 
 	var users Users;
 	var error error;
-	//error = db.Limit(pageSize).Offset(pageIndex).Find(&users.Data).Error;
-	error = db.Find(&users.Data).Error;
+	error = db.Limit(pageSize).Offset(pageIndex).Find(&users.Data).Error;
 	if error != nil{
 		return nil,error;
 	}
@@ -36,13 +35,16 @@ func (this *UserDbData) Search(user *User,pageIndex int,pageSize int)(*Users,err
 }
 
 func (this *UserDbData) Get(userId int)(*User,error){
-	var user User;
-	error := config.DB.Where(&User{UserId:userId}).Find(&user).Error;
-	return &user,error;
+	var users []*User;
+	error := config.DB.Where(&User{UserId:userId}).Find(&users).Error;
+	if( len(users) == 0 ){
+		return nil,errors.New("不存在该用户"+config.Itoa(userId));
+	}
+	return users[0],error;
 }
 
 func (this *UserDbData) Del(userId int)(error){
-	return config.DB.Delete(&User{UserId:userId}).Error;
+	return config.DB.Where(&User{UserId:userId}).Delete(&User{UserId:userId}).Error;
 }
  
 func (this *UserDbData) Add(user *User)(error){
@@ -50,18 +52,7 @@ func (this *UserDbData) Add(user *User)(error){
 }
 
 func (this *UserDbData) Mod(userId int,user* User)(error){
-	return config.DB.Where(&User{UserId:userId}).Updates(&user).Error;
-}
-
-func (this *UserDbData) ModPassword(userId int,oldPassword string,newPassword string)(error){
-	db := config.DB.Where(&User{Password:oldPassword}).Updates(&User{Password:newPassword});
-	if db.Error != nil{
-		return db.Error;
-	}else if db.RowsAffected == 0 {
-		return errors.New("原密码错误")
-	}else{
-		return nil;
-	}
+	return config.DB.Table(user.TableName()).Where(&User{UserId:userId}).Update(&user).Error;
 }
 
 func (this *UserDbData) GetByIdAndPass(userId int,password string)([]*User,error){

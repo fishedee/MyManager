@@ -15,8 +15,8 @@ func SetLoginRouter(router *gin.RouterGroup){
 	router.POST("/checkin", view.Json( func(c *gin.Context)(interface{},error){
 		return nil,user.LoginAo.Login(
 			c,
-			c.PostForm("Name"),
-			c.PostForm("Password"),
+			c.PostForm("name"),
+			c.PostForm("password"),
 		);
 	}));
 

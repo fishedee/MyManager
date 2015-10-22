@@ -11,3 +11,7 @@ func Atoi(str string)(int){
 	}
 	return result;
 }
+
+func Itoa(integer int)(string){
+	return strconv.Itoa(integer);
+}
