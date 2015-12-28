@@ -46,7 +46,7 @@ func (this *UserController) Search_Json() interface{} {
 	this.CheckGet(&limit)
 
 	//检查权限
-	//this.UserLoginAo.CheckMustAdmin()
+	this.UserLoginAo.CheckMustAdmin()
 
 	//执行业务逻辑
 	return this.UserAo.Search(where, limit)

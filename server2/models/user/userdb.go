@@ -13,14 +13,12 @@ type UserDbModel struct {
 func (this *UserDbModel) Search(where User, limit CommonPage) Users {
 	db := this.DB.NewSession()
 
-	/*
-		if limit.PageSize == 0 && limit.PageIndex == 0 {
-			return Users{
-				Count: 0,
-				Data:  []User{},
-			}
+	if limit.PageSize == 0 && limit.PageIndex == 0 {
+		return Users{
+			Count: 0,
+			Data:  []User{},
 		}
-	*/
+	}
 
 	if where.Name != "" {
 		db = db.Where("name like ?", "%"+where.Name+"%")
