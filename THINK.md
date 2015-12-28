@@ -26,6 +26,12 @@ go次一点爽，包管理器没有版本控制，比较坑爹。开发效率上
 
 /user/search 1500request/s
 
+2线程 beego
+
+/login/islogin 1800request/s
+
+/user/search 500request/s
+
 ## 总结
 go的性能太可怕了，基本上是php的十倍，nodejs的四倍左右。
 加上严格的代码规范，与类型系统，写出来的代码都是一个样，特别规范。
