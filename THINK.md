@@ -30,7 +30,7 @@ go次一点爽，包管理器没有版本控制，比较坑爹。开发效率上
 
 /login/islogin 1800request/s
 
-/user/search 500request/s
+/user/search 1500request/s
 
 ## 总结
 go的性能太可怕了，基本上是php的十倍，nodejs的四倍左右。
@@ -54,6 +54,5 @@ php性能比较忧伤，严重的io阻塞而可能会导致全站卡死。
 ## 后续总结
 最终采用了beego做路由+xorm做orm的方式来开发
 beego的路由性能很好，跟gin基本差不多。
-但是xorm的接口虽然好，可性能大概只有gorm的一半，十分忧伤。
-只能后续通过重写实现来提高性能了。
+xorm的性能问题解决了，恢复到和gorm差不多的水平上
 
