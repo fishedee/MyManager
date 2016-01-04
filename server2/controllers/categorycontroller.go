@@ -1,12 +1,15 @@
 package controllers
 
-import ()
+import (
+	. "mymanager/models/category"
+)
 
 type CategoryController struct {
 	BaseController
+	CategoryAo CategoryAoModel
 }
 
 func (this *CategoryController) Test_Json() interface{} {
-	//检查输入参数
-	return "Hello World"
+	this.CategoryAo.Produce()
+	return ""
 }
