@@ -58,7 +58,6 @@ func (this *UserLoginAoModel) Login(name string, password string) {
 		panic("session启动失败")
 	}
 	defer sess.SessionRelease(this.Ctx.ResponseWriter)
-
 	users := this.UserAo.GetByName(name)
 	if len(users) == 0 {
 		Throw(1, "不存在此帐号")

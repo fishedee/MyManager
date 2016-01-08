@@ -9,28 +9,6 @@ type UserController struct {
 	BaseController
 	UserLoginAo UserLoginAoModel
 	UserAo      UserAoModel
-	UserDb      UserDbModel
-}
-
-func (this *UserController) Islogin_Json() interface{} {
-	user := this.UserLoginAo.IsLogin()
-	if user.UserId != 0 {
-		return user
-	} else {
-		return nil
-	}
-}
-
-func (this *UserController) Login_Json() {
-	//检查输入参数
-	var user User
-	this.CheckPost(&user)
-
-	this.UserLoginAo.Login(user.Name, user.Password)
-}
-
-func (this *UserController) Logout_Json() {
-	this.UserLoginAo.Logout()
 }
 
 func (this *UserController) GetType_Json() interface{} {
