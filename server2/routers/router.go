@@ -9,4 +9,5 @@ func init() {
 	InitRoute("login", &LoginController{})
 	InitRoute("category", &CategoryController{})
 	InitRoute("card", &CardController{})
+	InitRoute("account", &AccountController{})
 }

@@ -1,8 +1,8 @@
 package card
 
 import (
-	. "mymanager/models/common"
 	. "github.com/fishedee/language"
+	. "mymanager/models/common"
 	"strconv"
 )
 
@@ -10,15 +10,8 @@ type CardDbModel struct {
 	BaseModel
 }
 
-func (this *CardDbModel) Search(where Card,limit CommonPage )Cards{
+func (this *CardDbModel) Search(where Card, limit CommonPage) Cards {
 	db := this.DB.NewSession()
-
-	if limit.PageSize == 0 && limit.PageIndex == 0 {
-		return Cards{
-			Count: 0,
-			Data:  []Card{},
-		}
-	}
 
 	if where.Name != "" {
 		db = db.Where("name like ?", "%"+where.Name+"%")
@@ -47,7 +40,7 @@ func (this *CardDbModel) Search(where Card,limit CommonPage )Cards{
 	}
 }
 
-func (this *CardDbModel) Get(cardId int)Card{
+func (this *CardDbModel) Get(cardId int) Card {
 	var cards []Card
 	err := this.DB.Where("cardId = ?", cardId).Find(&cards)
 	if err != nil {
@@ -59,21 +52,21 @@ func (this *CardDbModel) Get(cardId int)Card{
 	return cards[0]
 }
 
-func (this *CardDbModel) Del(cardId int){
-	_,err := this.DB.Where("cardId = ?",cardId).Delete(&Card{})
-	if err != nil{
+func (this *CardDbModel) Del(cardId int) {
+	_, err := this.DB.Where("cardId = ?", cardId).Delete(&Card{})
+	if err != nil {
 		panic(err)
 	}
 }
 
-func (this *CardDbModel) Add(card Card){
+func (this *CardDbModel) Add(card Card) {
 	_, err := this.DB.Insert(card)
 	if err != nil {
 		panic(err)
 	}
 }
 
-func (this *CardDbModel) Mod(cardId int,card Card){
+func (this *CardDbModel) Mod(cardId int, card Card) {
 	_, err := this.DB.Where("cardId = ?", cardId).Update(&card)
 	if err != nil {
 		panic(err)

@@ -1,15 +1,19 @@
 package card
 
+import (
+	"time"
+)
+
 type Card struct {
 	CardId     int
-	UserId       int
-	Name   string
-	Bank   string
-	Card string
-	Money int
-	Remark	string
-	CreateTime string `xorm:"created"`
-	ModifyTime string `xorm:"updated"`
+	UserId     int
+	Name       string
+	Bank       string
+	Card       string
+	Money      int
+	Remark     string
+	CreateTime time.Time `xorm:"created"`
+	ModifyTime time.Time `xorm:"updated"`
 }
 
 type Cards struct {

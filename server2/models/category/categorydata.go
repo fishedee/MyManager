@@ -1,12 +1,16 @@
 package category
 
+import (
+	"time"
+)
+
 type Category struct {
-	CategoryId     int
-	UserId       int
-	Name   string
-	Remark	string
-	CreateTime string `xorm:"created"`
-	ModifyTime string `xorm:"updated"`
+	CategoryId int
+	UserId     int
+	Name       string
+	Remark     string
+	CreateTime time.Time `xorm:"created"`
+	ModifyTime time.Time `xorm:"updated"`
 }
 
 type Categorys struct {

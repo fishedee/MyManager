@@ -1,12 +1,16 @@
 package user
 
+import (
+	"time"
+)
+
 type User struct {
 	UserId     int
 	Name       string
 	Password   string
 	Type       int
-	CreateTime string `xorm:"created"`
-	ModifyTime string `xorm:"updated"`
+	CreateTime time.Time `xorm:"created"`
+	ModifyTime time.Time `xorm:"updated"`
 }
 
 type Users struct {

@@ -1,8 +1,8 @@
 package category
 
 import (
-	. "mymanager/models/common"
 	. "github.com/fishedee/language"
+	. "mymanager/models/common"
 	"strconv"
 )
 
@@ -10,15 +10,8 @@ type CategoryDbModel struct {
 	BaseModel
 }
 
-func (this *CategoryDbModel) Search(where Category,limit CommonPage )Categorys{
+func (this *CategoryDbModel) Search(where Category, limit CommonPage) Categorys {
 	db := this.DB.NewSession()
-
-	if limit.PageSize == 0 && limit.PageIndex == 0 {
-		return Categorys{
-			Count: 0,
-			Data:  []Category{},
-		}
-	}
 
 	if where.Name != "" {
 		db = db.Where("name like ?", "%"+where.Name+"%")
@@ -47,7 +40,7 @@ func (this *CategoryDbModel) Search(where Category,limit CommonPage )Categorys{
 	}
 }
 
-func (this *CategoryDbModel) Get(categoryId int)Category{
+func (this *CategoryDbModel) Get(categoryId int) Category {
 	var categorys []Category
 	err := this.DB.Where("categoryId = ?", categoryId).Find(&categorys)
 	if err != nil {
@@ -59,21 +52,21 @@ func (this *CategoryDbModel) Get(categoryId int)Category{
 	return categorys[0]
 }
 
-func (this *CategoryDbModel) Del(categoryId int){
-	_,err := this.DB.Where("categoryId = ?",categoryId).Delete(&Category{})
-	if err != nil{
+func (this *CategoryDbModel) Del(categoryId int) {
+	_, err := this.DB.Where("categoryId = ?", categoryId).Delete(&Category{})
+	if err != nil {
 		panic(err)
 	}
 }
 
-func (this *CategoryDbModel) Add(category Category){
+func (this *CategoryDbModel) Add(category Category) {
 	_, err := this.DB.Insert(category)
 	if err != nil {
 		panic(err)
 	}
 }
 
-func (this *CategoryDbModel) Mod(categoryId int,category Category){
+func (this *CategoryDbModel) Mod(categoryId int, category Category) {
 	_, err := this.DB.Where("categoryId = ?", categoryId).Update(&category)
 	if err != nil {
 		panic(err)
