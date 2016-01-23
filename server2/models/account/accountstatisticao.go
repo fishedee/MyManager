@@ -74,9 +74,9 @@ func (this *AccountStatisticAoModel) GetWeekTypeStatisticDetail(userId int, year
 
 func (this *AccountStatisticAoModel) GetWeekCardStatistic(userId int) []AccountStatistic {
 	statistic := this.AccountDb.GetWeekCardStatisticByUser(userId)
-	statisticYearWeekCardMap := ArrayColumnMap(statistic, "year", "week", "cardId").(map[int]map[int]map[int]AccountStatistic)
-	statisticYearWeekSort := ArrayColumnSort(statistic, "year", "week").([]AccountStatistic)
-	statisticYearWeekSort = ArrayColumnUnique(statisticYearWeekSort, "year", "week").([]AccountStatistic)
+	statisticYearWeekCardMap := ArrayColumnMap(statistic, "Year", "Week", "CardId").(map[int]map[int]map[int]AccountStatistic)
+	statisticYearWeekSort := ArrayColumnSort(statistic, "Year", "Week").([]AccountStatistic)
+	statisticYearWeekSort = ArrayColumnUnique(statisticYearWeekSort, "Year", "Week").([]AccountStatistic)
 
 	card := this.CardAo.Search(userId, Card{}, CommonPage{}).Data
 
