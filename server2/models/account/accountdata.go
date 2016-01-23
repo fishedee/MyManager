@@ -33,6 +33,10 @@ type AccountStatistic struct {
 	Money    int
 }
 
+func (this *AccountStatistic) TableName() string {
+	return "t_account"
+}
+
 type AccountStatisticDetail struct {
 	CategoryId   int
 	CategoryName string
@@ -40,4 +44,8 @@ type AccountStatisticDetail struct {
 	TypeName     string
 	Money        int
 	Precent      string
+}
+
+func (this *AccountStatisticDetail) TableName() string {
+	return "t_account"
 }

@@ -8,8 +8,9 @@ import (
 
 type AccountController struct {
 	BaseController
-	AccountAo   AccountAoModel
-	UserLoginAo UserLoginAoModel
+	AccountAo          AccountAoModel
+	AccountStatisticAo AccountStatisticAoModel
+	UserLoginAo        UserLoginAoModel
 }
 
 func (this *AccountController) Search_Json() interface{} {
@@ -79,20 +80,60 @@ func (this *AccountController) GetType_Json() interface{} {
 	return AccountTypeEnum.Names()
 }
 
-/*
 func (this *AccountController) GetWeekTypeStatistic_Json() interface{} {
+	//检查权限
+	loginUser := this.UserLoginAo.CheckMustLogin()
 
+	//执行业务逻辑
+	return this.AccountStatisticAo.GetWeekTypeStatistic(
+		loginUser.UserId,
+	)
 }
 
 func (this *AccountController) GetWeekDetailTypeStatistic_Json() interface{} {
+	//检查输入参数
+	var account Account
+	this.CheckGet(&account)
+	var accountStatistic AccountStatistic
+	this.CheckGet(&accountStatistic)
 
+	//检查权限
+	loginUser := this.UserLoginAo.CheckMustLogin()
+
+	//执行业务逻辑
+	return this.AccountStatisticAo.GetWeekTypeStatisticDetail(
+		loginUser.UserId,
+		accountStatistic.Year,
+		accountStatistic.Week,
+		account.Type,
+	)
 }
 
 func (this *AccountController) GetWeekCardStatistic_Json() interface{} {
+	//检查权限
+	loginUser := this.UserLoginAo.CheckMustLogin()
 
+	//执行业务逻辑
+	return this.AccountStatisticAo.GetWeekCardStatistic(
+		loginUser.UserId,
+	)
 }
 
 func (this *AccountController) GetWeekDetailCardStatistic_Json() interface{} {
+	//检查输入参数
+	var account Account
+	this.CheckGet(&account)
+	var accountStatistic AccountStatistic
+	this.CheckGet(&accountStatistic)
 
+	//检查权限
+	loginUser := this.UserLoginAo.CheckMustLogin()
+
+	//执行业务逻辑
+	return this.AccountStatisticAo.GetWeekCardStatisticDetail(
+		loginUser.UserId,
+		accountStatistic.Year,
+		accountStatistic.Week,
+		account.CardId,
+	)
 }
-*/

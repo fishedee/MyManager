@@ -1,12 +1,6 @@
 package account
 
-/*
 import (
-	"fmt"
-	. "github.com/fishedee/language"
-	. "github.com/fishedee/web"
-	. "mymanager/models/card"
-	. "mymanager/models/category"
 	. "mymanager/models/common"
 )
 
@@ -71,4 +65,3 @@ func (this *AccountStatisticDbModel) GetWeekCardStatisticDetailByUser(userId int
 	}
 	return data
 }
-*/

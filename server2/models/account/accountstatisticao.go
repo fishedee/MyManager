@@ -1,10 +1,8 @@
 package account
 
-/*
 import (
 	"fmt"
 	. "github.com/fishedee/language"
-	. "github.com/fishedee/web"
 	. "mymanager/models/card"
 	. "mymanager/models/category"
 	. "mymanager/models/common"
@@ -12,22 +10,39 @@ import (
 
 type AccountStatisticAoModel struct {
 	BaseModel
-	AccountDb  AccountDbModel
+	AccountDb  AccountStatisticDbModel
 	CardAo     CardAoModel
 	CategoryAo CategoryAoModel
 }
 
 func (this *AccountStatisticAoModel) GetWeekTypeStatistic(userId int) []AccountStatistic {
-	result := this.AccountDb.GetWeekTypStatisticByUser(userId)
-	typeMap := AccountTypeEnum.Entrys()
-	for key, singleResult := range result {
-		singleResult.Name = fmt.Sprintf(
-			"%4d年%2d月",
-			singleResult.Year,
-			singleResult.Week,
-		)
-		singleResult.TypeName = typeMap[singleResult.Type]
-		result[key] = singleResult
+	statistic := this.AccountDb.GetWeekTypStatisticByUser(userId)
+
+	statisticYearWeekTypeMap := ArrayColumnMap(statistic, "Year", "Week", "Type").(map[int]map[int]map[int]AccountStatistic)
+	statisticYearWeekSort := ArrayColumnSort(statistic, "Year", "Week").([]AccountStatistic)
+	statisticYearWeekSort = ArrayColumnUnique(statisticYearWeekSort, "Year", "Week").([]AccountStatistic)
+
+	result := []AccountStatistic{}
+	for _, singleStatistic := range statisticYearWeekSort {
+		year := singleStatistic.Year
+		week := singleStatistic.Week
+		for singleType, singleTypeName := range AccountTypeEnum.Entrys() {
+			singleData := statisticYearWeekTypeMap[year][week][singleType]
+
+			singleResult := AccountStatistic{
+				Year:     year,
+				Week:     week,
+				Type:     singleType,
+				TypeName: singleTypeName,
+				Money:    singleData.Money,
+				Name: fmt.Sprintf(
+					"%4d年%2d月",
+					year,
+					week,
+				),
+			}
+			result = append(result, singleResult)
+		}
 	}
 	return result
 }
@@ -51,26 +66,43 @@ func (this *AccountStatisticAoModel) GetWeekTypeStatisticDetail(userId int, year
 			categoryName = category.Name
 		}
 		singleResult.CategoryName = categoryName
-		singleResult.Precent = Sprintf("%.2f", float64(singleResult.Money)/float64(totalMoney)*100)
+		singleResult.Precent = fmt.Sprintf("%.2f", float64(singleResult.Money)/float64(totalMoney)*100)
 		result[key] = singleResult
 	}
 	return result
 }
 
 func (this *AccountStatisticAoModel) GetWeekCardStatistic(userId int) []AccountStatistic {
-	result := this.AccountDb.GetWeekCardStatisticByUser(userId)
+	statistic := this.AccountDb.GetWeekCardStatisticByUser(userId)
+	statisticYearWeekCardMap := ArrayColumnMap(statistic, "year", "week", "cardId").(map[int]map[int]map[int]AccountStatistic)
+	statisticYearWeekSort := ArrayColumnSort(statistic, "year", "week").([]AccountStatistic)
+	statisticYearWeekSort = ArrayColumnUnique(statisticYearWeekSort, "year", "week").([]AccountStatistic)
 
 	card := this.CardAo.Search(userId, Card{}, CommonPage{}).Data
-	cardMap := ArrayColumnMap(card, "CardId").(map[int]Card)
 
-	for key, singleResult := range result {
-		singleResult.Name = fmt.Sprintf(
-			"%4d年%2d月",
-			singleResult.Year,
-			singleResult.Week,
-		)
-		singleResult.CardName = cardMap[singleResult.CardId]
-		result[key] = singleResult
+	result := []AccountStatistic{}
+	for _, singleStatistic := range statisticYearWeekSort {
+		year := singleStatistic.Year
+		week := singleStatistic.Week
+		for key, singleCard := range card {
+			singleData := statisticYearWeekCardMap[year][week][singleCard.CardId]
+			singleCard.Money += singleData.Money
+			card[key] = singleCard
+
+			singleResult := AccountStatistic{
+				Year:     year,
+				Week:     week,
+				CardId:   singleCard.CardId,
+				CardName: singleCard.Name,
+				Money:    singleCard.Money,
+				Name: fmt.Sprintf(
+					"%4d年%2d月",
+					year,
+					week,
+				),
+			}
+			result = append(result, singleResult)
+		}
 	}
 	return result
 }
@@ -86,9 +118,8 @@ func (this *AccountStatisticAoModel) GetWeekCardStatisticDetail(userId int, year
 	}
 	for key, singleResult := range result {
 		singleResult.TypeName = typeMap[singleResult.Type]
-		singleResult.Precent = Sprintf("%.2f", float64(singleResult.Money)/float64(totalMoney)*100)
+		singleResult.Precent = fmt.Sprintf("%.2f", float64(singleResult.Money)/float64(totalMoney)*100)
 		result[key] = singleResult
 	}
 	return result
 }
-*/

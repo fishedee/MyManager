@@ -1,14 +1,14 @@
 package controllers
 
 import (
-	. "mymanager/models/common"
 	. "mymanager/models/card"
+	. "mymanager/models/common"
 	. "mymanager/models/user"
 )
 
 type CardController struct {
 	BaseController
-	CardAo CardAoModel
+	CardAo      CardAoModel
 	UserLoginAo UserLoginAoModel
 }
 
@@ -24,7 +24,7 @@ func (this *CardController) Search_Json() interface{} {
 	loginUser := this.UserLoginAo.CheckMustLogin()
 
 	//执行业务逻辑
-	return this.CardAo.Search(loginUser.UserId,where, limit)
+	return this.CardAo.Search(loginUser.UserId, where, limit)
 }
 
 func (this *CardController) Get_Json() interface{} {
@@ -36,7 +36,7 @@ func (this *CardController) Get_Json() interface{} {
 	loginUser := this.UserLoginAo.CheckMustLogin()
 
 	//执行业务逻辑
-	return this.CardAo.Get(loginUser.UserId,card.CardId)
+	return this.CardAo.Get(loginUser.UserId, card.CardId)
 }
 
 func (this *CardController) Add_Json() {
@@ -48,7 +48,7 @@ func (this *CardController) Add_Json() {
 	loginUser := this.UserLoginAo.CheckMustLogin()
 
 	//执行业务逻辑
-	this.CardAo.Add(loginUser.UserId,card)
+	this.CardAo.Add(loginUser.UserId, card)
 }
 
 func (this *CardController) Del_Json() {
@@ -60,7 +60,7 @@ func (this *CardController) Del_Json() {
 	loginUser := this.UserLoginAo.CheckMustLogin()
 
 	//执行业务逻辑
-	this.CardAo.Del(loginUser.UserId,card.CardId)
+	this.CardAo.Del(loginUser.UserId, card.CardId)
 }
 
 func (this *CardController) Mod_Json() {
@@ -72,5 +72,5 @@ func (this *CardController) Mod_Json() {
 	loginUser := this.UserLoginAo.CheckMustLogin()
 
 	//执行业务逻辑
-	this.CardAo.Mod(loginUser.UserId, card.CardId,card)
+	this.CardAo.Mod(loginUser.UserId, card.CardId, card)
 }

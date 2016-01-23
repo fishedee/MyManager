@@ -2,7 +2,7 @@ server {
 	listen   80;
 
 	root /var/www/MyManager/;
-	server_name me.fishedee.com me.test.fishedee.com;
+	server_name me.fishedee.com me.test.fishedee.com me.dev.fishedee.com;
 
 	rewrite ^/data/upload/(.*) /data/upload/$1 last;
 	rewrite ^/(.*\.html) /static/build/backstage/$1 last;
