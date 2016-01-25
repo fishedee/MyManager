@@ -1,1 +1,0 @@
-../../../third-party/FishCI/application/config/mimes.php
