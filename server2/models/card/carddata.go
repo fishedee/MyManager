@@ -5,7 +5,7 @@ import (
 )
 
 type Card struct {
-	CardId     int
+	CardId     int `xorm:"autoincr"`
 	UserId     int
 	Name       string
 	Bank       string

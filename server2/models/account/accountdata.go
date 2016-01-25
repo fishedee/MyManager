@@ -5,7 +5,7 @@ import (
 )
 
 type Account struct {
-	AccountId  int
+	AccountId  int `xorm:"autoincr"`
 	UserId     int
 	Name       string
 	Money      int
@@ -13,8 +13,8 @@ type Account struct {
 	CategoryId int
 	CardId     int
 	Type       int
-	CreateTime time.Time
-	ModifyTime time.Time
+	CreateTime time.Time `xorm:"created"`
+	ModifyTime time.Time `xorm:"updated"`
 }
 
 type Accounts struct {

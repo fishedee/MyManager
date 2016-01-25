@@ -5,7 +5,7 @@ import (
 )
 
 type User struct {
-	UserId     int
+	UserId     int `xorm:"autoincr"`
 	Name       string
 	Password   string
 	Type       int

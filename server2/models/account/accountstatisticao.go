@@ -17,109 +17,98 @@ type AccountStatisticAoModel struct {
 
 func (this *AccountStatisticAoModel) GetWeekTypeStatistic(userId int) []AccountStatistic {
 	statistic := this.AccountDb.GetWeekTypStatisticByUser(userId)
+	enums := AccountTypeEnum.Datas()
 
-	statisticYearWeekTypeMap := ArrayColumnMap(statistic, "Year", "Week", "Type").(map[int]map[int]map[int]AccountStatistic)
-	statisticYearWeekSort := ArrayColumnSort(statistic, "Year", "Week").([]AccountStatistic)
-	statisticYearWeekSort = ArrayColumnUnique(statisticYearWeekSort, "Year", "Week").([]AccountStatistic)
-
-	result := []AccountStatistic{}
-	for _, singleStatistic := range statisticYearWeekSort {
-		year := singleStatistic.Year
-		week := singleStatistic.Week
-		for singleType, singleTypeName := range AccountTypeEnum.Entrys() {
-			singleData := statisticYearWeekTypeMap[year][week][singleType]
-
-			singleResult := AccountStatistic{
-				Year:     year,
-				Week:     week,
-				Type:     singleType,
-				TypeName: singleTypeName,
-				Money:    singleData.Money,
+	return QueryGroup(statistic, "   Year    desc    ,   Week    desc", func(weekStatistic []AccountStatistic) []AccountStatistic {
+		single := weekStatistic[0]
+		result := QueryLeftJoin(enums, weekStatistic, "Id = Type", func(left EnumData, right AccountStatistic) AccountStatistic {
+			return AccountStatistic{
+				Year: single.Year,
+				Week: single.Week,
 				Name: fmt.Sprintf(
-					"%4d年%2d月",
-					year,
-					week,
+					"%4d年%02d周",
+					single.Year,
+					single.Week,
 				),
+				Type:     left.Id,
+				TypeName: left.Name,
+				Money:    right.Money,
 			}
-			result = append(result, singleResult)
-		}
-	}
-	return result
+		}).([]AccountStatistic)
+		return result
+	}).([]AccountStatistic)
 }
 
 func (this *AccountStatisticAoModel) GetWeekTypeStatisticDetail(userId int, year int, week int, accountType int) []AccountStatisticDetail {
-	result := this.AccountDb.GetWeekTypeStatisticDetailByUser(userId, year, week, accountType)
-
+	statistic := this.AccountDb.GetWeekTypeStatisticDetailByUser(userId, year, week, accountType)
 	category := this.CategoryAo.Search(userId, Category{}, CommonPage{}).Data
-	categoryMap := ArrayColumnMap(category, "CategoryId").(map[int]Category)
 
-	totalMoney := 0
-	for _, singleResult := range result {
-		totalMoney += singleResult.Money
-	}
-	for key, singleResult := range result {
-		var categoryName string
-		category, ok := categoryMap[singleResult.CategoryId]
-		if !ok {
-			categoryName = "无分类"
-		} else {
-			categoryName = category.Name
+	totalMoney := QuerySum(QueryColumn(statistic, "Money")).(int)
+	return QueryLeftJoin(statistic, category, "CategoryId = CategoryId", func(left AccountStatisticDetail, right Category) AccountStatisticDetail {
+		if right.Name == "" {
+			right.Name = "无分类"
 		}
-		singleResult.CategoryName = categoryName
-		singleResult.Precent = fmt.Sprintf("%.2f", float64(singleResult.Money)/float64(totalMoney)*100)
-		result[key] = singleResult
-	}
-	return result
+		left.CategoryName = right.Name
+		left.Precent = fmt.Sprintf("%.2f", float64(left.Money)/float64(totalMoney)*100)
+		return left
+	}).([]AccountStatisticDetail)
 }
 
 func (this *AccountStatisticAoModel) GetWeekCardStatistic(userId int) []AccountStatistic {
 	statistic := this.AccountDb.GetWeekCardStatisticByUser(userId)
-	statisticYearWeekCardMap := ArrayColumnMap(statistic, "Year", "Week", "CardId").(map[int]map[int]map[int]AccountStatistic)
-	statisticYearWeekSort := ArrayColumnSort(statistic, "Year", "Week").([]AccountStatistic)
-	statisticYearWeekSort = ArrayColumnUnique(statisticYearWeekSort, "Year", "Week").([]AccountStatistic)
-
 	card := this.CardAo.Search(userId, Card{}, CommonPage{}).Data
 
-	result := []AccountStatistic{}
-	for _, singleStatistic := range statisticYearWeekSort {
-		year := singleStatistic.Year
-		week := singleStatistic.Week
-		for key, singleCard := range card {
-			singleData := statisticYearWeekCardMap[year][week][singleCard.CardId]
-			singleCard.Money += singleData.Money
-			card[key] = singleCard
-
-			singleResult := AccountStatistic{
-				Year:     year,
-				Week:     week,
-				CardId:   singleCard.CardId,
-				CardName: singleCard.Name,
-				Money:    singleCard.Money,
-				Name: fmt.Sprintf(
-					"%4d年%2d月",
-					year,
-					week,
-				),
+	statistic = QueryGroup(statistic, "Year desc,Week desc,CardId desc", func(weekStatistic []AccountStatistic) []AccountStatistic {
+		sum := QuerySum(QuerySelect(weekStatistic, func(singleStatistic AccountStatistic) int {
+			if singleStatistic.Type == AccountTypeEnum.TYPE_BORROW_IN ||
+				singleStatistic.Type == AccountTypeEnum.TYPE_IN ||
+				singleStatistic.Type == AccountTypeEnum.TYPE_TRANSFER_IN {
+				return singleStatistic.Money
+			} else {
+				return -singleStatistic.Money
 			}
-			result = append(result, singleResult)
-		}
-	}
-	return result
+		})).(int)
+		left := weekStatistic[0]
+		left.Money = sum
+		return []AccountStatistic{left}
+	}).([]AccountStatistic)
+
+	cardMoney := map[int]int{}
+	statistic = QueryGroup(statistic, "Year asc ,Week asc", func(weekStatistic []AccountStatistic) []AccountStatistic {
+		single := weekStatistic[0]
+		return QueryLeftJoin(card, weekStatistic, "CardId = CardId", func(left Card, right AccountStatistic) AccountStatistic {
+			currentMoney, ok := cardMoney[left.CardId]
+			if !ok {
+				currentMoney = left.Money
+			}
+			currentMoney += right.Money
+			cardMoney[left.CardId] = currentMoney
+			return AccountStatistic{
+				Year: single.Year,
+				Week: single.Week,
+				Name: fmt.Sprintf(
+					"%4d年%02d周",
+					single.Year,
+					single.Week,
+				),
+				CardId:   left.CardId,
+				CardName: left.Name,
+				Money:    currentMoney,
+			}
+		}).([]AccountStatistic)
+	}).([]AccountStatistic)
+
+	return QueryReverse(statistic).([]AccountStatistic)
 }
 
 func (this *AccountStatisticAoModel) GetWeekCardStatisticDetail(userId int, year int, week int, cardId int) []AccountStatisticDetail {
-	result := this.AccountDb.GetWeekCardStatisticDetailByUser(userId, year, week, cardId)
+	statistic := this.AccountDb.GetWeekCardStatisticDetailByUser(userId, year, week, cardId)
+	enums := AccountTypeEnum.Datas()
 
-	typeMap := AccountTypeEnum.Entrys()
-
-	totalMoney := 0
-	for _, singleResult := range result {
-		totalMoney += singleResult.Money
-	}
-	for key, singleResult := range result {
-		singleResult.TypeName = typeMap[singleResult.Type]
-		singleResult.Precent = fmt.Sprintf("%.2f", float64(singleResult.Money)/float64(totalMoney)*100)
-		result[key] = singleResult
-	}
-	return result
+	totalMoney := QuerySum(QueryColumn(statistic, "Money")).(int)
+	return QueryLeftJoin(statistic, enums, "Type = Id", func(left AccountStatisticDetail, right EnumData) AccountStatisticDetail {
+		left.TypeName = right.Name
+		left.Precent = fmt.Sprintf("%.2f", float64(left.Money)/float64(totalMoney)*100)
+		return left
+	}).([]AccountStatisticDetail)
 }

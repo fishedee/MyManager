@@ -5,7 +5,7 @@ import (
 )
 
 type Category struct {
-	CategoryId int
+	CategoryId int `xorm:"autoincr"`
 	UserId     int
 	Name       string
 	Remark     string

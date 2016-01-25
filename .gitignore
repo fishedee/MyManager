@@ -1,6 +1,7 @@
 /data/mysql/backup/*
 /data/log/*
 /static/build/*
+.DS_Store
 
 !/data/mysql/backup/.gitignore
 !/data/log/.gitignore
