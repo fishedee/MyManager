@@ -21,22 +21,22 @@ func (this *AccountDbModel) Search(where Account, limit CommonPage) Accounts {
 	}
 
 	if where.Name != "" {
-		db = db.Where("name like ?", "%"+where.Name+"%")
+		db = db.And("name like ?", "%"+where.Name+"%")
 	}
 	if where.Remark != "" {
-		db = db.Where("remark like ?", "%"+where.Remark+"%")
+		db = db.And("remark like ?", "%"+where.Remark+"%")
 	}
 	if where.CategoryId != 0 {
-		db = db.Where("categoryId = ?", where.CategoryId)
+		db = db.And("categoryId = ?", where.CategoryId)
 	}
 	if where.CardId != 0 {
-		db = db.Where("cardId = ?", where.CardId)
+		db = db.And("cardId = ?", where.CardId)
 	}
 	if where.Type != 0 {
-		db = db.Where("type = ?", where.Type)
+		db = db.And("type = ?", where.Type)
 	}
 	if where.UserId != 0 {
-		db = db.Where("userId = ?", where.UserId)
+		db = db.And("userId = ?", where.UserId)
 	}
 
 	data := []Account{}
