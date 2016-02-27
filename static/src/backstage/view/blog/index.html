@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>烘焙帮后台管理系统</title>
+	<script type="text/javascript" src="/fishstrap/lib/mod.js"></script>
+</head>
+<body class="definewidth m10">
+	<div id="container">
+	</div>
+	<script type="text/javascript">
+		var $ = require('/fishstrap/core/global.js');
+		var dialog = require('/fishstrap/ui/dialog.js');
+		var query = require('/fishstrap/ui/query.js');
+		var state = {1:'未开始',2:'进行中',3:'失败',4:'成功'};
+		var syncType = {1:'增量转换',2:'全量转换'};
+		function go(){
+			query.simpleQuery({
+				id:'container',
+				url:'/blog/searchTask',
+				column:[
+					{id:'blogSyncId',type:'text',name:'同步ID'},
+					{id:'gitUrl',type:'text',name:'git地址'},
+					{id:'accessToken',type:'text',name:'csdn访问授权'},
+					{id:'syncType',type:'enum',name:'同步类型',map:syncType},
+					{id:'state',type:'enum',name:'状态',map:state},
+					{id:'stateMessage',type:'text',name:'状态描述'},
+					{id:'createTime',type:'text',name:'创建时间'},
+					{id:'modifyTime',type:'text',name:'修改时间'},
+				],
+				queryColumn:['gitUrl','syncType','state'],
+				operate:[
+				{
+					name:'重新开始',
+					click:function(data){
+						$.post('/blog/restartTask',{blogSyncId:data.blogSyncId},function(data){
+							data = $.JSON.parse(data);
+							if( data.code != 0 ){
+								dialog.message(data.msg);
+								return;
+							}
+							location.href = 'index.html';
+						});
+					}
+				}],
+				button:[
+				{
+					name:'添加任务',
+					click:function(){
+						location.href = 'view.html';
+					}
+				}
+				],
+			});
+		}
+		go();
+	</script>
+ </body>
+</html>

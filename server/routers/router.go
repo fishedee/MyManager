@@ -10,4 +10,5 @@ func init() {
 	InitRoute("category", &CategoryController{})
 	InitRoute("card", &CardController{})
 	InitRoute("account", &AccountController{})
+	InitRoute("blog", &BlogController{})
 }

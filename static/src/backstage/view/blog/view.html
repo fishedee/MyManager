@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>烘焙帮后台管理系统</title>
+	<script type="text/javascript" src="/fishstrap/lib/mod.js"></script>
+</head>
+<body class="definewidth m10">
+	<div id="container">
+	</div>
+	<script type="text/javascript">
+		var $ = require('/fishstrap/core/global.js');
+		var dialog = require('/fishstrap/ui/dialog.js');
+		var input = require('/fishstrap/ui/input.js');
+		var subPage = require('fishstrap/page/subPage.js');
+		var syncType = {1:'增量转换',2:'全量转换'};
+		function go(){
+			input.verticalInput({
+				id:'container',
+				field:[
+					{id:'gitUrl',type:'text',name:'git地址(https)'},
+					{id:'accessToken',type:'table',name:'csdn访问授权',
+						option:{
+							column:[
+								{name:'授权',type:'text',id:'token'},
+							],
+							operate:[],
+							button:[{
+								name:'点击授权',
+								click:function(operation){
+									var redirectUrl = 'http://'+location.host +'/view/blog/auth.html';
+									$.get('/blog/getAuthUrl',{redirectUrl:redirectUrl},function(data){
+										data = $.JSON.parse(data);
+										if( data.code != 0 ){
+											dialog.message(data.msg);
+											return;
+										}
+										subPage.open({
+											title:'csdn授权',
+											url:data.data,
+											close:function(state,data){
+												if( state == 'confirm' && data){
+													operation.clear();
+													operation.add([{
+														token:data
+													}]);
+												}
+											}
+										});
+									});
+								}
+							}]
+						}
+					},
+					{id:'syncType',type:'enum',name:'同步类型',map:syncType},
+				],
+				submit:function(data){
+					if( data.accessToken.length == 0 ){
+						dialog.message('请先获得csdn访问授权');
+						return;
+					}
+					data.accessToken = data.accessToken[0].token;
+					$.post('/blog/addTask',data,function(data){
+						data = $.JSON.parse(data);
+						if( data.code != 0 ){
+							dialog.message(data.msg);
+							return;
+						}
+						history.back();
+					});
+				},
+				cancel:function(){
+					history.back();
+				}
+			});
+		}
+		go();
+	</script>
+ </body>
+</html>

@@ -62,6 +62,23 @@ create table t_account(
 
 alter table t_account add index userIdIndex(userId);
 
+#创建记账表
+create table t_blog_sync(
+	blogSyncId integer not null auto_increment,
+	userId integer not null,
+	accessToken varchar(1024) not null,
+	gitUrl varchar(1024) not null,
+	syncType integer not null,
+	state integer not null,
+	stateMessage varchar(10240) not null,
+	createTime timestamp not null default CURRENT_TIMESTAMP,
+	modifyTime timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP, 
+	primary key( blogSyncId )
+)engine=innodb default charset=utf8 auto_increment = 10001;
+
+alter table t_blog_sync add index stateIndex(state);
+alter table t_blog_sync add index syncTypeIndex(syncType);
+
 #创建session表
 CREATE TABLE IF NOT EXISTS `ci_sessions` (
     `id` varchar(40) NOT NULL,
