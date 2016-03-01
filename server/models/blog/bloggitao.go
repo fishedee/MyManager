@@ -17,22 +17,16 @@ type BlogGitAoModel struct {
 	BaseModel
 }
 
-func (this *BlogGitAoModel) getFileContent(fileAddress string) []byte {
+func (this *BlogGitAoModel) getFileContent(fileAddress string) string {
 	data, err := ioutil.ReadFile(fileAddress)
 	if err != nil {
 		panic(err)
 	}
-	return data
-}
-
-func (this *BlogGitAoModel) getMdContent(fileAddress string) string {
-	data := this.getFileContent(fileAddress)
-	return string(blackfriday.MarkdownCommon(data))
-}
-
-func (this *BlogGitAoModel) getHtmlContent(fileAddress string) string {
-	data := this.getFileContent(fileAddress)
 	return string(data)
+}
+
+func (this *BlogGitAoModel) markdownToHtml(data string) string {
+	return string(blackfriday.MarkdownCommon([]byte(data)))
 }
 
 func (this *BlogGitAoModel) analyseSingleDir(fileAddress string) []BlogArticle {
@@ -46,16 +40,21 @@ func (this *BlogGitAoModel) analyseSingleDir(fileAddress string) []BlogArticle {
 	for _, singleFile := range dirFileInfo {
 		singleFileName := singleFile.Name()
 		var content string
+		var htmlContent string
 		var article BlogArticle
 		if strings.HasSuffix(singleFileName, ".md") {
-			content = this.getMdContent(fileAddress + "/" + singleFileName)
-		} else if strings.HasSuffix(singleFileName, ".html") {
-			content = this.getHtmlContent(fileAddress + "/" + singleFileName)
+			content = this.getFileContent(fileAddress + "/" + singleFileName)
+			content = strings.Trim(content, " ")
+			if content == "" {
+				continue
+			}
+			htmlContent = this.markdownToHtml(content)
 		} else {
 			continue
 		}
 		article.Title = singleFileName[0 : len(singleFileName)-len(path.Ext(singleFileName))]
 		article.Content = content
+		article.HtmlContent = htmlContent
 		article.Category = category
 		result = append(result, article)
 	}

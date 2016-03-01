@@ -4,57 +4,51 @@ import (
 	. "github.com/fishedee/language"
 	. "github.com/fishedee/sdk"
 	. "mymanager/models/common"
+	"strings"
 )
 
 type BlogCsdnAoModel struct {
 	BaseModel
+	BlogCsdnCrawlAo BlogCsdnCrawlAoModel
 }
 
-func (this *BlogCsdnAoModel) getSdk() *CsdnSdk {
-	return &CsdnSdk{
-		AppKey:    "1100258",
-		AppSecert: "47720345d6024a3eb65ee0620d6b7748",
+func (this *BlogCsdnAoModel) login(accessToken string) string {
+	accessTokenArray := strings.Split(accessToken, ",")
+	if len(accessTokenArray) != 2 {
+		Throw(1, "请输入用逗号分割的accessToken")
 	}
+	username := accessTokenArray[0]
+	password := accessTokenArray[1]
+	if username == "" || password == "" {
+		Throw(1, "用户名与密码都不能为空")
+	}
+	this.BlogCsdnCrawlAo.Login(username, password)
+	return username
 }
 
-func (this *BlogCsdnAoModel) getData(accessToken string) Blog {
-	data := Blog{}
-	categoryList, err := this.getSdk().GetCategoryList(CsdnSdkGetCategoryListRequest{
-		AccessToken: accessToken,
-	})
-	if err != nil {
-		panic(err)
-	}
-	for _, singleCategory := range categoryList {
-		data.Categorys = append(data.Categorys, BlogCategory{
-			Name: singleCategory.Name,
-		})
-	}
-	articleList, err := this.getSdk().GetArticleList(CsdnSdkGetArticleListRequest{
-		AccessToken: accessToken,
-		Status:      "enabled",
-		Page:        1,
-		Size:        1000,
-	})
-	if err != nil {
-		panic(err)
-	}
-	for _, singleArticle := range articleList.List {
-		detailArticle, err := this.getSdk().GetArticle(CsdnSdkGetArticleRequest{
-			AccessToken: accessToken,
-			Id:          singleArticle.Id,
-		})
-		if err != nil {
-			panic(err)
+func (this *BlogCsdnAoModel) getData(username string) Blog {
+	//获取category数据
+	categoryList := this.BlogCsdnCrawlAo.GetCategoryList()
+
+	//获取文章数据
+	var articleList []BlogArticle
+	pageIndex := 0
+	totalCount := 10
+	for len(articleList) < totalCount {
+		var singleArticleList []BlogArticle
+		singleArticleList, totalCount = this.BlogCsdnCrawlAo.GetArticleList(pageIndex)
+		if len(singleArticleList) == 0 {
+			break
 		}
-		data.Articles = append(data.Articles, BlogArticle{
-			Id:       detailArticle.Id,
-			Title:    detailArticle.Title,
-			Content:  detailArticle.Content,
-			Category: detailArticle.Categories,
-		})
+		for _, singleArticle := range singleArticleList {
+			singleArticleInfo := this.BlogCsdnCrawlAo.GetArticle(singleArticle.Id, username)
+			articleList = append(articleList, singleArticleInfo)
+		}
 	}
-	return data
+	return Blog{
+		Articles:  articleList,
+		Categorys: categoryList,
+	}
 }
 
 func (this *BlogCsdnAoModel) diffData(src Blog, dist Blog, syncType int) BlogDiff {
@@ -81,8 +75,8 @@ func (this *BlogCsdnAoModel) diffData(src Blog, dist Blog, syncType int) BlogDif
 	}
 
 	//比较Article
-	mapSrcArticle := ArrayColumnMap(src.Articles, "Name").(map[string]BlogArticle)
-	mapDistArticle := ArrayColumnMap(dist.Articles, "Name").(map[string]BlogArticle)
+	mapSrcArticle := ArrayColumnMap(src.Articles, "Title").(map[string]BlogArticle)
+	mapDistArticle := ArrayColumnMap(dist.Articles, "Title").(map[string]BlogArticle)
 	for name, singleArticle := range mapSrcArticle {
 		_, ok := mapDistArticle[name]
 		if !ok {
@@ -106,43 +100,43 @@ func (this *BlogCsdnAoModel) diffData(src Blog, dist Blog, syncType int) BlogDif
 	return result
 }
 
-func (this *BlogCsdnAoModel) setData(accessToken string, diff BlogDiff) {
-	//FIXME csdn开放接口不支持增加和删除category
-
-	//FIXME csdn开放接口不支持删除article
-
-	//添加文章
-	for _, singleArticle := range diff.AddArticles {
-		_, err := this.getSdk().SaveArticle(CsdnSdkSaveArticleRequest{
-			AccessToken: accessToken,
-			Title:       singleArticle.Title,
-			Content:     singleArticle.Content,
-			Categories:  singleArticle.Category,
+func (this *BlogCsdnAoModel) setData(username string, diff BlogDiff) {
+	//添加category
+	for _, singleCategory := range diff.AddCategorys {
+		this.BlogCsdnCrawlAo.AddCategory(BlogCategory{
+			Name: singleCategory.Name,
 		})
-		if err != nil {
-			panic(err)
-		}
 	}
 
-	//修改文章
+	//删除category
+	for _, singleCategory := range diff.DelCategorys {
+		this.BlogCsdnCrawlAo.DelCategory(singleCategory.Id)
+	}
+
+	//添加article
+	for _, singleArticle := range diff.AddArticles {
+		this.BlogCsdnCrawlAo.AddArticle(singleArticle)
+	}
+
+	//删除article
+	for _, singleArticle := range diff.DelArticles {
+		this.BlogCsdnCrawlAo.DelArticle(singleArticle.Id)
+	}
+
+	//修改article
 	for _, singleArticle := range diff.ModArticles {
-		_, err := this.getSdk().SaveArticle(CsdnSdkSaveArticleRequest{
-			AccessToken: accessToken,
-			Id:          singleArticle.Id,
-			Title:       singleArticle.Title,
-			Content:     singleArticle.Content,
-			Categories:  singleArticle.Category,
-		})
-		if err != nil {
-			panic(err)
-		}
+		this.BlogCsdnCrawlAo.ModArticle(singleArticle.Id, singleArticle)
 	}
 }
 
 func (this *BlogCsdnAoModel) Sync(accessToken string, syncType int, src Blog, progressUpdater BlogSyncProgress) {
+	//登录csdn博客中
+	progressUpdater("正在登录博客账号中")
+	user := this.login(accessToken)
+
 	//获取数据
 	progressUpdater("正在获取csdn博客数据中")
-	dist := this.getData(accessToken)
+	dist := this.getData(user)
 
 	//比对数据
 	progressUpdater("正在比较数据中")
@@ -150,21 +144,5 @@ func (this *BlogCsdnAoModel) Sync(accessToken string, syncType int, src Blog, pr
 
 	//更新数据
 	progressUpdater("正在设置csdn数据中")
-	this.setData(accessToken, diff)
-}
-
-func (this *BlogCsdnAoModel) GetAuthUrl(redirectUrl string) string {
-	data, err := this.getSdk().GetAuthUrl(redirectUrl)
-	if err != nil {
-		Throw(1, err.Error())
-	}
-	return data
-}
-
-func (this *BlogCsdnAoModel) GetAccessToken(redirectUrl string, code string) string {
-	data, err := this.getSdk().GetAccessToken(redirectUrl, code)
-	if err != nil {
-		panic(err)
-	}
-	return data.AccessToken
+	this.setData(user, diff)
 }

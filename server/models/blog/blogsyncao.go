@@ -18,14 +18,6 @@ func (this *BlogSyncAoModel) SearchTask(userId int, where BlogSync, limit Common
 	return this.BlogSyncDb.Search(where, limit)
 }
 
-func (this *BlogSyncAoModel) GetAuthUrl(redirectUrl string) string {
-	return this.BlogCsdnAo.GetAuthUrl(redirectUrl)
-}
-
-func (this *BlogSyncAoModel) GetAccessToken(redirectUrl string, code string) string {
-	return this.BlogCsdnAo.GetAccessToken(redirectUrl, code)
-}
-
 func (this *BlogSyncAoModel) AddTask(userId int, accessToken string, gitUrl string, syncType int) {
 	data := BlogSync{
 		UserId:       userId,

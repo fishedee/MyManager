@@ -29,10 +29,11 @@ type BlogCategory struct {
 }
 
 type BlogArticle struct {
-	Id       int
-	Title    string
-	Content  string
-	Category string
+	Id          int
+	Title       string
+	Content     string
+	HtmlContent string
+	Category    string
 }
 
 type Blog struct {

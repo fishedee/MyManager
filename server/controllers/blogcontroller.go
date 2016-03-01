@@ -62,32 +62,3 @@ func (this *BlogController) RestartTask_Json() {
 	//执行业务逻辑
 	this.BlogSyncAo.RestartTask(loginUser.UserId, blogSync.BlogSyncId)
 }
-
-func (this *BlogController) GetAuthUrl_Json() interface{} {
-	//检查输入参数
-	var data struct {
-		RedirectUrl string
-	}
-	this.CheckGet(&data)
-
-	//检查权限
-	this.UserLoginAo.CheckMustLogin()
-
-	//执行业务逻辑
-	return this.BlogSyncAo.GetAuthUrl(data.RedirectUrl)
-}
-
-func (this *BlogController) GetAccessToken_Json() interface{} {
-	//检查输入参数
-	var data struct {
-		RedirectUrl string
-		Code        string
-	}
-	this.CheckGet(&data)
-
-	//检查权限
-	this.UserLoginAo.CheckMustLogin()
-
-	//执行业务逻辑
-	return this.BlogSyncAo.GetAccessToken(data.RedirectUrl, data.Code)
-}
