@@ -62,7 +62,7 @@ create table t_account(
 
 alter table t_account add index userIdIndex(userId);
 
-#创建记账表
+#创建博客同步任务表
 create table t_blog_sync(
 	blogSyncId integer not null auto_increment,
 	userId integer not null,
@@ -76,8 +76,21 @@ create table t_blog_sync(
 	primary key( blogSyncId )
 )engine=innodb default charset=utf8 auto_increment = 10001;
 
-alter table t_blog_sync add index stateIndex(state);
-alter table t_blog_sync add index syncTypeIndex(syncType);
+alter table t_blog_sync add index stateIndex(userId,state);
+alter table t_blog_sync add index syncTypeIndex(userId,syncType);
+
+#创建博客自动同步表
+create table t_blog_sync_auto(
+	blogSyncAutoId integer not null auto_increment,
+	userId integer not null,
+	accessToken varchar(1024) not null,
+	gitUrl varchar(1024) not null,
+	createTime timestamp not null default CURRENT_TIMESTAMP,
+	modifyTime timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP, 
+	primary key( blogSyncAutoId )
+)engine=innodb default charset=utf8 auto_increment = 10001;
+
+alter table t_blog_sync_auto add index userIdIndex(userId);
 
 #创建session表
 CREATE TABLE IF NOT EXISTS `ci_sessions` (

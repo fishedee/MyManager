@@ -18,8 +18,22 @@ type BlogSync struct {
 	ModifyTime   time.Time `xorm:"updated"`
 }
 
+type BlogSyncAuto struct {
+	BlogSyncAutoId int `xorm:"autoincr"`
+	UserId         int
+	AccessToken    string
+	GitUrl         string
+	CreateTime     time.Time `xorm:"created"`
+	ModifyTime     time.Time `xorm:"updated"`
+}
+
 type BlogSyncs struct {
 	Data  []BlogSync
+	Count int
+}
+
+type BlogSyncAutos struct {
+	Data  []BlogSyncAuto
 	Count int
 }
 

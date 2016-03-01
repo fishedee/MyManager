@@ -3,7 +3,6 @@ package blog
 import (
 	"bytes"
 	"crypto/tls"
-	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	. "github.com/fishedee/encoding"
 	. "github.com/fishedee/util"
@@ -254,7 +253,6 @@ func (this *BlogCsdnCrawlAoModel) DelArticle(id int) {
 	}
 	argv.T = "del"
 	argv.Id = id
-	fmt.Println(argv)
 	this.apiForHtml("get", "http://write.blog.csdn.net/postlist", argv, "http://write.blog.csdn.net/postlist")
 }
 

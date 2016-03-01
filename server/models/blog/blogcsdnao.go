@@ -84,16 +84,16 @@ func (this *BlogCsdnAoModel) diffData(src Blog, dist Blog, syncType int) BlogDif
 		}
 	}
 
-	if syncType == BlogSyncTypeEnum.TYPE_ALL_UPDATE {
-		for name, singleArticle := range mapDistArticle {
-			singleSrcArticle, ok := mapSrcArticle[name]
-			if !ok {
+	for name, singleArticle := range mapDistArticle {
+		singleSrcArticle, ok := mapSrcArticle[name]
+		if !ok {
+			if syncType == BlogSyncTypeEnum.TYPE_ALL_UPDATE {
 				result.DelArticles = append(result.DelArticles, singleArticle)
-			} else {
-				if singleArticle.Content != singleSrcArticle.Content ||
-					singleArticle.Category != singleSrcArticle.Category {
-					result.ModArticles = append(result.ModArticles, singleArticle)
-				}
+			}
+		} else {
+			if singleArticle.Content != singleSrcArticle.Content ||
+				singleArticle.Category != singleSrcArticle.Category {
+				result.ModArticles = append(result.ModArticles, singleArticle)
 			}
 		}
 	}

@@ -8,9 +8,41 @@ import (
 
 type BlogSyncAoModel struct {
 	BaseModel
-	BlogSyncDb BlogSyncDbModel
-	BlogCsdnAo BlogCsdnAoModel
-	BlogGitAo  BlogGitAoModel
+	BlogSyncDb     BlogSyncDbModel
+	BlogSyncAutoDb BlogSyncAutoDbModel
+	BlogCsdnAo     BlogCsdnAoModel
+	BlogGitAo      BlogGitAoModel
+}
+
+func (this *BlogSyncAoModel) SearchAuto(userId int, where BlogSyncAuto, limit CommonPage) BlogSyncAutos {
+	where.UserId = userId
+	return this.BlogSyncAutoDb.Search(where, limit)
+}
+
+func (this *BlogSyncAoModel) GetAuto(userId int, blogSyncAutoId int) BlogSyncAuto {
+	cardInfo := this.BlogSyncAutoDb.Get(blogSyncAutoId)
+	if cardInfo.UserId != userId {
+		Throw(1, "你没有该权限")
+	}
+	return cardInfo
+}
+
+func (this *BlogSyncAoModel) DelAuto(userId int, blogSyncAutoId int) {
+	this.GetAuto(userId, blogSyncAutoId)
+
+	this.BlogSyncAutoDb.Del(blogSyncAutoId)
+}
+
+func (this *BlogSyncAoModel) AddAuto(userId int, blogSyncAuto BlogSyncAuto) {
+	blogSyncAuto.UserId = userId
+	this.BlogSyncAutoDb.Add(blogSyncAuto)
+}
+
+func (this *BlogSyncAoModel) ModAuto(userId int, blogSyncAutoId int, blogSyncAuto BlogSyncAuto) {
+	this.GetAuto(userId, blogSyncAutoId)
+
+	blogSyncAuto.UserId = userId
+	this.BlogSyncAutoDb.Mod(blogSyncAutoId, blogSyncAuto)
 }
 
 func (this *BlogSyncAoModel) SearchTask(userId int, where BlogSync, limit CommonPage) BlogSyncs {
@@ -75,8 +107,21 @@ func (this *BlogSyncAoModel) sync(blogSyncId int) {
 	this.modState(blogSyncId, BlogStateEnum.STATE_SUCCESS, "")
 }
 
+func (this *BlogSyncAoModel) syncAuto() {
+	data := this.BlogSyncAutoDb.GetAll()
+	for _, singleData := range data {
+		this.AddTask(
+			singleData.UserId,
+			singleData.AccessToken,
+			singleData.GitUrl,
+			BlogSyncTypeEnum.TYPE_INCREMENTAL_UPDATE,
+		)
+	}
+}
+
 func init() {
 	InitDaemon(func(this *BlogSyncAoModel) {
 		this.Queue.Consume("blog_sync", this.sync)
+		this.Timer.Cron("* * 23 * *", this.syncAuto)
 	})
 }

@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>烘焙帮后台管理系统</title>
+	<script type="text/javascript" src="/fishstrap/lib/mod.js"></script>
+</head>
+<body class="definewidth m10">
+	<div id="container">
+	</div>
+	<script type="text/javascript">
+		var $ = require('/fishstrap/core/global.js');
+		var input = require('/fishstrap/ui/input.js');
+		var dialog = require('/fishstrap/ui/dialog.js');
+		var blogSyncAutoId = $.location.getQueryArgv('blogSyncAutoId');
+		function go(value){
+			input.verticalInput({
+				id:'container',
+				field:[
+					{id:'gitUrl',type:'text',name:'git地址'},
+					{id:'accessToken',type:'text',name:'csdn访问授权'},
+				],
+				value:value,
+				submit:function(data){
+					if( blogSyncAutoId != null ){
+						data = $.extend({blogSyncAutoId:blogSyncAutoId},data);
+						$.post('/blog/modAuto',data,function(data){
+							data = $.JSON.parse(data);
+							if( data.code != 0 ){
+								dialog.message(data.msg);
+								return;
+							}
+							history.back();
+						});
+					}else{
+						$.post('/blog/addAuto',data,function(data){
+							data = $.JSON.parse(data);
+							if( data.code != 0 ){
+								dialog.message(data.msg);
+								return;
+							}
+							history.back();
+						});
+					}
+				},
+				cancel:function(){
+					history.back();
+				}
+			});
+		}
+		if( blogSyncAutoId != null ){
+			$.get('/blog/getAuto',{blogSyncAutoId:blogSyncAutoId},function(data){
+				data = $.JSON.parse(data);
+				if( data.code != 0 ){
+					dialog.message(data.msg);
+					return;
+				}
+				go(data.data);
+			});
+		}else{
+			go({});
+		}
+	</script>
+ </body>
+</html>

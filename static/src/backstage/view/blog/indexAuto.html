@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>烘焙帮后台管理系统</title>
+	<script type="text/javascript" src="/fishstrap/lib/mod.js"></script>
+</head>
+<body class="definewidth m10">
+	<div id="container">
+	</div>
+	<script type="text/javascript">
+		var $ = require('/fishstrap/core/global.js');
+		var dialog = require('/fishstrap/ui/dialog.js');
+		var query = require('/fishstrap/ui/query.js');
+		function go(){
+			query.simpleQuery({
+				id:'container',
+				url:'/blog/searchAuto',
+				column:[
+					{id:'blogSyncAutoId',type:'text',name:'自动同步ID'},
+					{id:'gitUrl',type:'text',name:'git地址'},
+					{id:'accessToken',type:'text',name:'csdn访问授权'},
+					{id:'createTime',type:'text',name:'创建时间'},
+					{id:'modifyTime',type:'text',name:'修改时间'},
+				],
+				queryColumn:['gitUrl'],
+				operate:[
+				{
+					name:'删除',
+					click:function(data){
+						$.post('/blog/delAuto',{blogSyncAutoId:data.blogSyncAutoId},function(data){
+							data = $.JSON.parse(data);
+							if( data.code != 0 ){
+								dialog.message(data.msg);
+								return;
+							}
+							location.href = 'indexAuto.html';
+						});
+					}
+				},
+				{
+					name:'查看',
+					click:function(data){
+						location.href = 'viewAuto.html?blogSyncAutoId='+data.blogSyncAutoId;
+					}
+				}],
+				button:[
+				{
+					name:'添加自动同步',
+					click:function(){
+						location.href = 'viewAuto.html';
+					}
+				}
+				],
+			});
+		}
+		go();
+	</script>
+ </body>
+</html>
