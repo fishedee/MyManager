@@ -93,17 +93,19 @@ func (this *BlogCsdnCrawlAoModel) Login(name string, password string) {
 		Execution string `json:"execution"`
 		EventId   string `json:"_eventId"`
 	}
+	docHtml, _ := doc.Html()
+
 	argv.Lt = doc.Find("#fm1 input[name=lt]").AttrOr("value", "")
 	if argv.Lt == "" {
-		panic("invalid lt")
+		panic("invalid lt " + docHtml)
 	}
 	argv.Execution = doc.Find("#fm1 input[name=execution]").AttrOr("value", "")
 	if argv.Execution == "" {
-		panic("invalid exection")
+		panic("invalid exection " + docHtml)
 	}
 	argv.EventId = doc.Find("#fm1 input[name=_eventId]").AttrOr("value", "")
 	if argv.EventId == "" {
-		panic("invalid eventId")
+		panic("invalid eventId " + docHtml)
 	}
 	argv.UserName = name
 	argv.Password = password
@@ -278,6 +280,9 @@ func (this *BlogCsdnCrawlAoModel) GetArticleList(page int) ([]BlogArticle, int) 
 	doc := this.apiForHtml("get", "http://write.blog.csdn.net/postlist/0/0/enabled/"+strconv.Itoa(page), "", "")
 
 	data := []BlogArticle{}
+	if doc.Find("#lstBox tr").Length() == 0 {
+		panic("获取文章列表失败")
+	}
 	doc.Find("#lstBox tr").Each(func(index int, s *goquery.Selection) {
 		singleArticle := this.analyseArticle(s)
 		if singleArticle.Id == 0 {

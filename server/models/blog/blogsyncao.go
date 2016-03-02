@@ -104,7 +104,7 @@ func (this *BlogSyncAoModel) sync(blogSyncId int) {
 	blogs := this.BlogGitAo.Get(data.GitUrl, updateProgress)
 	this.BlogCsdnAo.Sync(data.AccessToken, data.SyncType, blogs, updateProgress)
 
-	this.modState(blogSyncId, BlogStateEnum.STATE_SUCCESS, "")
+	this.modState(blogSyncId, BlogStateEnum.STATE_SUCCESS, "成功")
 }
 
 func (this *BlogSyncAoModel) syncAuto() {

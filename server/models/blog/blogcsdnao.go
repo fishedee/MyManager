@@ -91,8 +91,11 @@ func (this *BlogCsdnAoModel) diffData(src Blog, dist Blog, syncType int) BlogDif
 				result.DelArticles = append(result.DelArticles, singleArticle)
 			}
 		} else {
-			if singleArticle.Content != singleSrcArticle.Content ||
+			if strings.Trim(singleArticle.Content, " ") != strings.Trim(singleSrcArticle.Content, " ") ||
 				singleArticle.Category != singleSrcArticle.Category {
+				singleArticle.HtmlContent = singleSrcArticle.HtmlContent
+				singleArticle.Content = singleSrcArticle.Content
+				singleArticle.Category = singleSrcArticle.Category
 				result.ModArticles = append(result.ModArticles, singleArticle)
 			}
 		}

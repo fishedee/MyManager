@@ -98,7 +98,7 @@ func (this *BlogCsdnCrawlAoTest) testArticleClear(name string) {
 }
 
 func (this *BlogCsdnCrawlAoTest) testArticleAdd(name string) []BlogArticle {
-	count := 1
+	count := 3
 
 	data := []BlogArticle{}
 	for i := 0; i != count; i++ {
@@ -117,6 +117,7 @@ func (this *BlogCsdnCrawlAoTest) testArticleAdd(name string) []BlogArticle {
 	for i := 0; i != count; i++ {
 		this.AssertEqual(articleList[i].Title, data[i].Title)
 		this.AssertEqual(articleList[i].Content, data[i].Content)
+		this.AssertEqual(articleList[i].HtmlContent, data[i].HtmlContent)
 	}
 	return articleList
 }
@@ -129,7 +130,12 @@ func (this *BlogCsdnCrawlAoTest) testArticleMod(name string, articleList []BlogA
 	}
 
 	articleList2 := this.getAllArticle(name)
-	this.AssertEqual(articleList, articleList2)
+	this.AssertEqual(len(articleList), len(articleList2))
+	for i := 0; i != len(articleList); i++ {
+		this.AssertEqual(articleList[i].Title, articleList2[i].Title)
+		this.AssertEqual(articleList[i].Content, articleList2[i].Content)
+		this.AssertEqual(articleList[i].HtmlContent, articleList2[i].HtmlContent)
+	}
 }
 
 func (this *BlogCsdnCrawlAoTest) testArticle(name string) {
@@ -143,18 +149,18 @@ func (this *BlogCsdnCrawlAoTest) testArticle(name string) {
 }
 
 func (this *BlogCsdnCrawlAoTest) Test() {
-	username := "fishmei2"
-	password := "woaini520"
+	//username := "fishmei2"
+	//password := "woaini520"
 
-	this.BlogCsdnCrawlAo.Login(username, password)
+	//this.BlogCsdnCrawlAo.Login(username, password)
 
 	//测试文章
-	this.testArticle(username)
+	//this.testArticle(username)
 
 	//测试分类
-	this.testCategory()
+	//this.testCategory()
 }
 
-func Test(t *testing.T) {
+func TestCsdnCrawlAo(t *testing.T) {
 	InitTest(t, &BlogCsdnCrawlAoTest{})
 }
