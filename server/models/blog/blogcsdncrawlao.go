@@ -41,7 +41,7 @@ func (this *BlogCsdnCrawlAoModel) apiForJson(method string, url string, data int
 		panic(url + " error " + commonData.Error)
 	}
 	if err != nil {
-		panic("decode error " + string(result))
+		panic("decode error " + err.Error() + "," + string(result))
 	}
 }
 
