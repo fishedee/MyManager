@@ -149,10 +149,10 @@ func (this *BlogCsdnCrawlAoTest) testArticle(name string) {
 }
 
 func (this *BlogCsdnCrawlAoTest) Test() {
-	//username := "fishmei2"
-	//password := "woaini520"
+	username := "fishmei2"
+	password := "woaini520"
 
-	//this.BlogCsdnCrawlAo.Login(username, password)
+	this.BlogCsdnCrawlAo.Login(username, password)
 
 	//测试文章
 	//this.testArticle(username)

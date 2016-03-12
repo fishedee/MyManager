@@ -31,8 +31,8 @@ func (this *BlogCsdnCrawlAoModel) apiForJson(method string, url string, data int
 	result := this.api(method, url, data, referer)
 
 	var commonData struct {
-		Status bool   `json:status`
-		Error  string `json:error`
+		Status bool   `json:"status"`
+		Error  string `json:"error"`
 		Data   interface{}
 	}
 	commonData.Data = responseData
@@ -87,11 +87,11 @@ func (this *BlogCsdnCrawlAoModel) Login(name string, password string) {
 	//获取登录页面
 	doc := this.apiForHtml("get", "https://passport.csdn.net/account/login", "", "")
 	var argv struct {
-		UserName  string `json:"username"`
-		Password  string `json:"password"`
-		Lt        string `json:"lt"`
-		Execution string `json:"execution"`
-		EventId   string `json:"_eventId"`
+		UserName  string `url:"username"`
+		Password  string `url:"password"`
+		Lt        string `url:"lt"`
+		Execution string `url:"execution"`
+		EventId   string `url:"_eventId"`
 	}
 	docHtml, _ := doc.Html()
 
@@ -149,8 +149,8 @@ func (this *BlogCsdnCrawlAoModel) GetCategoryList() []BlogCategory {
 
 func (this *BlogCsdnCrawlAoModel) AddCategory(category BlogCategory) {
 	var argv struct {
-		T    string `json:"t"`
-		Name string `json:"name`
+		T    string `url:"t"`
+		Name string `url:"name"`
 	}
 	argv.T = "add"
 	argv.Name = category.Name
@@ -159,8 +159,8 @@ func (this *BlogCsdnCrawlAoModel) AddCategory(category BlogCategory) {
 
 func (this *BlogCsdnCrawlAoModel) DelCategory(id int) {
 	var argv struct {
-		T  string `json:"t"`
-		Id int    `json:"id`
+		T  string `url:"t"`
+		Id int    `url:"id"`
 	}
 	argv.T = "del"
 	argv.Id = id
@@ -169,9 +169,9 @@ func (this *BlogCsdnCrawlAoModel) DelCategory(id int) {
 
 func (this *BlogCsdnCrawlAoModel) ModCategory(id int, data BlogCategory) {
 	var argv struct {
-		T    string `json:"t"`
-		Id   int    `json:"id`
-		Name string `json:name`
+		T    string `url:"t"`
+		Id   int    `url:"id"`
+		Name string `url:"name"`
 	}
 	argv.T = "edit"
 	argv.Id = id
@@ -242,7 +242,7 @@ func (this *BlogCsdnCrawlAoModel) ModArticle(id int, data BlogArticle) {
 
 func (this *BlogCsdnCrawlAoModel) AddArticle(data BlogArticle) int {
 	var responseData struct {
-		Id int `json:id`
+		Id int `url:"id"`
 	}
 	this.apiForJson("post", "http://write.blog.csdn.net/mdeditor/setArticle", this.getArticleInfo(data), &responseData, "")
 	return responseData.Id
@@ -250,8 +250,8 @@ func (this *BlogCsdnCrawlAoModel) AddArticle(data BlogArticle) int {
 
 func (this *BlogCsdnCrawlAoModel) DelArticle(id int) {
 	var argv struct {
-		T  string `json:"t"`
-		Id int    `json:"id"`
+		T  string `url:"t"`
+		Id int    `url:"id"`
 	}
 	argv.T = "del"
 	argv.Id = id
@@ -260,8 +260,8 @@ func (this *BlogCsdnCrawlAoModel) DelArticle(id int) {
 
 func (this *BlogCsdnCrawlAoModel) GetArticle(id int, name string) BlogArticle {
 	var argv struct {
-		Id       int    `json:"id"`
-		UserName string `json:"username"`
+		Id       int    `url:"id"`
+		UserName string `url:"username"`
 	}
 	var responseData blogArticleInfo
 	argv.Id = id

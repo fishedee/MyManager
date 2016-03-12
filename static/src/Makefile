@@ -7,7 +7,7 @@ COMMON_IN := `cd $(COMMON) && pwd`
 all:
 	$(MAKE) debug
 copy_common:
-	-rm $(COMMON_OUT) -rf
+	-rm -rf $(COMMON_OUT)
 	mkdir $(COMMON_OUT)
 	cd $(COMMON_OUT)
 	for i in `cd $(COMMON) && find .`; do \
@@ -22,7 +22,7 @@ copy_common:
 debug:copy_common
 	-rm $(OUT) -rf
 	fis release --pack --domains --dest $(OUT)
-release:
+release:copy_common
 	-rm $(OUT) -rf
 	fis release --md5 --pack --domains --optimize --dest $(OUT)
 watch:debug
