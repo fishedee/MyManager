@@ -1,20 +1,25 @@
 package blog
 
 import (
+	"bytes"
 	"fmt"
+	"github.com/PuerkitoBio/goquery"
+	. "github.com/fishedee/encoding"
 	. "github.com/fishedee/language"
+	. "github.com/fishedee/util"
 	"github.com/russross/blackfriday"
 	"io/ioutil"
 	. "mymanager/models/common"
+	. "mymanager/models/file"
 	"os"
 	"os/exec"
 	"path"
 	"strings"
-	"time"
 )
 
 type BlogGitAoModel struct {
 	BaseModel
+	UploadAo UploadAoModel
 }
 
 func (this *BlogGitAoModel) getFileContent(fileAddress string) string {
@@ -27,6 +32,34 @@ func (this *BlogGitAoModel) getFileContent(fileAddress string) string {
 
 func (this *BlogGitAoModel) markdownToHtml(data string) string {
 	return string(blackfriday.MarkdownCommon([]byte(data)))
+}
+
+func (this *BlogGitAoModel) convertImage(dir string, content string) string {
+	doc, err := goquery.NewDocumentFromReader(bytes.NewReader([]byte(content)))
+	if err != nil {
+		panic(err)
+	}
+	doc.Find("img").Each(func(index int, s *goquery.Selection) {
+		src := strings.Trim(s.AttrOr("src", ""), " ")
+		if src == "" ||
+			strings.HasPrefix(src, "http") ||
+			strings.HasPrefix(src, "https") ||
+			strings.HasPrefix(src, "data") {
+			return
+		}
+		src, err := DecodeUrl(src)
+		if err != nil {
+			panic(err)
+		}
+		localPath := dir + "/" + src
+		newSrc := this.UploadAo.UploadFileFromLocal(localPath)
+		s.SetAttr("src", newSrc)
+	})
+	docHtml, err := doc.Html()
+	if err != nil {
+		panic(err)
+	}
+	return docHtml
 }
 
 func (this *BlogGitAoModel) analyseSingleDir(fileAddress string) []BlogArticle {
@@ -49,6 +82,7 @@ func (this *BlogGitAoModel) analyseSingleDir(fileAddress string) []BlogArticle {
 				continue
 			}
 			htmlContent = this.markdownToHtml(content)
+			htmlContent = this.convertImage(fileAddress, htmlContent)
 		} else {
 			continue
 		}
@@ -93,17 +127,12 @@ func (this *BlogGitAoModel) analyse(dir string) Blog {
 	return result
 }
 
-func (this *BlogGitAoModel) download(gitUrl string) string {
+func (this *BlogGitAoModel) download(gitUrl string, tempDir string) string {
 	if strings.HasPrefix(gitUrl, "https://github.com") == false {
 		Throw(1, "请输入https://github.com开头的git仓库地址")
 	}
-	workingDir, err := os.Getwd()
-	if err != nil {
-		panic(err)
-	}
-	now := time.Now()
-	gitDir := workingDir + "/../data/git"
-	gitFile := fmt.Sprintf("%s_%v-%v-%v_%v:%v:%v", path.Base(gitUrl), now.Year(), now.Month(), now.Day(), now.Hour(), now.Minute(), now.Second())
+	gitFile := path.Base(tempDir)
+	gitDir := path.Dir(tempDir)
 
 	cmd := exec.Cmd{
 		Path: "/usr/bin/git",
@@ -123,8 +152,14 @@ func (this *BlogGitAoModel) download(gitUrl string) string {
 }
 
 func (this *BlogGitAoModel) Get(gitUrl string, progressUpdater BlogSyncProgress) Blog {
+	tempDir, err := CreateTempFile("mymanager", "-git")
+	defer os.RemoveAll(tempDir)
+	if err != nil {
+		panic(err)
+	}
+
 	progressUpdater("正在从git中下载博客数据")
-	localDir := this.download(gitUrl)
+	localDir := this.download(gitUrl, tempDir)
 
 	progressUpdater("从git中分析博客数据")
 	return this.analyse(localDir)
