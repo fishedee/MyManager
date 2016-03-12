@@ -3,7 +3,7 @@ package file
 import (
 	. "github.com/fishedee/sdk"
 	"io/ioutil"
-	. "server2/models/common"
+	. "mymanager/models/common"
 )
 
 const (

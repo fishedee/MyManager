@@ -19,7 +19,7 @@ copy_common:
 			fi \
 		fi \
 	done
-debug:
+debug:copy_common
 	-rm $(OUT) -rf
 	fis release --pack --domains --dest $(OUT)
 release:

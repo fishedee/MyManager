@@ -327,8 +327,8 @@ GRI.Dialog = function(json, callback) {
 
 		
 		//var dialogPosition = ($.browser.msie && $.browser.version < 7) ? 'absolute' : 'fixed';
-		var dialogPosition = "absolute";
 		extra['heatmap'] && ( dialogPosition = 'absolute');
+		var dialogPosition = "fixed";
 		//热区图
 		var btnText1, btnText2, tips = opts.tips, btnType = opts.btnType;
 		var typeList = {
@@ -443,7 +443,7 @@ GRI.Dialog = function(json, callback) {
 	}, buttonClick = function(btnName) {
 		//仅支持第一个按钮的点击调用回调函数
 		(btnName == 'btn1' && callback) ? function() {
-			callback();
+			callback($('#' + self.dialogId));
 			if(opts.extra.autoClose) {
 				self.hideWindows();
 			}

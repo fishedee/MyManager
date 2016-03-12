@@ -2,6 +2,7 @@ var $ = require('../core/global.js');
 var html5 = require('../core/html5.js');
 var imageCompresser = require('./imageCompresser.js');
 var jpegMeta = require('./jpegMeta.js').JpegMeta;
+var wxSdk = require('../module/jweixin.js');
 module.exports = {
 	_checkFileSize:function( file , defaultOption , nextStep ){
 		function checkMaxSize(size){
@@ -52,7 +53,7 @@ module.exports = {
 		if ($.os.android) {
 			var MQQBrowser = navigator.userAgent.match(/MQQBrowser\/([^\s]+)/);
 			if (!MQQBrowser || MQQBrowser && MQQBrowser[1] < '5.2') {
-				if ($.os.version.toString().indexOf('4.4') === 0 || $.os.version.toString() <= '2.1') {
+				if ( $.os.version.toString() <= '2.1') {
 					defaultOption.onFail('您的安卓手机系统暂不支持上传功能，请下载最新版的QQ浏览器');
 					return;
 				}
@@ -317,6 +318,7 @@ module.exports = {
 			type:null,
 			maxSize:null,
 			accept:null,
+			iframe:null,
 		};
 		defaultOption = $.extend(defaultOption,option);
 		//绘制图形
@@ -326,30 +328,34 @@ module.exports = {
 		var fileId = $.uniqueNum();
 		if(defaultOption.accept)
 			defaultOption.accept = 'accept="'+defaultOption.accept+'"';
+		if( !window.FormData || !window.File )
+			defaultOption.iframe = '<iframe name="'+frameId+'" id="'+frameId+'" style="display:none">';
 		div = '<form id="'+formId+'" action="'+defaultOption.url+'" target="'+frameId+'" method="post" enctype="multipart/form-data" style="opacity:0;filter:alpha(opacity=0);display:block;position:absolute;top:0px;bottom:0px;left:0px;right:0px;width:100%;height:100%;z-index:9;overflow:hidden;">'+
 			'<input type="file" id="'+fileId+'" style="width:100%;height:100%;font-size:1000px;" name="'+defaultOption.field+'"'+defaultOption.accept+'/>'+
-			'<iframe name="'+frameId+'" id="'+frameId+'" style="display:none">'+
+			defaultOption.iframe+
 		'</form>';
 		div = $(div);
 		$('#'+defaultOption.target).css('position','relative');
 		$('#'+defaultOption.target).append(div);
 		
 		//挂载iframe载入事件
-		$('#'+frameId).load(function(){
-			//iframe载入事件会触发两次，一次是空白页面，第二次是提交文件后的页面
-			//检查progress是否存在就能区分这两种事件了。
-			if(!defaultOption._progress)
-				return;
-			var result;
-			if(this.contentWindow){
-				result = $(this.contentWindow.document.body).html();
-			}else{
-				result = $(this.contentDocument.document.body).html();
-			}
-			clearInterval(defaultOption._progressInterval);
-			defaultOption.onProgress(100);
-			defaultOption.onSuccess(result);
-		});
+		if( defaultOption.iframe ){
+			$('#'+frameId).load(function(){
+				//iframe载入事件会触发两次，一次是空白页面，第二次是提交文件后的页面
+				//检查progress是否存在就能区分这两种事件了。
+				if(!defaultOption._progress)
+					return;
+				var result;
+				if(this.contentWindow){
+					result = $(this.contentWindow.document.body).text();
+				}else{
+					result = $(this.contentDocument.document.body).text();
+				}
+				clearInterval(defaultOption._progressInterval);
+				defaultOption.onProgress(100);
+				defaultOption.onSuccess(result);
+			});
+		}
 		//挂载上传事件操作
 		div.find('input').on('change',function(){
 			var file = this;
@@ -357,12 +363,232 @@ module.exports = {
 				self._checkFileSelect( file , defaultOption , function(){
 					self._checkFileType( file , defaultOption , function(){
 						self._checkFileSize( file , defaultOption , function(){
-							self._iframeUpload(frameId,formId,defaultOption);
+							if( defaultOption.iframe ){
+								self._iframeUpload(frameId,formId,defaultOption);
+							}else{
+								defaultOption._uploadData = file.files[0];
+								self._localImageUpload(file,defaultOption);
+							}
 						});
 					});
 				});
 			});
 		});
+	},
+	_cordovaImage:function(defaultOption){
+		function chooseImage(next){
+			window.imagePicker.getPictures(
+			    function(results) {
+			    	if( results.length == 0 ){
+			    		defaultOption.onFail('请选择图片上传噢');
+			    		return;
+			    	}
+			        next(results[0]);
+			    }, function (error) {
+			    	defaultOption.onFail(error);
+			    },{
+			        maximumImagesCount: 1,
+			        width: defaultOption.width
+			    }
+			);
+		}
+		function uploadImageToServer(fileURL){
+			var success = function (r) {
+				if( r.responseCode != 200 ){
+					defaultOption.onFail('上传图片到服务器失败，错误码为：'+r.responseCode);
+					return;
+				}
+				defaultOption.onSuccess(r.response);
+			}
+
+			var fail = function (error) {
+				defaultOption.onFail('上传图片到服务器失败 '+ error.code);
+			}
+
+			var options = new window.FileUploadOptions();
+			options.fileKey = "data";
+			options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
+			options.mimeType = "text/plain";
+
+			var fileTransfer = new window.FileTransfer();
+			fileTransfer.onprogress = function(progressEvent) {
+			    if (progressEvent.lengthComputable) {
+			    	var precent =  Math.ceil(100 * (progressEvent.loaded / progressEvent.total));
+			    	defaultOption.onProgress(precent);
+			    }
+			};
+			fileTransfer.upload(fileURL, encodeURI(defaultOption.url), success, fail, options);
+		}
+		function go(){
+			defaultOption.onOpen();
+			chooseImage(function(url){
+				uploadImageToServer(url);
+			});
+		}
+		$('#'+defaultOption.target).click(go);
+	},
+	_wxImage:function(defaultOption){
+		var currentLocalId = null;
+		var currentServerId = null;
+		function chooseImage(next){
+			wxSdk.chooseImage({
+				success: function (res) {
+			        var localIds = res.localIds;
+			        if( localIds.length == 0 )
+			        	return;
+			        currentLocalId = localIds[0];
+			        defaultOption.onOpen(currentLocalId);
+			        defaultOption.onProgress(0);
+			        next();
+			    }
+			});
+		}
+		function uploadImageToWeixin(next){
+			wxSdk.uploadImage({
+			    localId:currentLocalId,
+			    isShowProgressTips: 1,
+			    success: function (res) {
+			      	currentServerId = res.serverId;
+			      	next();
+			    },
+			    fail:function(){
+			    	defaultOption.onFail('上传图片到微信服务器失败');
+			    }
+			});
+		}
+		function uploadImageToServer(next){
+			//构造数据
+			var formData = new FormData();
+			formData.append('data', currentServerId);
+			//提交表单
+			var progress = function(e) {
+				if(e.lengthComputable){
+					var progress = Math.ceil(100 * (e.loaded / e.total));
+					defaultOption.onProgress(progress);
+				}
+			}
+			var complete = function(e) {
+				defaultOption.onSuccess(e.target.response);
+			}
+			var failed = function() {
+				defaultOption.onFail('下载微信图片断开，请稍后重新操作');
+			}
+			var abort = function() {
+				defaultOption.onFail('上传已取消');
+			}
+			var httpReuqest = new XMLHttpRequest();
+			if( httpReuqest.upload ){
+				httpReuqest.upload.addEventListener('progress',progress, false);
+			}
+			httpReuqest.open("POST", defaultOption.url + '?t=' + Date.now(),true);
+			httpReuqest.addEventListener('progress',progress, false);
+			httpReuqest.addEventListener("load", complete, false);
+			httpReuqest.addEventListener("abort", abort, false);
+			httpReuqest.addEventListener("error", failed, false);
+			httpReuqest.send(formData);
+		}
+		function go(){
+			if ($.os.wxVersion.toString() < '6.1' ) {
+				alert('您的微信版本过低，微信上传图功能将不能正常使用，请升级微信至6.1及以上');
+				return;
+			}
+			chooseImage(function(){
+				uploadImageToWeixin(function(){
+					uploadImageToServer();
+				});
+			});
+		}
+		$('#'+defaultOption.target).click(go);
+	},
+	_crossImage:function(defaultOption){
+		var currentImage = null;
+		function chooseImage(next){
+			$._ajax({
+				url:'/crossapi/image/choose',
+				data:{isShowCamera:true,count:1},
+				success:function(data){
+					data = $.JSON.parse(data);
+					if(data.code != 0 ){
+						alert(data.msg);
+						return;
+					}
+					if( data.data.length == 0 ){
+						return;
+					}
+					defaultOption.onOpen();
+				    defaultOption.onProgress(0);
+				    currentImage = data.data[0];
+				    next();
+				},
+				error:function(xhr,data){
+					alert(data);
+				}
+			});
+		}
+		function uploadImage(next){
+			$._ajax({
+				url:'/crossapi/image/upload',
+				data:{
+					url:defaultOption.url,
+					image:currentImage,
+					field:'data',
+					maxWidth:defaultOption.width,
+					maxHeight:defaultOption.height
+				},
+				success:function(data){
+					data = $.JSON.parse(data);
+					if(data.code != 0 ){
+						defaultOption.onFail(data.msg);
+						return;
+					}
+					defaultOption.onProgress(100);
+					defaultOption.onSuccess(data.data);
+				},
+				error:function(xhr,data){
+					defaultOption.onFail(data);
+				}
+			});
+		}
+		function go(){
+			chooseImage(function(){
+				uploadImage();
+			});
+		}
+		$('#'+defaultOption.target).click(go);
+	},
+	imageV3:function( option ){
+		//初始化option
+		var defaultOption = {
+			url:'',
+			field:'',
+			target:'',
+			width:null,
+			height:null,
+			quality:0.8,
+			onOpen:function(data){
+			},
+			onProgress:function(data){
+			},
+			onSuccess:function(){
+			},
+			onFail:function(msg){
+			},
+		};
+		defaultOption = $.extend(defaultOption,option);
+		//处理
+		if( $.os.wx ){
+			return this._wxImage(defaultOption);
+		}else if( $.os.crossapi ){
+			return this._crossImage(defaultOption);
+		}else if( $.os.crosswalk ){
+			defaultOption.type = 'png|jpg|jpeg|gif|bmp';
+			defaultOption.accept = 'image/*';
+			defaultOption.maxSize = 1024*1024*8;
+			return this.file( defaultOption );
+		}else{
+			return this.image( defaultOption );
+		}
+
 	},
 	imageV2:function( option ){
 		//初始化option

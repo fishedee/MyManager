@@ -101,7 +101,7 @@
             }
             
             if (this["summary"] == undefined){
-            	this["summary"] = [];
+                this["summary"] = [];
             }  
 
 
@@ -139,8 +139,8 @@
             var container = ifDivNode ? document.getElementById(options.tableId) : _table.parentNode;
 
             for (var key in allFields) {
-            	if(allFields[key].needOrder==undefined) 
-            		allFields[key].needOrder = false;
+                if(allFields[key].needOrder==undefined) 
+                    allFields[key].needOrder = false;
             }
 
             //如果没有设置Html详情，则自动创建
@@ -171,7 +171,7 @@
                 var ifClicked = false;
 
                 if (document.all) {
-					
+                    
                     var _colgroup = document.createElement('COLGROUP');
                     var _thead = document.createElement('THEAD');
                     var _tr = document.createElement('TR');
@@ -189,13 +189,13 @@
                         var _th = document.createElement("TH");
                         var _span = document.createElement("span");
                         if (key != 'gri_checkAll') {
-                        	_span.className = "label";
-                        	
+                            _span.className = "label";
+                            
                             if (allFields[key].thText) {
-                            	_span.innerHTML = allFields[key].thText;
+                                _span.innerHTML = allFields[key].thText;
                                 //_th.innerHTML += ('<span class="label">' + allFields[key].thText + '</span>');
                             } else {
-                            	_span.innerHTML = key;
+                                _span.innerHTML = key;
                                 //_th.innerHTML += ('<span class="label">' + key + '</span>');
                             }
                         }
@@ -591,7 +591,7 @@
                     tableBody = tr + tableBody;
                 }
             }
-			
+            
 
 
 
@@ -626,7 +626,7 @@
                 } else {
 
                     var trs = [];
-		
+        
                     while (tableBody.length > 0) {
                         var trRow = tableBody.substring(4, tableBody.indexOf("</tr>"));
                         tableBody = tableBody.replace("<tr>" + trRow + "</tr>", "");
@@ -641,28 +641,28 @@
                         if (i % 2 == 1) {
                             trNode.className = 'gri_listtd';
                         }
-						
-						//Fish 修复Td无限循环的问题
+                        
+                        //Fish 修复Td无限循环的问题
                         var trRow = trs[i];
-						var newTrRow = "";
-						var regEx = /(<td[^>]*>)([^<]*)(<\/td>)/g;
-						while((r = regEx.exec(trRow) ) != null ){
-							newTrRow += r[1]+decodeURIComponent(r[2])+r[3];
-						}
-						$(trNode).html(newTrRow);
-						/*
+                        var newTrRow = "";
+                        var regEx = /(<td[^>]*>)([^<]*)(<\/td>)/g;
+                        while((r = regEx.exec(trRow) ) != null ){
+                            newTrRow += r[1]+decodeURIComponent(r[2])+r[3];
+                        }
+                        $(trNode).html(newTrRow);
+                        /*
                         while (trRow.length > 0) {
-							var temp = trRow.className;
-							trRow.className = "";
+                            var temp = trRow.className;
+                            trRow.className = "";
                             var tdHTML = trRow.substring(4, trRow.indexOf("</td>"));
                             trRow = trRow.replace("<td>" + tdHTML + "</td>", "");
 
                             var tdNode = document.createElement('TD');
                             tdNode.innerHTML = decodeURIComponent(tdHTML);
-							tdNode.className = temp;
+                            tdNode.className = temp;
                             trNode.appendChild(tdNode);
                         }
-						*/
+                        */
 
                         tbody.appendChild(trNode);
                     }
@@ -706,7 +706,7 @@
                     }
                 }
             }
-			
+            
 
 
             //获取当前的table
@@ -863,6 +863,28 @@
                     var page_right_div = document.createElement('div');
                     page_right_div.className = 'pg';
                     this.page.container.appendChild(page_right_div);
+
+                    //创建直达页
+                    var aLift = document.createElement('A');
+                    aLift.className = 'first';
+                    aLift.innerHTML = '直达电梯';
+                    this.addEvent(aLift,'click',function(){
+                        var index = prompt('请输入直达跳转的页数');
+                        if( !index )
+                            return
+                        if( index >= _this.page.count )
+                            index = _this.page.count;
+                        if( index <= 1 )
+                            index = 1
+                        _this.page.index = index - 1;
+                        if (_this.page.ifRealPage) {
+                            _this.createJsonTable(_this);
+                        } else {
+                            _this.createTable(_this.options);
+                        }
+                    })
+                    aLift.setAttribute('href', 'javascript:void(0);');
+                    page_right_div.appendChild(aLift);
 
                     //创建"当前页"
                     var aHead = document.createElement('A');
@@ -1059,7 +1081,7 @@
                 var sltRowNumSpan = document.createElement("span");
                 sltRowNumSpan.className = 'gri_datatable_pg_rowcount';
                 sltRowNumSpan.innerHTML = "<select class='gri_datatable_rownum ipt_show '>" +
-                    "<option value='5'>5</option><option value='10'>10</option><option value='15'>15</option><option value='20'>20</option><option value='30'>30</option><option value='50'>50</option><option value='80'>80</option><option value='100'>100</option><option value='200'>200</option>" +
+                    "<option value='5'>5</option><option value='10'>10</option><option value='15'>15</option><option value='20'>20</option><option value='30'>30</option><option value='50'>50</option><option value='80'>80</option><option value='100'>100</option><option value='200'>200</option><option value='1000'>1000</option><option value='5000'>5000</option>" +
                     "</select> 条";
 
                 spanTotal.appendChild(sltRowNumSpan);
@@ -1108,7 +1130,7 @@
             loadingDiv.style.left = positon.left + (_table.clientWidth / 2) + "px";
             loadingDiv.style.top = positon.top + 120 + "px";
             loadingDiv.style.zIndex = '1000';
-			var _pageFrom = _this.page.index * _this.page.size;
+            var _pageFrom = _this.page.index * _this.page.size;
             var paramStr = 'pageIndex=' + _pageFrom + "&pageSize=" + _this.page.size + "&orderField=" + _this.page.orderField + "&orderType=" + _this.page.orderType + "&t=" + Math.random();
             var sendUrl = _this.page.url;
 
@@ -1140,7 +1162,7 @@
                         _this.options.callbackParam.value = resultObj[_this.options.callbackParam.key];
                     }
                 }
-				
+                
 
                 loadingDiv.parentNode.removeChild(loadingDiv);
                 _this.initDataTable(_this.options);
@@ -1367,7 +1389,7 @@
             var result = str.replace(reg, '');
             return result;
 
-            // 		  待增加，正则表达式
+            //        待增加，正则表达式
             //        var result = reg.exec(str);
             //        if (result != null && result.length > 0) {
             //            return reg.exec(str)[0];
@@ -2033,23 +2055,23 @@
 // var myST = new superTable("myTableId");
 //
 // var myST = new superTable("myTableId", {
-//		cssSkin : "sDefault",
-//		headerRows : 1,
-//		fixedCols : 2,
-//		colWidths : [100, 230, 220, -1, 120, -1, -1, 120],
-//		onStart : function () {
-//			this.start = new Date();
-//		},
-//		onFinish : function () {
-//			alert("Finished... " + ((new Date()) - this.start) + "ms.");
-//		}
+//      cssSkin : "sDefault",
+//      headerRows : 1,
+//      fixedCols : 2,
+//      colWidths : [100, 230, 220, -1, 120, -1, -1, 120],
+//      onStart : function () {
+//          this.start = new Date();
+//      },
+//      onFinish : function () {
+//          alert("Finished... " + ((new Date()) - this.start) + "ms.");
+//      }
 // });
 //
 ////// ISSUES / NOTES:
 // 1. No quirksmode support (officially, but still should work)
 // 2. Element id's may be duplicated when fixedCols > 0, causing getElementById() issues
 // 3. Safari will render the header row incorrectly if the fixed header row count is 1 and there is a colspan > 1 in one 
-//		or more of the cells (fix available)
+//      or more of the cells (fix available)
 /////////////////////////////////////////////////////////////////////////////////////////
 var superTable = function (tableId, options) {
 /////* Initialize */
