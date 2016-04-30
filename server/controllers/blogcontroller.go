@@ -1,23 +1,23 @@
 package controllers
 
 import (
-	. "mymanager/models/blog"
-	. "mymanager/models/common"
-	. "mymanager/models/user"
+	"mymanager/models/blog"
+	"mymanager/models/common"
+	"mymanager/models/user"
 )
 
 type BlogController struct {
 	BaseController
-	BlogSyncAo  BlogSyncAoModel
-	UserLoginAo UserLoginAoModel
+	BlogSyncAo  blog.BlogSyncAoModel
+	UserLoginAo user.UserLoginAoModel
 }
 
 func (this *BlogController) SearchAuto_Json() interface{} {
 	//检查输入参数
-	var where BlogSyncAuto
+	var where blog.BlogSyncAuto
 	this.CheckGet(&where)
 
-	var limit CommonPage
+	var limit common.CommonPage
 	this.CheckGet(&limit)
 
 	//检查权限
@@ -29,7 +29,7 @@ func (this *BlogController) SearchAuto_Json() interface{} {
 
 func (this *BlogController) GetAuto_Json() interface{} {
 	//检查输入参数
-	var blogSync BlogSyncAuto
+	var blogSync blog.BlogSyncAuto
 	this.CheckGet(&blogSync)
 
 	//检查权限
@@ -41,7 +41,7 @@ func (this *BlogController) GetAuto_Json() interface{} {
 
 func (this *BlogController) AddAuto_Json() {
 	//检查输入参数
-	var blogSync BlogSyncAuto
+	var blogSync blog.BlogSyncAuto
 	this.CheckPost(&blogSync)
 
 	//检查权限
@@ -53,7 +53,7 @@ func (this *BlogController) AddAuto_Json() {
 
 func (this *BlogController) ModAuto_Json() {
 	//检查输入参数
-	var blogSync BlogSyncAuto
+	var blogSync blog.BlogSyncAuto
 	this.CheckPost(&blogSync)
 
 	//检查权限
@@ -65,7 +65,7 @@ func (this *BlogController) ModAuto_Json() {
 
 func (this *BlogController) DelAuto_Json() {
 	//检查输入参数
-	var blogSync BlogSyncAuto
+	var blogSync blog.BlogSyncAuto
 	this.CheckPost(&blogSync)
 
 	//检查权限
@@ -77,10 +77,10 @@ func (this *BlogController) DelAuto_Json() {
 
 func (this *BlogController) SearchTask_Json() interface{} {
 	//检查输入参数
-	var where BlogSync
+	var where blog.BlogSync
 	this.CheckGet(&where)
 
-	var limit CommonPage
+	var limit common.CommonPage
 	this.CheckGet(&limit)
 
 	//检查权限
@@ -92,7 +92,7 @@ func (this *BlogController) SearchTask_Json() interface{} {
 
 func (this *BlogController) GetTask_Json() interface{} {
 	//检查输入参数
-	var blogSync BlogSync
+	var blogSync blog.BlogSync
 	this.CheckGet(&blogSync)
 
 	//检查权限
@@ -104,7 +104,7 @@ func (this *BlogController) GetTask_Json() interface{} {
 
 func (this *BlogController) AddTask_Json() {
 	//检查输入参数
-	var blogSync BlogSync
+	var blogSync blog.BlogSync
 	this.CheckPost(&blogSync)
 
 	//检查权限
@@ -116,7 +116,7 @@ func (this *BlogController) AddTask_Json() {
 
 func (this *BlogController) RestartTask_Json() {
 	//检查输入参数
-	var blogSync BlogSync
+	var blogSync blog.BlogSync
 	this.CheckPost(&blogSync)
 
 	//检查权限

@@ -1,21 +1,21 @@
 package controllers
 
 import (
-	. "mymanager/models/user"
+	"mymanager/models/user"
 )
 
 type LoginController struct {
 	BaseController
-	UserLoginAo UserLoginAoModel
+	UserLoginAo user.UserLoginAoModel
 }
 
 func (this *LoginController) Islogin_Json() interface{} {
-	return  this.UserLoginAo.CheckMustLogin()
+	return this.UserLoginAo.CheckMustLogin()
 }
 
 func (this *LoginController) Checkin_Json() {
 	//检查输入参数
-	var user User
+	var user user.User
 	this.CheckPost(&user)
 
 	this.UserLoginAo.Login(user.Name, user.Password)

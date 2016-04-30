@@ -1,23 +1,23 @@
 package controllers
 
 import (
-	. "mymanager/models/card"
-	. "mymanager/models/common"
-	. "mymanager/models/user"
+	"mymanager/models/card"
+	"mymanager/models/common"
+	"mymanager/models/user"
 )
 
 type CardController struct {
 	BaseController
-	CardAo      CardAoModel
-	UserLoginAo UserLoginAoModel
+	CardAo      card.CardAoModel
+	UserLoginAo user.UserLoginAoModel
 }
 
 func (this *CardController) Search_Json() interface{} {
 	//检查输入参数
-	var where Card
+	var where card.Card
 	this.CheckGet(&where)
 
-	var limit CommonPage
+	var limit common.CommonPage
 	this.CheckGet(&limit)
 
 	//检查权限
@@ -29,7 +29,7 @@ func (this *CardController) Search_Json() interface{} {
 
 func (this *CardController) Get_Json() interface{} {
 	//检查输入参数
-	var card Card
+	var card card.Card
 	this.CheckGet(&card)
 
 	//检查权限
@@ -41,7 +41,7 @@ func (this *CardController) Get_Json() interface{} {
 
 func (this *CardController) Add_Json() {
 	//检查输入参数
-	var card Card
+	var card card.Card
 	this.CheckPost(&card)
 
 	//检查权限
@@ -53,7 +53,7 @@ func (this *CardController) Add_Json() {
 
 func (this *CardController) Del_Json() {
 	//检查输入参数
-	var card Card
+	var card card.Card
 	this.CheckPost(&card)
 
 	//检查权限
@@ -65,7 +65,7 @@ func (this *CardController) Del_Json() {
 
 func (this *CardController) Mod_Json() {
 	//检查输入参数
-	var card Card
+	var card card.Card
 	this.CheckPost(&card)
 
 	//检查权限

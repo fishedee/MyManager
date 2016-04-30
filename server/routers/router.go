@@ -1,14 +1,14 @@
 package routers
 
 import (
-	. "mymanager/controllers"
+	"mymanager/controllers"
 )
 
 func init() {
-	InitRoute("user", &UserController{})
-	InitRoute("login", &LoginController{})
-	InitRoute("category", &CategoryController{})
-	InitRoute("card", &CardController{})
-	InitRoute("account", &AccountController{})
-	InitRoute("blog", &BlogController{})
+	controllers.InitRoute("user", &controllers.UserController{})
+	controllers.InitRoute("login", &controllers.LoginController{})
+	controllers.InitRoute("category", &controllers.CategoryController{})
+	controllers.InitRoute("card", &controllers.CardController{})
+	controllers.InitRoute("account", &controllers.AccountController{})
+	controllers.InitRoute("blog", &controllers.BlogController{})
 }

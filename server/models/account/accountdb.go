@@ -1,16 +1,16 @@
 package account
 
 import (
-	. "github.com/fishedee/language"
-	. "mymanager/models/common"
+	"github.com/fishedee/language"
+	"mymanager/models/common"
 	"strconv"
 )
 
 type AccountDbModel struct {
-	BaseModel
+	common.BaseModel
 }
 
-func (this *AccountDbModel) Search(where Account, limit CommonPage) Accounts {
+func (this *AccountDbModel) Search(where Account, limit common.CommonPage) Accounts {
 	db := this.DB.NewSession()
 
 	if limit.PageSize == 0 && limit.PageIndex == 0 {
@@ -63,7 +63,7 @@ func (this *AccountDbModel) Get(accountId int) Account {
 		panic(err)
 	}
 	if len(accounts) == 0 {
-		Throw(1, "不存在该记录"+strconv.Itoa(accountId))
+		language.Throw(1, "不存在该记录"+strconv.Itoa(accountId))
 	}
 	return accounts[0]
 }

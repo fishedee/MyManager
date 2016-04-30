@@ -1,16 +1,16 @@
 package user
 
 import (
-	. "github.com/fishedee/language"
-	. "mymanager/models/common"
+	"github.com/fishedee/language"
+	"mymanager/models/common"
 	"strconv"
 )
 
 type UserDbModel struct {
-	BaseModel
+	common.BaseModel
 }
 
-func (this *UserDbModel) Search(where User, limit CommonPage) Users {
+func (this *UserDbModel) Search(where User, limit common.CommonPage) Users {
 	db := this.DB.NewSession()
 
 	if limit.PageSize == 0 && limit.PageIndex == 0 {
@@ -51,7 +51,7 @@ func (this *UserDbModel) Get(id int) User {
 		panic(err)
 	}
 	if len(users) == 0 {
-		Throw(1, "不存在该用户"+strconv.Itoa(id))
+		language.Throw(1, "不存在该用户"+strconv.Itoa(id))
 	}
 	return users[0]
 }

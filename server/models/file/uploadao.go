@@ -1,9 +1,9 @@
 package file
 
 import (
-	. "github.com/fishedee/sdk"
+	"github.com/fishedee/sdk"
 	"io/ioutil"
-	. "mymanager/models/common"
+	"mymanager/models/common"
 )
 
 const (
@@ -14,11 +14,11 @@ const (
 )
 
 type UploadAoModel struct {
-	BaseModel
+	common.BaseModel
 }
 
 func (this *UploadAoModel) UploadFile(data []byte) string {
-	qiniuSdk := QiniuSdk{
+	qiniuSdk := sdk.QiniuSdk{
 		AccessKey: qiniuAccessKey,
 		SecretKey: qiniuSecretKey,
 	}

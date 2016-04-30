@@ -1,12 +1,12 @@
 package user
 
 import (
-	. "github.com/fishedee/language"
-	. "mymanager/models/common"
+	"github.com/fishedee/language"
+	"mymanager/models/common"
 )
 
 type UserLoginAoModel struct {
-	BaseModel
+	common.BaseModel
 	UserAo UserAoModel
 }
 
@@ -29,7 +29,7 @@ func (this *UserLoginAoModel) IsLogin() User {
 func (this *UserLoginAoModel) CheckMustLogin() User {
 	user := this.IsLogin()
 	if user.UserId == 0 {
-		Throw(1, "用户未登录")
+		language.Throw(1, "用户未登录")
 	}
 	return user
 }
@@ -37,7 +37,7 @@ func (this *UserLoginAoModel) CheckMustLogin() User {
 func (this *UserLoginAoModel) CheckMustAdmin() User {
 	user := this.CheckMustLogin()
 	if user.Type != UserTypeEnum.ADMIN {
-		Throw(1, "非管理员没有权限执行此操作")
+		language.Throw(1, "非管理员没有权限执行此操作")
 	}
 	return user
 }
@@ -60,7 +60,7 @@ func (this *UserLoginAoModel) Login(name string, password string) {
 	defer sess.SessionRelease(this.Ctx.ResponseWriter)
 	users := this.UserAo.GetByName(name)
 	if len(users) == 0 {
-		Throw(1, "不存在此帐号")
+		language.Throw(1, "不存在此帐号")
 	}
 	this.UserAo.CheckMustVaildPassword(password, users[0].Password)
 	sess.Set("userId", users[0].UserId)

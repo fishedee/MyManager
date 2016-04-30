@@ -1,20 +1,20 @@
 package blog
 
 import (
-	. "github.com/fishedee/language"
-	. "github.com/fishedee/web"
-	. "mymanager/models/common"
+	"github.com/fishedee/language"
+	"github.com/fishedee/web"
+	"mymanager/models/common"
 )
 
 type BlogSyncAoModel struct {
-	BaseModel
+	common.BaseModel
 	BlogSyncDb     BlogSyncDbModel
 	BlogSyncAutoDb BlogSyncAutoDbModel
 	BlogCsdnAo     BlogCsdnAoModel
 	BlogGitAo      BlogGitAoModel
 }
 
-func (this *BlogSyncAoModel) SearchAuto(userId int, where BlogSyncAuto, limit CommonPage) BlogSyncAutos {
+func (this *BlogSyncAoModel) SearchAuto(userId int, where BlogSyncAuto, limit common.CommonPage) BlogSyncAutos {
 	where.UserId = userId
 	return this.BlogSyncAutoDb.Search(where, limit)
 }
@@ -22,7 +22,7 @@ func (this *BlogSyncAoModel) SearchAuto(userId int, where BlogSyncAuto, limit Co
 func (this *BlogSyncAoModel) GetAuto(userId int, blogSyncAutoId int) BlogSyncAuto {
 	cardInfo := this.BlogSyncAutoDb.Get(blogSyncAutoId)
 	if cardInfo.UserId != userId {
-		Throw(1, "你没有该权限")
+		language.Throw(1, "你没有该权限")
 	}
 	return cardInfo
 }
@@ -45,7 +45,7 @@ func (this *BlogSyncAoModel) ModAuto(userId int, blogSyncAutoId int, blogSyncAut
 	this.BlogSyncAutoDb.Mod(blogSyncAutoId, blogSyncAuto)
 }
 
-func (this *BlogSyncAoModel) SearchTask(userId int, where BlogSync, limit CommonPage) BlogSyncs {
+func (this *BlogSyncAoModel) SearchTask(userId int, where BlogSync, limit common.CommonPage) BlogSyncs {
 	where.UserId = userId
 	return this.BlogSyncDb.Search(where, limit)
 }
@@ -66,7 +66,7 @@ func (this *BlogSyncAoModel) AddTask(userId int, accessToken string, gitUrl stri
 func (this *BlogSyncAoModel) GetTask(userId int, blogSyncId int) BlogSync {
 	data := this.BlogSyncDb.Get(blogSyncId)
 	if data.UserId != userId {
-		Throw(1, "权限不足")
+		language.Throw(1, "权限不足")
 	}
 	return data
 }
@@ -74,7 +74,7 @@ func (this *BlogSyncAoModel) GetTask(userId int, blogSyncId int) BlogSync {
 func (this *BlogSyncAoModel) RestartTask(userId int, blogSyncId int) {
 	data := this.GetTask(userId, blogSyncId)
 	if data.State != BlogStateEnum.STATE_FAIL {
-		Throw(1, "非失败任务不能重启")
+		language.Throw(1, "非失败任务不能重启")
 	}
 	this.modState(blogSyncId, BlogStateEnum.STATE_BEGIN, "")
 
@@ -90,7 +90,7 @@ func (this *BlogSyncAoModel) modState(blogSyncId int, state int, stateMessage st
 }
 
 func (this *BlogSyncAoModel) sync(blogSyncId int) {
-	defer CatchCrash(func(e Exception) {
+	defer language.CatchCrash(func(e language.Exception) {
 		this.modState(blogSyncId, BlogStateEnum.STATE_FAIL, e.GetMessage())
 		panic(e.Error())
 	})
@@ -120,7 +120,7 @@ func (this *BlogSyncAoModel) syncAuto() {
 }
 
 func init() {
-	InitDaemon(func(this *BlogSyncAoModel) {
+	web.InitDaemon(func(this *BlogSyncAoModel) {
 		this.Queue.Consume("blog_sync", this.sync)
 		this.Timer.Cron("0 0 23 * *", this.syncAuto)
 	})

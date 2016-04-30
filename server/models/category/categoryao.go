@@ -2,17 +2,17 @@ package category
 
 import (
 	"fmt"
-	. "github.com/fishedee/language"
-	. "github.com/fishedee/web"
-	. "mymanager/models/common"
+	"github.com/fishedee/language"
+	"github.com/fishedee/web"
+	"mymanager/models/common"
 )
 
 type CategoryAoModel struct {
-	BaseModel
+	common.BaseModel
 	CategoryDb CategoryDbModel
 }
 
-func (this *CategoryAoModel) Search(userId int, where Category, limit CommonPage) Categorys {
+func (this *CategoryAoModel) Search(userId int, where Category, limit common.CommonPage) Categorys {
 	where.UserId = userId
 	return this.CategoryDb.Search(where, limit)
 }
@@ -20,7 +20,7 @@ func (this *CategoryAoModel) Search(userId int, where Category, limit CommonPage
 func (this *CategoryAoModel) Get(userId int, categoryId int) Category {
 	categoryInfo := this.CategoryDb.Get(categoryId)
 	if categoryInfo.UserId != userId {
-		Throw(1, "你没有该权限")
+		language.Throw(1, "你没有该权限")
 	}
 	return categoryInfo
 }
@@ -50,7 +50,7 @@ func (this *CategoryAoModel) TestQueue(id int, str string) {
 }
 
 func init() {
-	InitDaemon(func(this *CategoryAoModel) {
+	web.InitDaemon(func(this *CategoryAoModel) {
 		this.Queue.Consume("uu", this.TestQueue)
 	})
 }

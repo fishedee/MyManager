@@ -1,11 +1,11 @@
 package account
 
 import (
-	. "mymanager/models/common"
+	"mymanager/models/common"
 )
 
 type AccountStatisticDbModel struct {
-	BaseModel
+	common.BaseModel
 }
 
 func (this *AccountStatisticDbModel) GetWeekTypStatisticByUser(userId int) []AccountStatistic {

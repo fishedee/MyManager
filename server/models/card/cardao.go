@@ -1,16 +1,16 @@
 package card
 
 import (
-	. "mymanager/models/common"
-	. "github.com/fishedee/language"
+	"github.com/fishedee/language"
+	"mymanager/models/common"
 )
 
 type CardAoModel struct {
-	BaseModel
+	common.BaseModel
 	CardDb CardDbModel
 }
 
-func (this *CardAoModel) Search(userId int, where Card, limit CommonPage) Cards {
+func (this *CardAoModel) Search(userId int, where Card, limit common.CommonPage) Cards {
 	where.UserId = userId
 	return this.CardDb.Search(where, limit)
 }
@@ -18,7 +18,7 @@ func (this *CardAoModel) Search(userId int, where Card, limit CommonPage) Cards 
 func (this *CardAoModel) Get(userId int, cardId int) Card {
 	cardInfo := this.CardDb.Get(cardId)
 	if cardInfo.UserId != userId {
-		Throw(1, "你没有该权限")
+		language.Throw(1, "你没有该权限")
 	}
 	return cardInfo
 }

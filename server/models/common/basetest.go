@@ -1,14 +1,13 @@
 package common
 
 import (
-	. "github.com/fishedee/web"
-	"testing"
+	"github.com/fishedee/web"
 )
 
 type BaseTest struct {
-	BeegoValidateTest
+	web.BeegoValidateTest
 }
 
-func InitTest(t *testing.T, test BeegoValidateTestInterface) {
-	InitBeegoVaildateTest(t, test)
+func InitTest(test web.BeegoValidateTestInterface) {
+	web.InitBeegoVaildateTest(test)
 }

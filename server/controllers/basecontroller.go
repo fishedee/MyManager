@@ -2,17 +2,17 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
-	. "github.com/fishedee/encoding"
-	. "github.com/fishedee/language"
-	. "github.com/fishedee/web"
+	"github.com/fishedee/encoding"
+	"github.com/fishedee/language"
+	"github.com/fishedee/web"
 )
 
 type BaseController struct {
-	BeegoValidateController
+	web.BeegoValidateController
 }
 
 func InitRoute(namespace string, target beego.ControllerInterface) {
-	InitBeegoVaildateControllerRoute(namespace, target)
+	web.InitBeegoVaildateControllerRoute(namespace, target)
 }
 
 type baseControllerResult struct {
@@ -22,7 +22,7 @@ type baseControllerResult struct {
 }
 
 func (this *BaseController) jsonRender(result baseControllerResult) {
-	resultString, err := EncodeJson(result)
+	resultString, err := encoding.EncodeJson(result)
 	if err != nil {
 		panic(err)
 	}
@@ -31,7 +31,7 @@ func (this *BaseController) jsonRender(result baseControllerResult) {
 
 func (this *BaseController) AutoRender(returnValue interface{}, viewname string) {
 	result := baseControllerResult{}
-	resultError, ok := returnValue.(Exception)
+	resultError, ok := returnValue.(language.Exception)
 	if ok {
 		//带错误码的error
 		result.Code = resultError.GetCode()

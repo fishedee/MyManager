@@ -1,24 +1,24 @@
 package controllers
 
 import (
-	. "mymanager/models/account"
-	. "mymanager/models/common"
-	. "mymanager/models/user"
+	"mymanager/models/account"
+	"mymanager/models/common"
+	"mymanager/models/user"
 )
 
 type AccountController struct {
 	BaseController
-	AccountAo          AccountAoModel
-	AccountStatisticAo AccountStatisticAoModel
-	UserLoginAo        UserLoginAoModel
+	AccountAo          account.AccountAoModel
+	AccountStatisticAo account.AccountStatisticAoModel
+	UserLoginAo        user.UserLoginAoModel
 }
 
 func (this *AccountController) Search_Json() interface{} {
 	//检查输入参数
-	var where Account
+	var where account.Account
 	this.CheckGet(&where)
 
-	var limit CommonPage
+	var limit common.CommonPage
 	this.CheckGet(&limit)
 
 	//检查权限
@@ -30,7 +30,7 @@ func (this *AccountController) Search_Json() interface{} {
 
 func (this *AccountController) Get_Json() interface{} {
 	//检查输入参数
-	var account Account
+	var account account.Account
 	this.CheckGet(&account)
 
 	//检查权限
@@ -42,7 +42,7 @@ func (this *AccountController) Get_Json() interface{} {
 
 func (this *AccountController) Add_Json() {
 	//检查输入参数
-	var account Account
+	var account account.Account
 	this.CheckPost(&account)
 
 	//检查权限
@@ -54,7 +54,7 @@ func (this *AccountController) Add_Json() {
 
 func (this *AccountController) Del_Json() {
 	//检查输入参数
-	var account Account
+	var account account.Account
 	this.CheckPost(&account)
 
 	//检查权限
@@ -66,7 +66,7 @@ func (this *AccountController) Del_Json() {
 
 func (this *AccountController) Mod_Json() {
 	//检查输入参数
-	var account Account
+	var account account.Account
 	this.CheckPost(&account)
 
 	//检查权限
@@ -77,7 +77,7 @@ func (this *AccountController) Mod_Json() {
 }
 
 func (this *AccountController) GetType_Json() interface{} {
-	return AccountTypeEnum.Names()
+	return account.AccountTypeEnum.Names()
 }
 
 func (this *AccountController) GetWeekTypeStatistic_Json() interface{} {
@@ -92,9 +92,9 @@ func (this *AccountController) GetWeekTypeStatistic_Json() interface{} {
 
 func (this *AccountController) GetWeekDetailTypeStatistic_Json() interface{} {
 	//检查输入参数
-	var account Account
-	this.CheckGet(&account)
-	var accountStatistic AccountStatistic
+	var accountInfo account.Account
+	this.CheckGet(&accountInfo)
+	var accountStatistic account.AccountStatistic
 	this.CheckGet(&accountStatistic)
 
 	//检查权限
@@ -105,7 +105,7 @@ func (this *AccountController) GetWeekDetailTypeStatistic_Json() interface{} {
 		loginUser.UserId,
 		accountStatistic.Year,
 		accountStatistic.Week,
-		account.Type,
+		accountInfo.Type,
 	)
 }
 
@@ -121,9 +121,9 @@ func (this *AccountController) GetWeekCardStatistic_Json() interface{} {
 
 func (this *AccountController) GetWeekDetailCardStatistic_Json() interface{} {
 	//检查输入参数
-	var account Account
-	this.CheckGet(&account)
-	var accountStatistic AccountStatistic
+	var accountInfo account.Account
+	this.CheckGet(&accountInfo)
+	var accountStatistic account.AccountStatistic
 	this.CheckGet(&accountStatistic)
 
 	//检查权限
@@ -134,6 +134,6 @@ func (this *AccountController) GetWeekDetailCardStatistic_Json() interface{} {
 		loginUser.UserId,
 		accountStatistic.Year,
 		accountStatistic.Week,
-		account.CardId,
+		accountInfo.CardId,
 	)
 }

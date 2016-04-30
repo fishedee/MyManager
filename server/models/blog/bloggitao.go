@@ -4,13 +4,13 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
-	. "github.com/fishedee/encoding"
-	. "github.com/fishedee/language"
-	. "github.com/fishedee/util"
+	"github.com/fishedee/encoding"
+	"github.com/fishedee/language"
+	"github.com/fishedee/util"
 	"github.com/russross/blackfriday"
 	"io/ioutil"
-	. "mymanager/models/common"
-	. "mymanager/models/file"
+	"mymanager/models/common"
+	"mymanager/models/file"
 	"os"
 	"os/exec"
 	"path"
@@ -18,8 +18,8 @@ import (
 )
 
 type BlogGitAoModel struct {
-	BaseModel
-	UploadAo UploadAoModel
+	common.BaseModel
+	UploadAo file.UploadAoModel
 }
 
 func (this *BlogGitAoModel) getFileContent(fileAddress string) string {
@@ -67,7 +67,7 @@ func (this *BlogGitAoModel) convertImage(dir string, content string) string {
 			strings.HasPrefix(src, "data") {
 			return
 		}
-		src, err := DecodeUrl(src)
+		src, err := encoding.DecodeUrl(src)
 		if err != nil {
 			panic(err)
 		}
@@ -149,7 +149,7 @@ func (this *BlogGitAoModel) analyse(dir string) Blog {
 
 func (this *BlogGitAoModel) download(gitUrl string, tempDir string) string {
 	if strings.HasPrefix(gitUrl, "https://github.com") == false {
-		Throw(1, "请输入https://github.com开头的git仓库地址")
+		language.Throw(1, "请输入https://github.com开头的git仓库地址")
 	}
 	gitFile := path.Base(tempDir)
 	gitDir := path.Dir(tempDir)
@@ -172,7 +172,7 @@ func (this *BlogGitAoModel) download(gitUrl string, tempDir string) string {
 }
 
 func (this *BlogGitAoModel) Get(gitUrl string, progressUpdater BlogSyncProgress) Blog {
-	tempDir, err := CreateTempFile("mymanager", "-git")
+	tempDir, err := util.CreateTempFile("mymanager", "-git")
 	defer os.RemoveAll(tempDir)
 	if err != nil {
 		panic(err)

@@ -4,17 +4,17 @@ import (
 	"bytes"
 	"crypto/tls"
 	"github.com/PuerkitoBio/goquery"
-	. "github.com/fishedee/encoding"
-	. "github.com/fishedee/util"
-	. "mymanager/models/common"
+	"github.com/fishedee/encoding"
+	"github.com/fishedee/util"
+	"mymanager/models/common"
 	"strconv"
 	"strings"
 	"time"
 )
 
 type BlogCsdnCrawlAoModel struct {
-	BaseModel
-	AjaxPool *AjaxPool
+	common.BaseModel
+	AjaxPool *util.AjaxPool
 }
 
 func (this *BlogCsdnCrawlAoModel) apiForHtml(method string, url string, data interface{}, referer string) *goquery.Document {
@@ -36,7 +36,7 @@ func (this *BlogCsdnCrawlAoModel) apiForJson(method string, url string, data int
 		Data   interface{}
 	}
 	commonData.Data = responseData
-	err := DecodeJson(result, &commonData)
+	err := encoding.DecodeJson(result, &commonData)
 	if commonData.Status == false {
 		panic(url + " error " + commonData.Error)
 	}
@@ -47,7 +47,7 @@ func (this *BlogCsdnCrawlAoModel) apiForJson(method string, url string, data int
 
 func (this *BlogCsdnCrawlAoModel) api(method string, url string, data interface{}, referer string) []byte {
 	if this.AjaxPool == nil {
-		this.AjaxPool = NewAjaxPool(&AjaxPoolOption{
+		this.AjaxPool = util.NewAjaxPool(&util.AjaxPoolOption{
 			Timeout:      time.Second * 30,
 			HasCookieJar: true,
 			TLSClientConfig: &tls.Config{
@@ -64,7 +64,7 @@ func (this *BlogCsdnCrawlAoModel) api(method string, url string, data interface{
 	if len(referer) != 0 {
 		header["REFERER"] = referer
 	}
-	option := &Ajax{
+	option := &util.Ajax{
 		Url:          url,
 		Data:         data,
 		ResponseData: &result,

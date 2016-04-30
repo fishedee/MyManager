@@ -1,11 +1,11 @@
 package account
 
 import (
-	. "github.com/fishedee/language"
+	"github.com/fishedee/language"
 )
 
 var AccountTypeEnum struct {
-	EnumStruct
+	language.EnumStruct
 	TYPE_IN           int `enum:"1,收入"`
 	TYPE_OUT          int `enum:"2,支出"`
 	TYPE_TRANSFER_IN  int `enum:"3,转账收入"`
@@ -15,5 +15,5 @@ var AccountTypeEnum struct {
 }
 
 func init() {
-	InitEnumStruct(&AccountTypeEnum)
+	language.InitEnumStruct(&AccountTypeEnum)
 }

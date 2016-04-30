@@ -1,26 +1,26 @@
 package controllers
 
 import (
-	. "mymanager/models/common"
-	. "mymanager/models/user"
+	"mymanager/models/common"
+	"mymanager/models/user"
 )
 
 type UserController struct {
 	BaseController
-	UserLoginAo UserLoginAoModel
-	UserAo      UserAoModel
+	UserLoginAo user.UserLoginAoModel
+	UserAo      user.UserAoModel
 }
 
 func (this *UserController) GetType_Json() interface{} {
-	return UserTypeEnum.Names()
+	return user.UserTypeEnum.Names()
 }
 
 func (this *UserController) Search_Json() interface{} {
 	//检查输入参数
-	var where User
+	var where user.User
 	this.CheckGet(&where)
 
-	var limit CommonPage
+	var limit common.CommonPage
 	this.CheckGet(&limit)
 
 	//检查权限
@@ -32,7 +32,7 @@ func (this *UserController) Search_Json() interface{} {
 
 func (this *UserController) Get_Json() interface{} {
 	//检查输入参数
-	var user User
+	var user user.User
 	this.CheckGet(&user)
 
 	//检查权限
@@ -44,7 +44,7 @@ func (this *UserController) Get_Json() interface{} {
 
 func (this *UserController) Add_Json() {
 	//检查输入参数
-	var user User
+	var user user.User
 	this.CheckPost(&user)
 
 	//检查权限
@@ -56,7 +56,7 @@ func (this *UserController) Add_Json() {
 
 func (this *UserController) Del_Json() {
 	//检查输入参数
-	var user User
+	var user user.User
 	this.CheckPost(&user)
 
 	//检查权限
@@ -68,7 +68,7 @@ func (this *UserController) Del_Json() {
 
 func (this *UserController) ModType_Json() {
 	//检查输入参数
-	var user User
+	var user user.User
 	this.CheckPost(&user)
 
 	//检查权限
@@ -80,7 +80,7 @@ func (this *UserController) ModType_Json() {
 
 func (this *UserController) ModPassword_Json() {
 	//检查输入参数
-	var user User
+	var user user.User
 	this.CheckPost(&user)
 
 	//检查权限

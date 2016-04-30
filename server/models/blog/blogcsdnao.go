@@ -1,26 +1,25 @@
 package blog
 
 import (
-	. "github.com/fishedee/language"
-	. "github.com/fishedee/sdk"
-	. "mymanager/models/common"
+	"github.com/fishedee/language"
+	"mymanager/models/common"
 	"strings"
 )
 
 type BlogCsdnAoModel struct {
-	BaseModel
+	common.BaseModel
 	BlogCsdnCrawlAo BlogCsdnCrawlAoModel
 }
 
 func (this *BlogCsdnAoModel) login(accessToken string) string {
 	accessTokenArray := strings.Split(accessToken, ",")
 	if len(accessTokenArray) != 2 {
-		Throw(1, "请输入用逗号分割的accessToken")
+		language.Throw(1, "请输入用逗号分割的accessToken")
 	}
 	username := accessTokenArray[0]
 	password := accessTokenArray[1]
 	if username == "" || password == "" {
-		Throw(1, "用户名与密码都不能为空")
+		language.Throw(1, "用户名与密码都不能为空")
 	}
 	this.BlogCsdnCrawlAo.Login(username, password)
 	return username
@@ -55,8 +54,8 @@ func (this *BlogCsdnAoModel) diffData(src Blog, dist Blog, syncType int) BlogDif
 	result := BlogDiff{}
 
 	//比较Category
-	mapSrcCategory := ArrayColumnMap(src.Categorys, "Name").(map[string]BlogCategory)
-	mapDistCategory := ArrayColumnMap(dist.Categorys, "Name").(map[string]BlogCategory)
+	mapSrcCategory := language.ArrayColumnMap(src.Categorys, "Name").(map[string]BlogCategory)
+	mapDistCategory := language.ArrayColumnMap(dist.Categorys, "Name").(map[string]BlogCategory)
 
 	for name, singleCategory := range mapSrcCategory {
 		_, ok := mapDistCategory[name]
@@ -75,8 +74,8 @@ func (this *BlogCsdnAoModel) diffData(src Blog, dist Blog, syncType int) BlogDif
 	}
 
 	//比较Article
-	mapSrcArticle := ArrayColumnMap(src.Articles, "Title").(map[string]BlogArticle)
-	mapDistArticle := ArrayColumnMap(dist.Articles, "Title").(map[string]BlogArticle)
+	mapSrcArticle := language.ArrayColumnMap(src.Articles, "Title").(map[string]BlogArticle)
+	mapDistArticle := language.ArrayColumnMap(dist.Articles, "Title").(map[string]BlogArticle)
 	for name, singleArticle := range mapSrcArticle {
 		_, ok := mapDistArticle[name]
 		if !ok {

@@ -1,16 +1,16 @@
 package card
 
 import (
-	. "github.com/fishedee/language"
-	. "mymanager/models/common"
+	"github.com/fishedee/language"
+	"mymanager/models/common"
 	"strconv"
 )
 
 type CardDbModel struct {
-	BaseModel
+	common.BaseModel
 }
 
-func (this *CardDbModel) Search(where Card, limit CommonPage) Cards {
+func (this *CardDbModel) Search(where Card, limit common.CommonPage) Cards {
 	db := this.DB.NewSession()
 
 	if where.Name != "" {
@@ -47,7 +47,7 @@ func (this *CardDbModel) Get(cardId int) Card {
 		panic(err)
 	}
 	if len(cards) == 0 {
-		Throw(1, "不存在该银行卡"+strconv.Itoa(cardId))
+		language.Throw(1, "不存在该银行卡"+strconv.Itoa(cardId))
 	}
 	return cards[0]
 }

@@ -1,16 +1,16 @@
 package blog
 
 import (
-	. "github.com/fishedee/language"
-	. "mymanager/models/common"
+	"github.com/fishedee/language"
+	"mymanager/models/common"
 	"strconv"
 )
 
 type BlogSyncDbModel struct {
-	BaseModel
+	common.BaseModel
 }
 
-func (this *BlogSyncDbModel) Search(where BlogSync, limit CommonPage) BlogSyncs {
+func (this *BlogSyncDbModel) Search(where BlogSync, limit common.CommonPage) BlogSyncs {
 	db := this.DB.NewSession()
 
 	if limit.PageSize == 0 && limit.PageIndex == 0 {
@@ -57,7 +57,7 @@ func (this *BlogSyncDbModel) Get(blogSyncId int) BlogSync {
 		panic(err)
 	}
 	if len(blogSyncs) == 0 {
-		Throw(1, "不存在该记录"+strconv.Itoa(blogSyncId))
+		language.Throw(1, "不存在该记录"+strconv.Itoa(blogSyncId))
 	}
 	return blogSyncs[0]
 }

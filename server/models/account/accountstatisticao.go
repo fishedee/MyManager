@@ -2,26 +2,26 @@ package account
 
 import (
 	"fmt"
-	. "github.com/fishedee/language"
-	. "mymanager/models/card"
-	. "mymanager/models/category"
-	. "mymanager/models/common"
+	"github.com/fishedee/language"
+	"mymanager/models/card"
+	"mymanager/models/category"
+	"mymanager/models/common"
 )
 
 type AccountStatisticAoModel struct {
-	BaseModel
+	common.BaseModel
 	AccountDb  AccountStatisticDbModel
-	CardAo     CardAoModel
-	CategoryAo CategoryAoModel
+	CardAo     card.CardAoModel
+	CategoryAo category.CategoryAoModel
 }
 
 func (this *AccountStatisticAoModel) GetWeekTypeStatistic(userId int) []AccountStatistic {
 	statistic := this.AccountDb.GetWeekTypStatisticByUser(userId)
 	enums := AccountTypeEnum.Datas()
 
-	return QueryGroup(statistic, "   Year    desc    ,   Week    desc", func(weekStatistic []AccountStatistic) []AccountStatistic {
+	return language.QueryGroup(statistic, "   Year    desc    ,   Week    desc", func(weekStatistic []AccountStatistic) []AccountStatistic {
 		single := weekStatistic[0]
-		result := QueryLeftJoin(enums, weekStatistic, "Id = Type", func(left EnumData, right AccountStatistic) AccountStatistic {
+		result := language.QueryLeftJoin(enums, weekStatistic, "Id = Type", func(left language.EnumData, right AccountStatistic) AccountStatistic {
 			return AccountStatistic{
 				Year: single.Year,
 				Week: single.Week,
@@ -41,10 +41,10 @@ func (this *AccountStatisticAoModel) GetWeekTypeStatistic(userId int) []AccountS
 
 func (this *AccountStatisticAoModel) GetWeekTypeStatisticDetail(userId int, year int, week int, accountType int) []AccountStatisticDetail {
 	statistic := this.AccountDb.GetWeekTypeStatisticDetailByUser(userId, year, week, accountType)
-	category := this.CategoryAo.Search(userId, Category{}, CommonPage{}).Data
+	categorys := this.CategoryAo.Search(userId, category.Category{}, common.CommonPage{}).Data
 
-	totalMoney := QuerySum(QueryColumn(statistic, "Money")).(int)
-	return QueryLeftJoin(statistic, category, "CategoryId = CategoryId", func(left AccountStatisticDetail, right Category) AccountStatisticDetail {
+	totalMoney := language.QuerySum(language.QueryColumn(statistic, "Money")).(int)
+	return language.QueryLeftJoin(statistic, categorys, "CategoryId = CategoryId", func(left AccountStatisticDetail, right category.Category) AccountStatisticDetail {
 		if right.Name == "" {
 			right.Name = "无分类"
 		}
@@ -56,10 +56,10 @@ func (this *AccountStatisticAoModel) GetWeekTypeStatisticDetail(userId int, year
 
 func (this *AccountStatisticAoModel) GetWeekCardStatistic(userId int) []AccountStatistic {
 	statistic := this.AccountDb.GetWeekCardStatisticByUser(userId)
-	card := this.CardAo.Search(userId, Card{}, CommonPage{}).Data
+	cards := this.CardAo.Search(userId, card.Card{}, common.CommonPage{}).Data
 
-	statistic = QueryGroup(statistic, "Year desc,Week desc,CardId desc", func(weekStatistic []AccountStatistic) []AccountStatistic {
-		sum := QuerySum(QuerySelect(weekStatistic, func(singleStatistic AccountStatistic) int {
+	statistic = language.QueryGroup(statistic, "Year desc,Week desc,CardId desc", func(weekStatistic []AccountStatistic) []AccountStatistic {
+		sum := language.QuerySum(language.QuerySelect(weekStatistic, func(singleStatistic AccountStatistic) int {
 			if singleStatistic.Type == AccountTypeEnum.TYPE_BORROW_IN ||
 				singleStatistic.Type == AccountTypeEnum.TYPE_IN ||
 				singleStatistic.Type == AccountTypeEnum.TYPE_TRANSFER_IN {
@@ -74,9 +74,9 @@ func (this *AccountStatisticAoModel) GetWeekCardStatistic(userId int) []AccountS
 	}).([]AccountStatistic)
 
 	cardMoney := map[int]int{}
-	statistic = QueryGroup(statistic, "Year asc ,Week asc", func(weekStatistic []AccountStatistic) []AccountStatistic {
+	statistic = language.QueryGroup(statistic, "Year asc ,Week asc", func(weekStatistic []AccountStatistic) []AccountStatistic {
 		single := weekStatistic[0]
-		return QueryLeftJoin(card, weekStatistic, "CardId = CardId", func(left Card, right AccountStatistic) AccountStatistic {
+		return language.QueryLeftJoin(cards, weekStatistic, "CardId = CardId", func(left card.Card, right AccountStatistic) AccountStatistic {
 			currentMoney, ok := cardMoney[left.CardId]
 			if !ok {
 				currentMoney = left.Money
@@ -98,15 +98,15 @@ func (this *AccountStatisticAoModel) GetWeekCardStatistic(userId int) []AccountS
 		}).([]AccountStatistic)
 	}).([]AccountStatistic)
 
-	return QueryReverse(statistic).([]AccountStatistic)
+	return language.QueryReverse(statistic).([]AccountStatistic)
 }
 
 func (this *AccountStatisticAoModel) GetWeekCardStatisticDetail(userId int, year int, week int, cardId int) []AccountStatisticDetail {
 	statistic := this.AccountDb.GetWeekCardStatisticDetailByUser(userId, year, week, cardId)
 	enums := AccountTypeEnum.Datas()
 
-	totalMoney := QuerySum(QueryColumn(statistic, "Money")).(int)
-	return QueryLeftJoin(statistic, enums, "Type = Id", func(left AccountStatisticDetail, right EnumData) AccountStatisticDetail {
+	totalMoney := language.QuerySum(language.QueryColumn(statistic, "Money")).(int)
+	return language.QueryLeftJoin(statistic, enums, "Type = Id", func(left AccountStatisticDetail, right language.EnumData) AccountStatisticDetail {
 		left.TypeName = right.Name
 		left.Precent = fmt.Sprintf("%.2f", float64(left.Money)/float64(totalMoney)*100)
 		return left

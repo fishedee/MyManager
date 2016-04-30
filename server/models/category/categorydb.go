@@ -1,16 +1,16 @@
 package category
 
 import (
-	. "github.com/fishedee/language"
-	. "mymanager/models/common"
+	"github.com/fishedee/language"
+	"mymanager/models/common"
 	"strconv"
 )
 
 type CategoryDbModel struct {
-	BaseModel
+	common.BaseModel
 }
 
-func (this *CategoryDbModel) Search(where Category, limit CommonPage) Categorys {
+func (this *CategoryDbModel) Search(where Category, limit common.CommonPage) Categorys {
 	db := this.DB.NewSession()
 
 	if where.Name != "" {
@@ -47,7 +47,7 @@ func (this *CategoryDbModel) Get(categoryId int) Category {
 		panic(err)
 	}
 	if len(categorys) == 0 {
-		Throw(1, "不存在该分类"+strconv.Itoa(categoryId))
+		language.Throw(1, "不存在该分类"+strconv.Itoa(categoryId))
 	}
 	return categorys[0]
 }
