@@ -22,7 +22,7 @@ func (this *BlogGitAoTest) TestMarkdown() {
 
 func (this *BlogGitAoTest) TestGit() {
 	fmt.Println("download git...")
-	data := this.BlogGitAo.Get("https://github.com/fishedee/MyBlog.git", func(message string) {
+	data := this.BlogGitAo.Get("https://github.com/fishedee/poj.git", func(message string) {
 		fmt.Println(message)
 	})
 	fmt.Println(data)

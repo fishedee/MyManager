@@ -13,3 +13,5 @@ stop:
 	sudo supervisorctl stop mymanager_server 
 	-pkill -9 bee
 	-pkill -9 mymanager
+gen:
+	go generate
