@@ -48,7 +48,7 @@ func (this *CardDbModel) Get(cardId int) Card {
 		panic(err)
 	}
 	if len(cards) == 0 {
-		Throw(1, "不存在该银行卡"+strconv.Itoa(cardId))
+		Throw(1, "该"+strconv.Itoa(cardId)+"银行卡不存在")
 	}
 	return cards[0]
 }

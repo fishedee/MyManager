@@ -48,7 +48,7 @@ func (this *CategoryDbModel) Get(categoryId int) Category {
 		panic(err)
 	}
 	if len(categorys) == 0 {
-		Throw(1, "不存在该分类"+strconv.Itoa(categoryId))
+		Throw(1, "该"+strconv.Itoa(categoryId)+"分类不存在")
 	}
 	return categorys[0]
 }

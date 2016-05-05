@@ -58,6 +58,7 @@ func (this *AccountStatisticAoModel) GetWeekTypeStatisticDetail(userId int, year
 func (this *AccountStatisticAoModel) GetWeekCardStatistic(userId int) []AccountStatistic {
 	statistic := this.AccountDb.GetWeekCardStatisticByUser(userId)
 	card := this.CardAo.Search(userId, Card{}, CommonPage{}).Data
+	card = QueryReverse(card).([]Card)
 
 	statistic = QueryGroup(statistic, "Year desc,Week desc,CardId desc", func(weekStatistic []AccountStatistic) []AccountStatistic {
 		sum := QuerySum(QuerySelect(weekStatistic, func(singleStatistic AccountStatistic) int {

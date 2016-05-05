@@ -64,7 +64,7 @@ func (this *AccountDbModel) Get(accountId int) Account {
 		panic(err)
 	}
 	if len(accounts) == 0 {
-		Throw(1, "不存在该记录"+strconv.Itoa(accountId))
+		Throw(1, "该"+strconv.Itoa(accountId)+"账务不存在")
 	}
 	return accounts[0]
 }

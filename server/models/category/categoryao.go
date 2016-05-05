@@ -20,7 +20,7 @@ func (this *CategoryAoModel) Search(userId int, where Category, limit CommonPage
 func (this *CategoryAoModel) Get(userId int, categoryId int) Category {
 	categoryInfo := this.CategoryDb.Get(categoryId)
 	if categoryInfo.UserId != userId {
-		Throw(1, "你没有该权限")
+		Throw(1, "你没有权利查看或编辑等操作")
 	}
 	return categoryInfo
 }

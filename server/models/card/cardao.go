@@ -19,7 +19,7 @@ func (this *CardAoModel) Search(userId int, where Card, limit CommonPage) Cards 
 func (this *CardAoModel) Get(userId int, cardId int) Card {
 	cardInfo := this.CardDb.Get(cardId)
 	if cardInfo.UserId != userId {
-		Throw(1, "你没有该权限")
+		Throw(1, "你没有权利查看或编辑等操作")
 	}
 	return cardInfo
 }

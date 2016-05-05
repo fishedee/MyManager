@@ -52,7 +52,7 @@ func (this *UserDbModel) Get(id int) User {
 		panic(err)
 	}
 	if len(users) == 0 {
-		Throw(1, "不存在该用户"+strconv.Itoa(id))
+		Throw(1, "该"+strconv.Itoa(id)+"用户不存在")
 	}
 	return users[0]
 }

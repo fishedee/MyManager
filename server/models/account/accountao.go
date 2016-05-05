@@ -43,7 +43,7 @@ func (this *AccountAoModel) Get(userId int, accountId int) Account {
 	account := this.AccountDb.Get(accountId)
 
 	if account.UserId != userId {
-		Throw(1, "权限不足")
+		Throw(1, "你没有权利查看或编辑等操作")
 	}
 	return account
 }
