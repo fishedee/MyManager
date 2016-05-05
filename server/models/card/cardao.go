@@ -29,7 +29,7 @@ func (this *CardAoModel) Del(userId int, cardId int) {
 
 	this.CardDb.Del(cardId)
 
-	this.Queue.Publish("card_del", cardId)
+	this.Queue.Publish(CardQueueEnum.EVENT_DEL, cardId)
 }
 
 func (this *CardAoModel) Add(userId int, card Card) {

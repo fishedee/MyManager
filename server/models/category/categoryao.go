@@ -30,7 +30,7 @@ func (this *CategoryAoModel) Del(userId int, categoryId int) {
 
 	this.CategoryDb.Del(categoryId)
 
-	this.Queue.Publish("category_del", categoryId)
+	this.Queue.Publish(CategoryQueueEnum.EVENT_DEL, categoryId)
 }
 
 func (this *CategoryAoModel) Add(userId int, categoryInfo Category) {

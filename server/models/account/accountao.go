@@ -79,7 +79,7 @@ func (this *AccountAoModel) whenCardDelete(cardId int) {
 
 func init() {
 	InitDaemon(func(this *AccountAoModel) {
-		this.Queue.Subscribe("category_del", this.whenCategoryDelete)
-		this.Queue.Subscribe("card_del", this.whenCardDelete)
+		this.Queue.Subscribe(CategoryQueueEnum.EVENT_DEL, this.whenCategoryDelete)
+		this.Queue.Subscribe(CardQueueEnum.EVENT_DEL, this.whenCardDelete)
 	})
 }
