@@ -6,14 +6,14 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	. "github.com/fishedee/encoding"
 	. "github.com/fishedee/util"
-	. "mymanager/models/common"
+	. "github.com/fishedee/web"
 	"strconv"
 	"strings"
 	"time"
 )
 
 type BlogCsdnCrawlAoModel struct {
-	BaseModel
+	Model
 	AjaxPool *AjaxPool
 }
 

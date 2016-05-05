@@ -1,18 +1,13 @@
 package controllers
 
 import (
-	"github.com/astaxie/beego"
 	. "github.com/fishedee/encoding"
 	. "github.com/fishedee/language"
 	. "github.com/fishedee/web"
 )
 
 type BaseController struct {
-	BeegoValidateController
-}
-
-func InitRoute(namespace string, target beego.ControllerInterface) {
-	InitBeegoVaildateControllerRoute(namespace, target)
+	Controller
 }
 
 type baseControllerResult struct {
@@ -26,7 +21,7 @@ func (this *BaseController) jsonRender(result baseControllerResult) {
 	if err != nil {
 		panic(err)
 	}
-	this.Ctx.WriteString(string(resultString))
+	this.Ctx.Write(resultString)
 }
 
 func (this *BaseController) AutoRender(returnValue interface{}, viewname string) {
@@ -43,9 +38,9 @@ func (this *BaseController) AutoRender(returnValue interface{}, viewname string)
 		result.Data = returnValue
 		result.Msg = ""
 	}
-	this.Ctx.Output.Header("Cache-Control", "private, no-store, no-cache, must-revalidate, max-age=0")
-	this.Ctx.Output.Header("Cache-Control", "post-check=0, pre-check=0")
-	this.Ctx.Output.Header("Pragma", "no-cache")
+	this.Ctx.WriteHeader("Cache-Control", "private, no-store, no-cache, must-revalidate, max-age=0")
+	this.Ctx.WriteHeader("Cache-Control", "post-check=0, pre-check=0")
+	this.Ctx.WriteHeader("Pragma", "no-cache")
 
 	if viewname == "json" {
 		this.jsonRender(result)

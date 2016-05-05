@@ -1,6 +1,7 @@
 package routers
 
 import (
+	. "github.com/fishedee/web"
 	. "mymanager/controllers"
 )
 

@@ -2,12 +2,13 @@ package card
 
 import (
 	. "github.com/fishedee/language"
+	. "github.com/fishedee/web"
 	. "mymanager/models/common"
 	"strconv"
 )
 
 type CardDbModel struct {
-	BaseModel
+	Model
 }
 
 func (this *CardDbModel) Search(where Card, limit CommonPage) Cards {

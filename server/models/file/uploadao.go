@@ -2,8 +2,8 @@ package file
 
 import (
 	. "github.com/fishedee/sdk"
+	. "github.com/fishedee/web"
 	"io/ioutil"
-	. "mymanager/models/common"
 )
 
 const (
@@ -14,7 +14,7 @@ const (
 )
 
 type UploadAoModel struct {
-	BaseModel
+	Model
 }
 
 func (this *UploadAoModel) UploadFile(data []byte) string {

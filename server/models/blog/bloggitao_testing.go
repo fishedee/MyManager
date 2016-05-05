@@ -2,12 +2,11 @@ package blog
 
 import (
 	"fmt"
-	. "mymanager/models/common"
-	"testing"
+	. "github.com/fishedee/web"
 )
 
 type BlogGitAoTest struct {
-	BaseTest
+	Test
 	BlogGitAo BlogGitAoModel
 }
 
@@ -29,6 +28,6 @@ func (this *BlogGitAoTest) TestGit() {
 	fmt.Println(data)
 }
 
-func TestBlogGit(t *testing.T) {
-	InitTest(t, &BlogGitAoTest{})
+func init() {
+	InitTest(&BlogGitAoTest{})
 }

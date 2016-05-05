@@ -8,7 +8,7 @@ import (
 )
 
 type CategoryAoModel struct {
-	BaseModel
+	Model
 	CategoryDb CategoryDbModel
 }
 

@@ -3,13 +3,14 @@ package account
 import (
 	"fmt"
 	. "github.com/fishedee/language"
+	. "github.com/fishedee/web"
 	. "mymanager/models/card"
 	. "mymanager/models/category"
 	. "mymanager/models/common"
 )
 
 type AccountStatisticAoModel struct {
-	BaseModel
+	Model
 	AccountDb  AccountStatisticDbModel
 	CardAo     CardAoModel
 	CategoryAo CategoryAoModel

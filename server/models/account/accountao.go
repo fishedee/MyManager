@@ -10,7 +10,7 @@ import (
 )
 
 type AccountAoModel struct {
-	BaseModel
+	Model
 	AccountDb  AccountDbModel
 	CategoryAo CategoryAoModel
 	CardAo     CardAoModel

@@ -2,12 +2,13 @@ package blog
 
 import (
 	. "github.com/fishedee/language"
+	. "github.com/fishedee/web"
 	. "mymanager/models/common"
 	"strconv"
 )
 
 type BlogSyncAutoDbModel struct {
-	BaseModel
+	Model
 }
 
 func (this *BlogSyncAutoDbModel) Search(where BlogSyncAuto, limit CommonPage) BlogSyncAutos {

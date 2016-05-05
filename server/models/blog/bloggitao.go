@@ -7,9 +7,9 @@ import (
 	. "github.com/fishedee/encoding"
 	. "github.com/fishedee/language"
 	. "github.com/fishedee/util"
+	. "github.com/fishedee/web"
 	"github.com/russross/blackfriday"
 	"io/ioutil"
-	. "mymanager/models/common"
 	. "mymanager/models/file"
 	"os"
 	"os/exec"
@@ -18,7 +18,7 @@ import (
 )
 
 type BlogGitAoModel struct {
-	BaseModel
+	Model
 	UploadAo UploadAoModel
 }
 

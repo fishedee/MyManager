@@ -2,12 +2,13 @@ package account
 
 import (
 	. "github.com/fishedee/language"
+	. "github.com/fishedee/web"
 	. "mymanager/models/common"
 	"strconv"
 )
 
 type AccountDbModel struct {
-	BaseModel
+	Model
 }
 
 func (this *AccountDbModel) Search(where Account, limit CommonPage) Accounts {

@@ -2,20 +2,20 @@ package user
 
 import (
 	. "github.com/fishedee/language"
-	. "mymanager/models/common"
+	. "github.com/fishedee/web"
 )
 
 type UserLoginAoModel struct {
-	BaseModel
+	Model
 	UserAo UserAoModel
 }
 
 func (this *UserLoginAoModel) IsLogin() User {
-	sess, err := this.Session.SessionStart(this.Ctx.ResponseWriter, this.Ctx.Request)
+	sess, err := this.Session.SessionStart()
 	if err != nil {
 		panic("session启动失败")
 	}
-	defer sess.SessionRelease(this.Ctx.ResponseWriter)
+	defer sess.SessionRelease()
 
 	userId := sess.Get("userId")
 	userIdInt, ok := userId.(int)
@@ -43,21 +43,21 @@ func (this *UserLoginAoModel) CheckMustAdmin() User {
 }
 
 func (this *UserLoginAoModel) Logout() {
-	sess, err := this.Session.SessionStart(this.Ctx.ResponseWriter, this.Ctx.Request)
+	sess, err := this.Session.SessionStart()
 	if err != nil {
 		panic("session启动失败")
 	}
-	defer sess.SessionRelease(this.Ctx.ResponseWriter)
+	defer sess.SessionRelease()
 
 	sess.Set("userId", 0)
 }
 
 func (this *UserLoginAoModel) Login(name string, password string) {
-	sess, err := this.Session.SessionStart(this.Ctx.ResponseWriter, this.Ctx.Request)
+	sess, err := this.Session.SessionStart()
 	if err != nil {
 		panic("session启动失败")
 	}
-	defer sess.SessionRelease(this.Ctx.ResponseWriter)
+	defer sess.SessionRelease()
 	users := this.UserAo.GetByName(name)
 	if len(users) == 0 {
 		Throw(1, "不存在此帐号")

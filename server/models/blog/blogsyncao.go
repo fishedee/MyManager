@@ -7,7 +7,7 @@ import (
 )
 
 type BlogSyncAoModel struct {
-	BaseModel
+	Model
 	BlogSyncDb     BlogSyncDbModel
 	BlogSyncAutoDb BlogSyncAutoDbModel
 	BlogCsdnAo     BlogCsdnAoModel

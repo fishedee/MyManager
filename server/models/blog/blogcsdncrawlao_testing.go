@@ -1,12 +1,11 @@
 package blog
 
 import (
-	. "mymanager/models/common"
-	"testing"
+	. "github.com/fishedee/web"
 )
 
 type BlogCsdnCrawlAoTest struct {
-	BaseTest
+	Test
 	BlogCsdnCrawlAo BlogCsdnCrawlAoModel
 }
 
@@ -148,7 +147,7 @@ func (this *BlogCsdnCrawlAoTest) testArticle(name string) {
 	this.testArticleClear(name)
 }
 
-func (this *BlogCsdnCrawlAoTest) Test() {
+func (this *BlogCsdnCrawlAoTest) TestBasic() {
 	username := "fishmei2"
 	password := "woaini520"
 
@@ -161,6 +160,6 @@ func (this *BlogCsdnCrawlAoTest) Test() {
 	//this.testCategory()
 }
 
-func TestCsdnCrawlAo(t *testing.T) {
-	InitTest(t, &BlogCsdnCrawlAoTest{})
+func init() {
+	InitTest(&BlogCsdnCrawlAoTest{})
 }

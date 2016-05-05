@@ -2,12 +2,11 @@ package file
 
 import (
 	. "github.com/fishedee/util"
-	. "server2/models/common"
-	"testing"
+	. "github.com/fishedee/web"
 )
 
 type UploadAoTest struct {
-	BaseTest
+	Test
 	UploadAo UploadAoModel
 }
 
@@ -29,6 +28,6 @@ func (this *UploadAoTest) TestFile() {
 	}
 }
 
-func TestUpload(t *testing.T) {
-	InitTest(t, &UploadAoTest{})
+func init() {
+	InitTest(&UploadAoTest{})
 }

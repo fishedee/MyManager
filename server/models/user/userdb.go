@@ -2,12 +2,13 @@ package user
 
 import (
 	. "github.com/fishedee/language"
+	. "github.com/fishedee/web"
 	. "mymanager/models/common"
 	"strconv"
 )
 
 type UserDbModel struct {
-	BaseModel
+	Model
 }
 
 func (this *UserDbModel) Search(where User, limit CommonPage) Users {

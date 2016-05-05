@@ -2,13 +2,12 @@ package blog
 
 import (
 	. "github.com/fishedee/language"
-	. "github.com/fishedee/sdk"
-	. "mymanager/models/common"
+	. "github.com/fishedee/web"
 	"strings"
 )
 
 type BlogCsdnAoModel struct {
-	BaseModel
+	Model
 	BlogCsdnCrawlAo BlogCsdnCrawlAoModel
 }
 

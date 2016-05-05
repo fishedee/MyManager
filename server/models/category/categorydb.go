@@ -2,12 +2,13 @@ package category
 
 import (
 	. "github.com/fishedee/language"
+	. "github.com/fishedee/web"
 	. "mymanager/models/common"
 	"strconv"
 )
 
 type CategoryDbModel struct {
-	BaseModel
+	Model
 }
 
 func (this *CategoryDbModel) Search(where Category, limit CommonPage) Categorys {

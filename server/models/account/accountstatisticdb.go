@@ -1,11 +1,11 @@
 package account
 
 import (
-	. "mymanager/models/common"
+	. "github.com/fishedee/web"
 )
 
 type AccountStatisticDbModel struct {
-	BaseModel
+	Model
 }
 
 func (this *AccountStatisticDbModel) GetWeekTypStatisticByUser(userId int) []AccountStatistic {

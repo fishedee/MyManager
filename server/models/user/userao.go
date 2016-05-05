@@ -4,12 +4,13 @@ import (
 	"crypto/sha1"
 	"fmt"
 	. "github.com/fishedee/language"
+	. "github.com/fishedee/web"
 	"io"
 	. "mymanager/models/common"
 )
 
 type UserAoModel struct {
-	BaseModel
+	Model
 	UserDb UserDbModel
 }
 

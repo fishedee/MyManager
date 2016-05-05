@@ -1,12 +1,13 @@
 package card
 
 import (
-	. "mymanager/models/common"
 	. "github.com/fishedee/language"
+	. "github.com/fishedee/web"
+	. "mymanager/models/common"
 )
 
 type CardAoModel struct {
-	BaseModel
+	Model
 	CardDb CardDbModel
 }
 
