@@ -4,12 +4,12 @@ import (
 	. "github.com/fishedee/web"
 )
 
-type BlogCsdnCrawlAoTest struct {
+type blogCsdnCrawlAoTest struct {
 	Test
 	BlogCsdnCrawlAo BlogCsdnCrawlAoModel
 }
 
-func (this *BlogCsdnCrawlAoTest) testCategoryClear() {
+func (this *blogCsdnCrawlAoTest) testCategoryClear() {
 	categoryList := this.BlogCsdnCrawlAo.GetCategoryList()
 
 	for i := 0; i != len(categoryList); i++ {
@@ -20,7 +20,7 @@ func (this *BlogCsdnCrawlAoTest) testCategoryClear() {
 	this.AssertEqual(len(categoryList), 0)
 }
 
-func (this *BlogCsdnCrawlAoTest) testCategoryAdd() []BlogCategory {
+func (this *blogCsdnCrawlAoTest) testCategoryAdd() []BlogCategory {
 	count := 3
 
 	data := []string{}
@@ -40,7 +40,7 @@ func (this *BlogCsdnCrawlAoTest) testCategoryAdd() []BlogCategory {
 	return categoryList
 }
 
-func (this *BlogCsdnCrawlAoTest) testCategoryMod(categoryList []BlogCategory) {
+func (this *blogCsdnCrawlAoTest) testCategoryMod(categoryList []BlogCategory) {
 	for i := 0; i != len(categoryList); i++ {
 		categoryList[i].Name = this.RandomString(16)
 		this.BlogCsdnCrawlAo.ModCategory(categoryList[i].Id, categoryList[i])
@@ -50,7 +50,7 @@ func (this *BlogCsdnCrawlAoTest) testCategoryMod(categoryList []BlogCategory) {
 	this.AssertEqual(categoryList, categoryList2)
 }
 
-func (this *BlogCsdnCrawlAoTest) testCategory() {
+func (this *blogCsdnCrawlAoTest) testCategory() {
 	this.testCategoryClear()
 
 	data := this.testCategoryAdd()
@@ -60,7 +60,7 @@ func (this *BlogCsdnCrawlAoTest) testCategory() {
 	this.testCategoryClear()
 }
 
-func (this *BlogCsdnCrawlAoTest) getAllArticle(name string) []BlogArticle {
+func (this *blogCsdnCrawlAoTest) getAllArticle(name string) []BlogArticle {
 	var result []BlogArticle
 	var articleList []BlogArticle
 
@@ -85,7 +85,7 @@ func (this *BlogCsdnCrawlAoTest) getAllArticle(name string) []BlogArticle {
 	return result
 }
 
-func (this *BlogCsdnCrawlAoTest) testArticleClear(name string) {
+func (this *blogCsdnCrawlAoTest) testArticleClear(name string) {
 	articleList := this.getAllArticle(name)
 
 	for i := 0; i != len(articleList); i++ {
@@ -96,7 +96,7 @@ func (this *BlogCsdnCrawlAoTest) testArticleClear(name string) {
 	this.AssertEqual(len(articleList), 0)
 }
 
-func (this *BlogCsdnCrawlAoTest) testArticleAdd(name string) []BlogArticle {
+func (this *blogCsdnCrawlAoTest) testArticleAdd(name string) []BlogArticle {
 	count := 3
 
 	data := []BlogArticle{}
@@ -121,7 +121,7 @@ func (this *BlogCsdnCrawlAoTest) testArticleAdd(name string) []BlogArticle {
 	return articleList
 }
 
-func (this *BlogCsdnCrawlAoTest) testArticleMod(name string, articleList []BlogArticle) {
+func (this *blogCsdnCrawlAoTest) testArticleMod(name string, articleList []BlogArticle) {
 	for i := 0; i != len(articleList); i++ {
 		articleList[i].Content = "#" + this.RandomString(16)
 		articleList[i].HtmlContent = "<h1>" + this.RandomString(16) + "</h1>"
@@ -137,7 +137,7 @@ func (this *BlogCsdnCrawlAoTest) testArticleMod(name string, articleList []BlogA
 	}
 }
 
-func (this *BlogCsdnCrawlAoTest) testArticle(name string) {
+func (this *blogCsdnCrawlAoTest) testArticle(name string) {
 	this.testArticleClear(name)
 
 	data := this.testArticleAdd(name)
@@ -147,7 +147,7 @@ func (this *BlogCsdnCrawlAoTest) testArticle(name string) {
 	this.testArticleClear(name)
 }
 
-func (this *BlogCsdnCrawlAoTest) TestBasic() {
+func (this *blogCsdnCrawlAoTest) TestBasic() {
 	username := "fishmei2"
 	password := "woaini520"
 
@@ -158,8 +158,4 @@ func (this *BlogCsdnCrawlAoTest) TestBasic() {
 
 	//测试分类
 	//this.testCategory()
-}
-
-func init() {
-	InitTest(&BlogCsdnCrawlAoTest{})
 }

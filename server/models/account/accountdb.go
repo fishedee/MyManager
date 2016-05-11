@@ -7,11 +7,11 @@ import (
 	"strconv"
 )
 
-type AccountDbModel struct {
+type accountDbModel struct {
 	Model
 }
 
-func (this *AccountDbModel) Search(where Account, limit CommonPage) Accounts {
+func (this *accountDbModel) Search(where Account, limit CommonPage) Accounts {
 	db := this.DB.NewSession()
 
 	if limit.PageSize == 0 && limit.PageIndex == 0 {
@@ -57,7 +57,7 @@ func (this *AccountDbModel) Search(where Account, limit CommonPage) Accounts {
 	}
 }
 
-func (this *AccountDbModel) Get(accountId int) Account {
+func (this *accountDbModel) Get(accountId int) Account {
 	var accounts []Account
 	err := this.DB.Where("accountId = ?", accountId).Find(&accounts)
 	if err != nil {
@@ -69,28 +69,28 @@ func (this *AccountDbModel) Get(accountId int) Account {
 	return accounts[0]
 }
 
-func (this *AccountDbModel) Del(accountId int) {
+func (this *accountDbModel) Del(accountId int) {
 	_, err := this.DB.Where("accountId = ?", accountId).Delete(&Account{})
 	if err != nil {
 		panic(err)
 	}
 }
 
-func (this *AccountDbModel) Add(account Account) {
+func (this *accountDbModel) Add(account Account) {
 	_, err := this.DB.Insert(account)
 	if err != nil {
 		panic(err)
 	}
 }
 
-func (this *AccountDbModel) Mod(accountId int, account Account) {
+func (this *accountDbModel) Mod(accountId int, account Account) {
 	_, err := this.DB.Where("accountId = ?", accountId).Update(&account)
 	if err != nil {
 		panic(err)
 	}
 }
 
-func (this *AccountDbModel) ResetCategory(categoryId int) {
+func (this *accountDbModel) ResetCategory(categoryId int) {
 	_, err := this.DB.Where("categoryId = ?", categoryId).Cols("categoryId").Update(&Account{
 		CategoryId: 0,
 	})
@@ -99,7 +99,7 @@ func (this *AccountDbModel) ResetCategory(categoryId int) {
 	}
 }
 
-func (this *AccountDbModel) ResetCard(cardId int) {
+func (this *accountDbModel) ResetCard(cardId int) {
 	_, err := this.DB.Where("cardId = ?", cardId).Cols("cardId").Update(&Account{
 		CardId: 0,
 	})

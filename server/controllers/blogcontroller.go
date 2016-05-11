@@ -6,13 +6,13 @@ import (
 	. "mymanager/models/user"
 )
 
-type BlogController struct {
-	BaseController
+type blogController struct {
+	baseController
 	BlogSyncAo  BlogSyncAoModel
 	UserLoginAo UserLoginAoModel
 }
 
-func (this *BlogController) SearchAuto_Json() interface{} {
+func (this *blogController) SearchAuto_Json() interface{} {
 	//检查输入参数
 	var where BlogSyncAuto
 	this.CheckGet(&where)
@@ -27,7 +27,7 @@ func (this *BlogController) SearchAuto_Json() interface{} {
 	return this.BlogSyncAo.SearchAuto(loginUser.UserId, where, limit)
 }
 
-func (this *BlogController) GetAuto_Json() interface{} {
+func (this *blogController) GetAuto_Json() interface{} {
 	//检查输入参数
 	var blogSync BlogSyncAuto
 	this.CheckGet(&blogSync)
@@ -39,7 +39,7 @@ func (this *BlogController) GetAuto_Json() interface{} {
 	return this.BlogSyncAo.GetAuto(loginUser.UserId, blogSync.BlogSyncAutoId)
 }
 
-func (this *BlogController) AddAuto_Json() {
+func (this *blogController) AddAuto_Json() {
 	//检查输入参数
 	var blogSync BlogSyncAuto
 	this.CheckPost(&blogSync)
@@ -51,7 +51,7 @@ func (this *BlogController) AddAuto_Json() {
 	this.BlogSyncAo.AddAuto(loginUser.UserId, blogSync)
 }
 
-func (this *BlogController) ModAuto_Json() {
+func (this *blogController) ModAuto_Json() {
 	//检查输入参数
 	var blogSync BlogSyncAuto
 	this.CheckPost(&blogSync)
@@ -63,7 +63,7 @@ func (this *BlogController) ModAuto_Json() {
 	this.BlogSyncAo.ModAuto(loginUser.UserId, blogSync.BlogSyncAutoId, blogSync)
 }
 
-func (this *BlogController) DelAuto_Json() {
+func (this *blogController) DelAuto_Json() {
 	//检查输入参数
 	var blogSync BlogSyncAuto
 	this.CheckPost(&blogSync)
@@ -75,7 +75,7 @@ func (this *BlogController) DelAuto_Json() {
 	this.BlogSyncAo.DelAuto(loginUser.UserId, blogSync.BlogSyncAutoId)
 }
 
-func (this *BlogController) SearchTask_Json() interface{} {
+func (this *blogController) SearchTask_Json() interface{} {
 	//检查输入参数
 	var where BlogSync
 	this.CheckGet(&where)
@@ -90,7 +90,7 @@ func (this *BlogController) SearchTask_Json() interface{} {
 	return this.BlogSyncAo.SearchTask(loginUser.UserId, where, limit)
 }
 
-func (this *BlogController) GetTask_Json() interface{} {
+func (this *blogController) GetTask_Json() interface{} {
 	//检查输入参数
 	var blogSync BlogSync
 	this.CheckGet(&blogSync)
@@ -102,7 +102,7 @@ func (this *BlogController) GetTask_Json() interface{} {
 	return this.BlogSyncAo.GetTask(loginUser.UserId, blogSync.BlogSyncId)
 }
 
-func (this *BlogController) AddTask_Json() {
+func (this *blogController) AddTask_Json() {
 	//检查输入参数
 	var blogSync BlogSync
 	this.CheckPost(&blogSync)
@@ -114,7 +114,7 @@ func (this *BlogController) AddTask_Json() {
 	this.BlogSyncAo.AddTask(loginUser.UserId, blogSync.AccessToken, blogSync.GitUrl, blogSync.SyncType)
 }
 
-func (this *BlogController) RestartTask_Json() {
+func (this *blogController) RestartTask_Json() {
 	//检查输入参数
 	var blogSync BlogSync
 	this.CheckPost(&blogSync)

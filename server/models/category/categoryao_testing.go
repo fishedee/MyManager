@@ -6,14 +6,14 @@ import (
 	. "mymanager/models/user"
 )
 
-type CategoryAoTest struct {
+type categoryAoTest struct {
 	Test
 	CategoryAo CategoryAoModel
 	UserAo     UserAoModel
 	UserAoTest UserAoTest
 }
 
-func (this *CategoryAoTest) InitEmpty() {
+func (this *categoryAoTest) InitEmpty() {
 	var where Category
 	limit := CommonPage{
 		PageSize:  1000,
@@ -25,7 +25,7 @@ func (this *CategoryAoTest) InitEmpty() {
 	}
 }
 
-func (this *CategoryAoTest) InitSample() {
+func (this *categoryAoTest) InitSample() {
 	this.InitEmpty()
 
 	categorys := []Category{
@@ -54,7 +54,7 @@ func (this *CategoryAoTest) InitSample() {
 	}
 }
 
-func (this *CategoryAoTest) assertCategoryEqual(categorys []Category) {
+func (this *categoryAoTest) assertCategoryEqual(categorys []Category) {
 	var where Category
 	limit := CommonPage{
 		PageSize:  99999,
@@ -65,7 +65,7 @@ func (this *CategoryAoTest) assertCategoryEqual(categorys []Category) {
 	this.AssertEqual(categorySearchData.Data, categorys)
 }
 
-func (this *CategoryAoTest) testAdd() []Category {
+func (this *categoryAoTest) testAdd() []Category {
 	categorys := []Category{
 		{
 			CategoryId: 10001,
@@ -88,7 +88,7 @@ func (this *CategoryAoTest) testAdd() []Category {
 	return categorys
 }
 
-func (this *CategoryAoTest) testGet(categorys []Category) {
+func (this *categoryAoTest) testGet(categorys []Category) {
 	//查看分类
 	categoryData := this.CategoryAo.Get(10001, 10001)
 	this.AssertEqual(categoryData, categorys[0])
@@ -102,7 +102,7 @@ func (this *CategoryAoTest) testGet(categorys []Category) {
 	this.AssertError(err3, 1, "该88888分类不存在")
 }
 
-func (this *CategoryAoTest) testMod(categorys []Category) {
+func (this *categoryAoTest) testMod(categorys []Category) {
 	//修改分类
 	modCategory := Category{
 		CategoryId: 10001,
@@ -133,7 +133,7 @@ func (this *CategoryAoTest) testMod(categorys []Category) {
 	this.AssertError(err5, 1, "该99999分类不存在")
 }
 
-func (this *CategoryAoTest) testDel(categorys []Category) {
+func (this *categoryAoTest) testDel(categorys []Category) {
 	//删除不属于他的分类
 	err6 := this.CategoryAo.Del_WithError(10002, 10001)
 	this.AssertError(err6, 1, "你没有权利查看或编辑等操作")
@@ -148,7 +148,7 @@ func (this *CategoryAoTest) testDel(categorys []Category) {
 	this.assertCategoryEqual(categorys)
 }
 
-func (this *CategoryAoTest) TestBasic() {
+func (this *categoryAoTest) TestBasic() {
 	this.UserAoTest.InitSample()
 	this.InitEmpty()
 
@@ -156,8 +156,4 @@ func (this *CategoryAoTest) TestBasic() {
 	this.testGet(data)
 	this.testMod(data)
 	this.testDel(data)
-}
-
-func init() {
-	InitTest(&CategoryAoTest{})
 }

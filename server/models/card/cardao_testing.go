@@ -7,14 +7,14 @@ import (
 	"time"
 )
 
-type CardAoTest struct {
+type cardAoTest struct {
 	Test
 	CardAo     CardAoModel
 	UserAo     UserAoModel
 	UserAoTest UserAoTest
 }
 
-func (this *CardAoTest) InitEmpty() {
+func (this *cardAoTest) InitEmpty() {
 	var where Card
 	limit := CommonPage{
 		PageSize:  1000,
@@ -26,7 +26,7 @@ func (this *CardAoTest) InitEmpty() {
 	}
 }
 
-func (this *CardAoTest) InitSample() {
+func (this *cardAoTest) InitSample() {
 	this.InitEmpty()
 
 	nowTime := time.Now().Truncate(time.Second)
@@ -59,7 +59,7 @@ func (this *CardAoTest) InitSample() {
 	this.CardAo.Add(10001, card10001)
 	this.CardAo.Add(10001, card10002)
 }
-func (this *CardAoTest) testAdd() (Card, Card) {
+func (this *cardAoTest) testAdd() (Card, Card) {
 	card10001 := Card{
 		CardId: 10001,
 		UserId: 10001,
@@ -86,7 +86,7 @@ func (this *CardAoTest) testAdd() (Card, Card) {
 
 	return card10001, card10002
 }
-func (this *CardAoTest) testSearch(card10001 Card, card10002 Card) {
+func (this *cardAoTest) testSearch(card10001 Card, card10002 Card) {
 	//查看卡片
 	cardData := this.CardAo.Get(10001, 10001)
 	this.AssertEqual(cardData, card10001)
@@ -112,7 +112,7 @@ func (this *CardAoTest) testSearch(card10001 Card, card10002 Card) {
 	this.AssertError(err3, 1, "该88888888银行卡不存在")
 
 }
-func (this *CardAoTest) testMod(card10001 Card) Card {
+func (this *cardAoTest) testMod(card10001 Card) Card {
 	//修改卡片
 	card10001.Bank = "顺德农商银行"
 	card10001.Card = "888888888"
@@ -147,7 +147,7 @@ func (this *CardAoTest) testMod(card10001 Card) Card {
 	return card10001
 }
 
-func (this *CardAoTest) testDel() {
+func (this *cardAoTest) testDel() {
 	//删除不属于他的卡片
 	err6 := this.CardAo.Del_WithError(10002, 10001)
 	this.AssertError(err6, 1, "你没有权利查看或编辑等操作")
@@ -162,7 +162,7 @@ func (this *CardAoTest) testDel() {
 	this.AssertError(err8, 1, "该10001银行卡不存在")
 
 }
-func (this *CardAoTest) TestBasic() {
+func (this *cardAoTest) TestBasic() {
 	this.UserAoTest.InitSample()
 	this.InitEmpty()
 
@@ -171,8 +171,4 @@ func (this *CardAoTest) TestBasic() {
 	card10001 = this.testMod(card10001)
 	this.testDel()
 
-}
-
-func init() {
-	InitTest(&CardAoTest{})
 }

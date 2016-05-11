@@ -7,11 +7,11 @@ import (
 	"strconv"
 )
 
-type CategoryDbModel struct {
+type categoryDbModel struct {
 	Model
 }
 
-func (this *CategoryDbModel) Search(where Category, limit CommonPage) Categorys {
+func (this *categoryDbModel) Search(where Category, limit CommonPage) Categorys {
 	db := this.DB.NewSession()
 
 	if where.Name != "" {
@@ -41,7 +41,7 @@ func (this *CategoryDbModel) Search(where Category, limit CommonPage) Categorys 
 	}
 }
 
-func (this *CategoryDbModel) Get(categoryId int) Category {
+func (this *categoryDbModel) Get(categoryId int) Category {
 	var categorys []Category
 	err := this.DB.Where("categoryId = ?", categoryId).Find(&categorys)
 	if err != nil {
@@ -53,21 +53,21 @@ func (this *CategoryDbModel) Get(categoryId int) Category {
 	return categorys[0]
 }
 
-func (this *CategoryDbModel) Del(categoryId int) {
+func (this *categoryDbModel) Del(categoryId int) {
 	_, err := this.DB.Where("categoryId = ?", categoryId).Delete(&Category{})
 	if err != nil {
 		panic(err)
 	}
 }
 
-func (this *CategoryDbModel) Add(category Category) {
+func (this *categoryDbModel) Add(category Category) {
 	_, err := this.DB.Insert(category)
 	if err != nil {
 		panic(err)
 	}
 }
 
-func (this *CategoryDbModel) Mod(categoryId int, category Category) {
+func (this *categoryDbModel) Mod(categoryId int, category Category) {
 	_, err := this.DB.Where("categoryId = ?", categoryId).Update(&category)
 	if err != nil {
 		panic(err)

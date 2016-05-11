@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-type AccountAoTest struct {
+type accountAoTest struct {
 	Test
 	AccountAo          AccountAoModel
 	AccountStatisticAo AccountStatisticAoModel
@@ -20,7 +20,7 @@ type AccountAoTest struct {
 	CardAo             CardAoModel
 }
 
-func (this *AccountAoTest) InitEmpty() {
+func (this *accountAoTest) InitEmpty() {
 	var where Account
 	limit := CommonPage{
 		PageSize:  1000,
@@ -32,7 +32,7 @@ func (this *AccountAoTest) InitEmpty() {
 	}
 }
 
-func (this *AccountAoTest) testAdd() (Account, Account) {
+func (this *accountAoTest) testAdd() (Account, Account) {
 	account1 := Account{
 		AccountId:  10001,
 		UserId:     10001,
@@ -62,7 +62,7 @@ func (this *AccountAoTest) testAdd() (Account, Account) {
 	return account1, account2
 }
 
-func (this *AccountAoTest) testSearch(account1 Account, account2 Account) {
+func (this *accountAoTest) testSearch(account1 Account, account2 Account) {
 	//查看账务
 	accountData := this.AccountAo.Get(10001, 10001)
 	this.AssertEqual(accountData, account1)
@@ -88,7 +88,7 @@ func (this *AccountAoTest) testSearch(account1 Account, account2 Account) {
 	this.AssertError(err3, 1, "该88888账务不存在")
 }
 
-func (this *AccountAoTest) testMod(account Account) Account {
+func (this *accountAoTest) testMod(account Account) Account {
 	//修改账务
 	account.Name = "小肥牛自助餐"
 	account.Money = 88
@@ -126,7 +126,7 @@ func (this *AccountAoTest) testMod(account Account) Account {
 	return account
 }
 
-func (this *AccountAoTest) testDel() {
+func (this *accountAoTest) testDel() {
 	//删除不属于他的账务
 	err6 := this.AccountAo.Del_WithError(10002, 10001)
 	this.AssertError(err6, 1, "你没有权利查看或编辑等操作")
@@ -152,7 +152,7 @@ func (this *AccountAoTest) testDel() {
 
 }
 
-func (this *AccountAoTest) testStatisticsAdd() {
+func (this *accountAoTest) testStatisticsAdd() {
 
 	nowTime := time.Date(2016, 4, 21, 13, 0, 0, 0, time.Local).Truncate(time.Second)
 	oldTime := nowTime.AddDate(0, -1, 0).Truncate(time.Second)
@@ -368,7 +368,7 @@ func (this *AccountAoTest) testStatisticsAdd() {
 	}
 }
 
-func (this *AccountAoTest) testGetWeekTypeStatistic() []AccountStatistic {
+func (this *accountAoTest) testGetWeekTypeStatistic() []AccountStatistic {
 	getWeekTypeStatistic := this.AccountStatisticAo.GetWeekTypeStatistic(10001)
 
 	this.AssertEqual(getWeekTypeStatistic, []AccountStatistic{
@@ -388,7 +388,7 @@ func (this *AccountAoTest) testGetWeekTypeStatistic() []AccountStatistic {
 	return getWeekTypeStatistic
 
 }
-func (this *AccountAoTest) testGetWeekDetailTypeStatistic(getWeekTypeStatistic []AccountStatistic) {
+func (this *accountAoTest) testGetWeekDetailTypeStatistic(getWeekTypeStatistic []AccountStatistic) {
 	getWeekDetailTypeStatistic := this.AccountStatisticAo.GetWeekTypeStatisticDetail(
 		10001,
 		getWeekTypeStatistic[0].Year,
@@ -403,7 +403,7 @@ func (this *AccountAoTest) testGetWeekDetailTypeStatistic(getWeekTypeStatistic [
 	})
 
 }
-func (this *AccountAoTest) testGetWeekCardStatistic() []AccountStatistic {
+func (this *accountAoTest) testGetWeekCardStatistic() []AccountStatistic {
 	getWeekCardStatistic := this.AccountStatisticAo.GetWeekCardStatistic(10001)
 
 	this.AssertEqual(getWeekCardStatistic, []AccountStatistic{
@@ -416,7 +416,7 @@ func (this *AccountAoTest) testGetWeekCardStatistic() []AccountStatistic {
 	return getWeekCardStatistic
 
 }
-func (this *AccountAoTest) testGetWeekDetailCardStatistic(getWeekCardStatistic []AccountStatistic) {
+func (this *accountAoTest) testGetWeekDetailCardStatistic(getWeekCardStatistic []AccountStatistic) {
 
 	getWeekDetailCardStatistic := this.AccountStatisticAo.GetWeekCardStatisticDetail(
 		10001,
@@ -435,7 +435,7 @@ func (this *AccountAoTest) testGetWeekDetailCardStatistic(getWeekCardStatistic [
 	})
 }
 
-func (this *AccountAoTest) testStatistics() {
+func (this *accountAoTest) testStatistics() {
 	getWeekTypeStatistic := this.testGetWeekTypeStatistic()
 	this.testGetWeekDetailTypeStatistic(getWeekTypeStatistic)
 
@@ -443,7 +443,7 @@ func (this *AccountAoTest) testStatistics() {
 	this.testGetWeekDetailCardStatistic(getWeekCardStatistic)
 }
 
-func (this *AccountAoTest) TestBasic() {
+func (this *accountAoTest) TestBasic() {
 	this.UserAoTest.InitSample()
 	this.CategoryAoTest.InitSample()
 	this.CardAoTest.InitSample()
@@ -455,7 +455,7 @@ func (this *AccountAoTest) TestBasic() {
 	this.testDel()
 }
 
-func (this *AccountAoTest) TestStatistic() {
+func (this *accountAoTest) TestStatistic() {
 	this.UserAoTest.InitSample()
 	this.CategoryAoTest.InitSample()
 	this.CardAoTest.InitSample()
@@ -463,8 +463,4 @@ func (this *AccountAoTest) TestStatistic() {
 
 	this.testStatisticsAdd()
 	this.testStatistics()
-}
-
-func init() {
-	InitTest(&AccountAoTest{})
 }

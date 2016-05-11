@@ -5,12 +5,12 @@ import (
 	. "github.com/fishedee/web"
 )
 
-type UserLoginAoModel struct {
+type userLoginAoModel struct {
 	Model
 	UserAo UserAoModel
 }
 
-func (this *UserLoginAoModel) IsLogin() User {
+func (this *userLoginAoModel) IsLogin() User {
 	sess, err := this.Session.SessionStart()
 	if err != nil {
 		panic("session启动失败")
@@ -26,7 +26,7 @@ func (this *UserLoginAoModel) IsLogin() User {
 	}
 }
 
-func (this *UserLoginAoModel) CheckMustLogin() User {
+func (this *userLoginAoModel) CheckMustLogin() User {
 	user := this.IsLogin()
 	if user.UserId == 0 {
 		Throw(1, "用户未登录")
@@ -34,7 +34,7 @@ func (this *UserLoginAoModel) CheckMustLogin() User {
 	return user
 }
 
-func (this *UserLoginAoModel) CheckMustAdmin() User {
+func (this *userLoginAoModel) CheckMustAdmin() User {
 	user := this.CheckMustLogin()
 	if user.Type != UserTypeEnum.ADMIN {
 		Throw(1, "非管理员没有权限执行此操作")
@@ -42,7 +42,7 @@ func (this *UserLoginAoModel) CheckMustAdmin() User {
 	return user
 }
 
-func (this *UserLoginAoModel) Logout() {
+func (this *userLoginAoModel) Logout() {
 	sess, err := this.Session.SessionStart()
 	if err != nil {
 		panic("session启动失败")
@@ -52,7 +52,7 @@ func (this *UserLoginAoModel) Logout() {
 	sess.Set("userId", 0)
 }
 
-func (this *UserLoginAoModel) Login(name string, password string) {
+func (this *userLoginAoModel) Login(name string, password string) {
 	sess, err := this.Session.SessionStart()
 	if err != nil {
 		panic("session启动失败")

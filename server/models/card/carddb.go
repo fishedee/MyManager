@@ -7,11 +7,11 @@ import (
 	"strconv"
 )
 
-type CardDbModel struct {
+type cardDbModel struct {
 	Model
 }
 
-func (this *CardDbModel) Search(where Card, limit CommonPage) Cards {
+func (this *cardDbModel) Search(where Card, limit CommonPage) Cards {
 	db := this.DB.NewSession()
 
 	if where.Name != "" {
@@ -41,7 +41,7 @@ func (this *CardDbModel) Search(where Card, limit CommonPage) Cards {
 	}
 }
 
-func (this *CardDbModel) Get(cardId int) Card {
+func (this *cardDbModel) Get(cardId int) Card {
 	var cards []Card
 	err := this.DB.Where("cardId = ?", cardId).Find(&cards)
 	if err != nil {
@@ -53,21 +53,21 @@ func (this *CardDbModel) Get(cardId int) Card {
 	return cards[0]
 }
 
-func (this *CardDbModel) Del(cardId int) {
+func (this *cardDbModel) Del(cardId int) {
 	_, err := this.DB.Where("cardId = ?", cardId).Delete(&Card{})
 	if err != nil {
 		panic(err)
 	}
 }
 
-func (this *CardDbModel) Add(card Card) {
+func (this *cardDbModel) Add(card Card) {
 	_, err := this.DB.Insert(card)
 	if err != nil {
 		panic(err)
 	}
 }
 
-func (this *CardDbModel) Mod(cardId int, card Card) {
+func (this *cardDbModel) Mod(cardId int, card Card) {
 	_, err := this.DB.Where("cardId = ?", cardId).Update(&card)
 	if err != nil {
 		panic(err)

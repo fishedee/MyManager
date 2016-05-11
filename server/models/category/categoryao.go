@@ -7,17 +7,17 @@ import (
 	. "mymanager/models/common"
 )
 
-type CategoryAoModel struct {
+type categoryAoModel struct {
 	Model
 	CategoryDb CategoryDbModel
 }
 
-func (this *CategoryAoModel) Search(userId int, where Category, limit CommonPage) Categorys {
+func (this *categoryAoModel) Search(userId int, where Category, limit CommonPage) Categorys {
 	where.UserId = userId
 	return this.CategoryDb.Search(where, limit)
 }
 
-func (this *CategoryAoModel) Get(userId int, categoryId int) Category {
+func (this *categoryAoModel) Get(userId int, categoryId int) Category {
 	categoryInfo := this.CategoryDb.Get(categoryId)
 	if categoryInfo.UserId != userId {
 		Throw(1, "你没有权利查看或编辑等操作")
@@ -25,7 +25,7 @@ func (this *CategoryAoModel) Get(userId int, categoryId int) Category {
 	return categoryInfo
 }
 
-func (this *CategoryAoModel) Del(userId int, categoryId int) {
+func (this *categoryAoModel) Del(userId int, categoryId int) {
 	this.Get(userId, categoryId)
 
 	this.CategoryDb.Del(categoryId)
@@ -33,24 +33,24 @@ func (this *CategoryAoModel) Del(userId int, categoryId int) {
 	this.Queue.Publish(CategoryQueueEnum.EVENT_DEL, categoryId)
 }
 
-func (this *CategoryAoModel) Add(userId int, categoryInfo Category) {
+func (this *categoryAoModel) Add(userId int, categoryInfo Category) {
 	categoryInfo.UserId = userId
 	this.CategoryDb.Add(categoryInfo)
 }
 
-func (this *CategoryAoModel) Mod(userId int, categoryId int, categoryInfo Category) {
+func (this *categoryAoModel) Mod(userId int, categoryId int, categoryInfo Category) {
 	this.Get(userId, categoryId)
 
 	categoryInfo.UserId = userId
 	this.CategoryDb.Mod(categoryId, categoryInfo)
 }
 
-func (this *CategoryAoModel) TestQueue(id int, str string) {
+func (this *categoryAoModel) TestQueue(id int, str string) {
 	fmt.Println(id, str)
 }
 
 func init() {
-	InitDaemon(func(this *CategoryAoModel) {
+	InitDaemon(func(this *categoryAoModel) {
 		this.Queue.Consume("uu", this.TestQueue)
 	})
 }

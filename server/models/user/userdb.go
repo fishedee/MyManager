@@ -7,11 +7,11 @@ import (
 	"strconv"
 )
 
-type UserDbModel struct {
+type userDbModel struct {
 	Model
 }
 
-func (this *UserDbModel) Search(where User, limit CommonPage) Users {
+func (this *userDbModel) Search(where User, limit CommonPage) Users {
 	db := this.DB.NewSession()
 
 	if limit.PageSize == 0 && limit.PageIndex == 0 {
@@ -45,7 +45,7 @@ func (this *UserDbModel) Search(where User, limit CommonPage) Users {
 	}
 }
 
-func (this *UserDbModel) Get(id int) User {
+func (this *userDbModel) Get(id int) User {
 	var users []User
 	err := this.DB.Where("userId=?", id).Find(&users)
 	if err != nil {
@@ -57,7 +57,7 @@ func (this *UserDbModel) Get(id int) User {
 	return users[0]
 }
 
-func (this *UserDbModel) GetByName(name string) []User {
+func (this *userDbModel) GetByName(name string) []User {
 	var users []User
 	err := this.DB.Where("name = ?", name).Find(&users)
 	if err != nil {
@@ -66,21 +66,21 @@ func (this *UserDbModel) GetByName(name string) []User {
 	return users
 }
 
-func (this *UserDbModel) Del(id int) {
+func (this *userDbModel) Del(id int) {
 	_, err := this.DB.Where("userId = ?", id).Delete(&User{})
 	if err != nil {
 		panic(err)
 	}
 }
 
-func (this *UserDbModel) Add(user User) {
+func (this *userDbModel) Add(user User) {
 	_, err := this.DB.Insert(user)
 	if err != nil {
 		panic(err)
 	}
 }
 
-func (this *UserDbModel) Mod(id int, user User) {
+func (this *userDbModel) Mod(id int, user User) {
 	_, err := this.DB.Where("userId = ?", id).Update(&user)
 	if err != nil {
 		panic(err)

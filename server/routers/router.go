@@ -6,10 +6,10 @@ import (
 )
 
 func init() {
-	InitRoute("user", &UserController{})
-	InitRoute("login", &LoginController{})
-	InitRoute("category", &CategoryController{})
-	InitRoute("card", &CardController{})
-	InitRoute("account", &AccountController{})
-	InitRoute("blog", &BlogController{})
+	InitRoute("user", (*UserController)(nil))
+	InitRoute("login", (*LoginController)(nil))
+	InitRoute("category", (*CategoryController)(nil))
+	InitRoute("card", (*CardController)(nil))
+	InitRoute("account", (*AccountController)(nil))
+	InitRoute("blog", (*BlogController)(nil))
 }

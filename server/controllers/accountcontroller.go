@@ -6,14 +6,14 @@ import (
 	. "mymanager/models/user"
 )
 
-type AccountController struct {
-	BaseController
+type accountController struct {
+	baseController
 	AccountAo          AccountAoModel
 	AccountStatisticAo AccountStatisticAoModel
 	UserLoginAo        UserLoginAoModel
 }
 
-func (this *AccountController) Search_Json() interface{} {
+func (this *accountController) Search_Json() interface{} {
 	//检查输入参数
 	var where Account
 	this.CheckGet(&where)
@@ -28,7 +28,7 @@ func (this *AccountController) Search_Json() interface{} {
 	return this.AccountAo.Search(loginUser.UserId, where, limit)
 }
 
-func (this *AccountController) Get_Json() interface{} {
+func (this *accountController) Get_Json() interface{} {
 	//检查输入参数
 	var account Account
 	this.CheckGet(&account)
@@ -40,7 +40,7 @@ func (this *AccountController) Get_Json() interface{} {
 	return this.AccountAo.Get(loginUser.UserId, account.AccountId)
 }
 
-func (this *AccountController) Add_Json() {
+func (this *accountController) Add_Json() {
 	//检查输入参数
 	var account Account
 	this.CheckPost(&account)
@@ -52,7 +52,7 @@ func (this *AccountController) Add_Json() {
 	this.AccountAo.Add(loginUser.UserId, account)
 }
 
-func (this *AccountController) Del_Json() {
+func (this *accountController) Del_Json() {
 	//检查输入参数
 	var account Account
 	this.CheckPost(&account)
@@ -64,7 +64,7 @@ func (this *AccountController) Del_Json() {
 	this.AccountAo.Del(loginUser.UserId, account.AccountId)
 }
 
-func (this *AccountController) Mod_Json() {
+func (this *accountController) Mod_Json() {
 	//检查输入参数
 	var account Account
 	this.CheckPost(&account)
@@ -76,11 +76,11 @@ func (this *AccountController) Mod_Json() {
 	this.AccountAo.Mod(loginUser.UserId, account.AccountId, account)
 }
 
-func (this *AccountController) GetType_Json() interface{} {
+func (this *accountController) GetType_Json() interface{} {
 	return AccountTypeEnum.Names()
 }
 
-func (this *AccountController) GetWeekTypeStatistic_Json() interface{} {
+func (this *accountController) GetWeekTypeStatistic_Json() interface{} {
 	//检查权限
 	loginUser := this.UserLoginAo.CheckMustLogin()
 
@@ -90,7 +90,7 @@ func (this *AccountController) GetWeekTypeStatistic_Json() interface{} {
 	)
 }
 
-func (this *AccountController) GetWeekDetailTypeStatistic_Json() interface{} {
+func (this *accountController) GetWeekDetailTypeStatistic_Json() interface{} {
 	//检查输入参数
 	var account Account
 	this.CheckGet(&account)
@@ -109,7 +109,7 @@ func (this *AccountController) GetWeekDetailTypeStatistic_Json() interface{} {
 	)
 }
 
-func (this *AccountController) GetWeekCardStatistic_Json() interface{} {
+func (this *accountController) GetWeekCardStatistic_Json() interface{} {
 	//检查权限
 	loginUser := this.UserLoginAo.CheckMustLogin()
 
@@ -119,7 +119,7 @@ func (this *AccountController) GetWeekCardStatistic_Json() interface{} {
 	)
 }
 
-func (this *AccountController) GetWeekDetailCardStatistic_Json() interface{} {
+func (this *accountController) GetWeekDetailCardStatistic_Json() interface{} {
 	//检查输入参数
 	var account Account
 	this.CheckGet(&account)

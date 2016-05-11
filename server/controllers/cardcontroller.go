@@ -6,13 +6,13 @@ import (
 	. "mymanager/models/user"
 )
 
-type CardController struct {
-	BaseController
+type cardController struct {
+	baseController
 	CardAo      CardAoModel
 	UserLoginAo UserLoginAoModel
 }
 
-func (this *CardController) Search_Json() interface{} {
+func (this *cardController) Search_Json() interface{} {
 	//检查输入参数
 	var where Card
 	this.CheckGet(&where)
@@ -27,7 +27,7 @@ func (this *CardController) Search_Json() interface{} {
 	return this.CardAo.Search(loginUser.UserId, where, limit)
 }
 
-func (this *CardController) Get_Json() interface{} {
+func (this *cardController) Get_Json() interface{} {
 	//检查输入参数
 	var card Card
 	this.CheckGet(&card)
@@ -39,7 +39,7 @@ func (this *CardController) Get_Json() interface{} {
 	return this.CardAo.Get(loginUser.UserId, card.CardId)
 }
 
-func (this *CardController) Add_Json() {
+func (this *cardController) Add_Json() {
 	//检查输入参数
 	var card Card
 	this.CheckPost(&card)
@@ -51,7 +51,7 @@ func (this *CardController) Add_Json() {
 	this.CardAo.Add(loginUser.UserId, card)
 }
 
-func (this *CardController) Del_Json() {
+func (this *cardController) Del_Json() {
 	//检查输入参数
 	var card Card
 	this.CheckPost(&card)
@@ -63,7 +63,7 @@ func (this *CardController) Del_Json() {
 	this.CardAo.Del(loginUser.UserId, card.CardId)
 }
 
-func (this *CardController) Mod_Json() {
+func (this *cardController) Mod_Json() {
 	//检查输入参数
 	var card Card
 	this.CheckPost(&card)

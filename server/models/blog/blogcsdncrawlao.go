@@ -12,12 +12,12 @@ import (
 	"time"
 )
 
-type BlogCsdnCrawlAoModel struct {
+type blogCsdnCrawlAoModel struct {
 	Model
 	AjaxPool *AjaxPool
 }
 
-func (this *BlogCsdnCrawlAoModel) apiForHtml(method string, url string, data interface{}, referer string) *goquery.Document {
+func (this *blogCsdnCrawlAoModel) apiForHtml(method string, url string, data interface{}, referer string) *goquery.Document {
 	result := this.api(method, url, data, referer)
 
 	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(result))
@@ -27,7 +27,7 @@ func (this *BlogCsdnCrawlAoModel) apiForHtml(method string, url string, data int
 	return doc
 }
 
-func (this *BlogCsdnCrawlAoModel) apiForJson(method string, url string, data interface{}, responseData interface{}, referer string) {
+func (this *blogCsdnCrawlAoModel) apiForJson(method string, url string, data interface{}, responseData interface{}, referer string) {
 	result := this.api(method, url, data, referer)
 
 	var commonData struct {
@@ -45,7 +45,7 @@ func (this *BlogCsdnCrawlAoModel) apiForJson(method string, url string, data int
 	}
 }
 
-func (this *BlogCsdnCrawlAoModel) api(method string, url string, data interface{}, referer string) []byte {
+func (this *blogCsdnCrawlAoModel) api(method string, url string, data interface{}, referer string) []byte {
 	if this.AjaxPool == nil {
 		this.AjaxPool = NewAjaxPool(&AjaxPoolOption{
 			Timeout:      time.Second * 30,
@@ -83,7 +83,7 @@ func (this *BlogCsdnCrawlAoModel) api(method string, url string, data interface{
 	return result
 }
 
-func (this *BlogCsdnCrawlAoModel) Login(name string, password string) {
+func (this *blogCsdnCrawlAoModel) Login(name string, password string) {
 	//获取登录页面
 	doc := this.apiForHtml("get", "https://passport.csdn.net/account/login", "", "")
 	var argv struct {
@@ -119,7 +119,7 @@ func (this *BlogCsdnCrawlAoModel) Login(name string, password string) {
 	}
 }
 
-func (this *BlogCsdnCrawlAoModel) analyseCategory(s *goquery.Selection) BlogCategory {
+func (this *blogCsdnCrawlAoModel) analyseCategory(s *goquery.Selection) BlogCategory {
 	singleName := s.Find("td").Eq(0).Text()
 	singleName = strings.Trim(singleName, " ")
 	if len(singleName) == 0 {
@@ -137,7 +137,7 @@ func (this *BlogCsdnCrawlAoModel) analyseCategory(s *goquery.Selection) BlogCate
 	}
 }
 
-func (this *BlogCsdnCrawlAoModel) GetCategoryList() []BlogCategory {
+func (this *blogCsdnCrawlAoModel) GetCategoryList() []BlogCategory {
 	doc := this.apiForHtml("get", "http://write.blog.csdn.net/category", "", "")
 
 	data := []BlogCategory{}
@@ -147,7 +147,7 @@ func (this *BlogCsdnCrawlAoModel) GetCategoryList() []BlogCategory {
 	return data
 }
 
-func (this *BlogCsdnCrawlAoModel) AddCategory(category BlogCategory) {
+func (this *blogCsdnCrawlAoModel) AddCategory(category BlogCategory) {
 	var argv struct {
 		T    string `url:"t"`
 		Name string `url:"name"`
@@ -157,7 +157,7 @@ func (this *BlogCsdnCrawlAoModel) AddCategory(category BlogCategory) {
 	this.apiForHtml("get", "http://write.blog.csdn.net/category", argv, "")
 }
 
-func (this *BlogCsdnCrawlAoModel) DelCategory(id int) {
+func (this *blogCsdnCrawlAoModel) DelCategory(id int) {
 	var argv struct {
 		T  string `url:"t"`
 		Id int    `url:"id"`
@@ -167,7 +167,7 @@ func (this *BlogCsdnCrawlAoModel) DelCategory(id int) {
 	this.apiForHtml("get", "http://write.blog.csdn.net/category", argv, "")
 }
 
-func (this *BlogCsdnCrawlAoModel) ModCategory(id int, data BlogCategory) {
+func (this *blogCsdnCrawlAoModel) ModCategory(id int, data BlogCategory) {
 	var argv struct {
 		T    string `url:"t"`
 		Id   int    `url:"id"`
@@ -194,7 +194,7 @@ type blogArticleInfo struct {
 	Type            string `json:"type"`
 }
 
-func (this *BlogCsdnCrawlAoModel) analyseArticle(s *goquery.Selection) BlogArticle {
+func (this *blogCsdnCrawlAoModel) analyseArticle(s *goquery.Selection) BlogArticle {
 	if s.Find("td").Length() == 0 {
 		return BlogArticle{}
 	}
@@ -217,7 +217,7 @@ func (this *BlogCsdnCrawlAoModel) analyseArticle(s *goquery.Selection) BlogArtic
 	}
 }
 
-func (this *BlogCsdnCrawlAoModel) getArticleInfo(data BlogArticle) interface{} {
+func (this *blogCsdnCrawlAoModel) getArticleInfo(data BlogArticle) interface{} {
 	var argv blogArticleInfo
 	argv.ArticleEditType = 1
 	argv.Categories = data.Category
@@ -234,13 +234,13 @@ func (this *BlogCsdnCrawlAoModel) getArticleInfo(data BlogArticle) interface{} {
 	return argv
 }
 
-func (this *BlogCsdnCrawlAoModel) ModArticle(id int, data BlogArticle) {
+func (this *blogCsdnCrawlAoModel) ModArticle(id int, data BlogArticle) {
 	var responseData interface{}
 	data.Id = id
 	this.apiForJson("post", "http://write.blog.csdn.net/mdeditor/setArticle", this.getArticleInfo(data), &responseData, "")
 }
 
-func (this *BlogCsdnCrawlAoModel) AddArticle(data BlogArticle) int {
+func (this *blogCsdnCrawlAoModel) AddArticle(data BlogArticle) int {
 	var responseData struct {
 		Id int `url:"id"`
 	}
@@ -248,7 +248,7 @@ func (this *BlogCsdnCrawlAoModel) AddArticle(data BlogArticle) int {
 	return responseData.Id
 }
 
-func (this *BlogCsdnCrawlAoModel) DelArticle(id int) {
+func (this *blogCsdnCrawlAoModel) DelArticle(id int) {
 	var argv struct {
 		T  string `url:"t"`
 		Id int    `url:"id"`
@@ -258,7 +258,7 @@ func (this *BlogCsdnCrawlAoModel) DelArticle(id int) {
 	this.apiForHtml("get", "http://write.blog.csdn.net/postlist", argv, "http://write.blog.csdn.net/postlist")
 }
 
-func (this *BlogCsdnCrawlAoModel) GetArticle(id int, name string) BlogArticle {
+func (this *blogCsdnCrawlAoModel) GetArticle(id int, name string) BlogArticle {
 	var argv struct {
 		Id       int    `url:"id"`
 		UserName string `url:"username"`
@@ -276,7 +276,7 @@ func (this *BlogCsdnCrawlAoModel) GetArticle(id int, name string) BlogArticle {
 	}
 }
 
-func (this *BlogCsdnCrawlAoModel) GetArticleList(page int) ([]BlogArticle, int) {
+func (this *blogCsdnCrawlAoModel) GetArticleList(page int) ([]BlogArticle, int) {
 	doc := this.apiForHtml("get", "http://write.blog.csdn.net/postlist/0/0/enabled/"+strconv.Itoa(page), "", "")
 
 	data := []BlogArticle{}

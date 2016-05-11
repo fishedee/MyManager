@@ -6,7 +6,7 @@ import (
 	. "mymanager/models/common"
 )
 
-type BlogSyncAoModel struct {
+type blogSyncAoModel struct {
 	Model
 	BlogSyncDb     BlogSyncDbModel
 	BlogSyncAutoDb BlogSyncAutoDbModel
@@ -14,12 +14,12 @@ type BlogSyncAoModel struct {
 	BlogGitAo      BlogGitAoModel
 }
 
-func (this *BlogSyncAoModel) SearchAuto(userId int, where BlogSyncAuto, limit CommonPage) BlogSyncAutos {
+func (this *blogSyncAoModel) SearchAuto(userId int, where BlogSyncAuto, limit CommonPage) BlogSyncAutos {
 	where.UserId = userId
 	return this.BlogSyncAutoDb.Search(where, limit)
 }
 
-func (this *BlogSyncAoModel) GetAuto(userId int, blogSyncAutoId int) BlogSyncAuto {
+func (this *blogSyncAoModel) GetAuto(userId int, blogSyncAutoId int) BlogSyncAuto {
 	cardInfo := this.BlogSyncAutoDb.Get(blogSyncAutoId)
 	if cardInfo.UserId != userId {
 		Throw(1, "你没有该权限")
@@ -27,30 +27,30 @@ func (this *BlogSyncAoModel) GetAuto(userId int, blogSyncAutoId int) BlogSyncAut
 	return cardInfo
 }
 
-func (this *BlogSyncAoModel) DelAuto(userId int, blogSyncAutoId int) {
+func (this *blogSyncAoModel) DelAuto(userId int, blogSyncAutoId int) {
 	this.GetAuto(userId, blogSyncAutoId)
 
 	this.BlogSyncAutoDb.Del(blogSyncAutoId)
 }
 
-func (this *BlogSyncAoModel) AddAuto(userId int, blogSyncAuto BlogSyncAuto) {
+func (this *blogSyncAoModel) AddAuto(userId int, blogSyncAuto BlogSyncAuto) {
 	blogSyncAuto.UserId = userId
 	this.BlogSyncAutoDb.Add(blogSyncAuto)
 }
 
-func (this *BlogSyncAoModel) ModAuto(userId int, blogSyncAutoId int, blogSyncAuto BlogSyncAuto) {
+func (this *blogSyncAoModel) ModAuto(userId int, blogSyncAutoId int, blogSyncAuto BlogSyncAuto) {
 	this.GetAuto(userId, blogSyncAutoId)
 
 	blogSyncAuto.UserId = userId
 	this.BlogSyncAutoDb.Mod(blogSyncAutoId, blogSyncAuto)
 }
 
-func (this *BlogSyncAoModel) SearchTask(userId int, where BlogSync, limit CommonPage) BlogSyncs {
+func (this *blogSyncAoModel) SearchTask(userId int, where BlogSync, limit CommonPage) BlogSyncs {
 	where.UserId = userId
 	return this.BlogSyncDb.Search(where, limit)
 }
 
-func (this *BlogSyncAoModel) AddTask(userId int, accessToken string, gitUrl string, syncType int) {
+func (this *blogSyncAoModel) AddTask(userId int, accessToken string, gitUrl string, syncType int) {
 	data := BlogSync{
 		UserId:       userId,
 		AccessToken:  accessToken,
@@ -63,7 +63,7 @@ func (this *BlogSyncAoModel) AddTask(userId int, accessToken string, gitUrl stri
 	this.Queue.Produce("blog_sync", syncId)
 }
 
-func (this *BlogSyncAoModel) GetTask(userId int, blogSyncId int) BlogSync {
+func (this *blogSyncAoModel) GetTask(userId int, blogSyncId int) BlogSync {
 	data := this.BlogSyncDb.Get(blogSyncId)
 	if data.UserId != userId {
 		Throw(1, "权限不足")
@@ -71,7 +71,7 @@ func (this *BlogSyncAoModel) GetTask(userId int, blogSyncId int) BlogSync {
 	return data
 }
 
-func (this *BlogSyncAoModel) RestartTask(userId int, blogSyncId int) {
+func (this *blogSyncAoModel) RestartTask(userId int, blogSyncId int) {
 	data := this.GetTask(userId, blogSyncId)
 	if data.State != BlogStateEnum.STATE_FAIL {
 		Throw(1, "非失败任务不能重启")
@@ -81,7 +81,7 @@ func (this *BlogSyncAoModel) RestartTask(userId int, blogSyncId int) {
 	this.Queue.Produce("blog_sync", blogSyncId)
 }
 
-func (this *BlogSyncAoModel) modState(blogSyncId int, state int, stateMessage string) {
+func (this *blogSyncAoModel) modState(blogSyncId int, state int, stateMessage string) {
 	modData := BlogSync{
 		State:        state,
 		StateMessage: stateMessage,
@@ -89,7 +89,7 @@ func (this *BlogSyncAoModel) modState(blogSyncId int, state int, stateMessage st
 	this.BlogSyncDb.Mod(blogSyncId, modData)
 }
 
-func (this *BlogSyncAoModel) sync(blogSyncId int) {
+func (this *blogSyncAoModel) sync(blogSyncId int) {
 	defer CatchCrash(func(e Exception) {
 		this.modState(blogSyncId, BlogStateEnum.STATE_FAIL, e.GetMessage())
 		panic(e.Error())
@@ -107,7 +107,7 @@ func (this *BlogSyncAoModel) sync(blogSyncId int) {
 	this.modState(blogSyncId, BlogStateEnum.STATE_SUCCESS, "成功")
 }
 
-func (this *BlogSyncAoModel) syncAuto() {
+func (this *blogSyncAoModel) syncAuto() {
 	data := this.BlogSyncAutoDb.GetAll()
 	for _, singleData := range data {
 		this.AddTask(
@@ -120,7 +120,7 @@ func (this *BlogSyncAoModel) syncAuto() {
 }
 
 func init() {
-	InitDaemon(func(this *BlogSyncAoModel) {
+	InitDaemon(func(this *blogSyncAoModel) {
 		this.Queue.Consume("blog_sync", this.sync)
 		this.Timer.Cron("0 0 23 * *", this.syncAuto)
 	})

@@ -9,14 +9,14 @@ import (
 	. "mymanager/models/common"
 )
 
-type AccountStatisticAoModel struct {
+type accountStatisticAoModel struct {
 	Model
 	AccountDb  AccountStatisticDbModel
 	CardAo     CardAoModel
 	CategoryAo CategoryAoModel
 }
 
-func (this *AccountStatisticAoModel) GetWeekTypeStatistic(userId int) []AccountStatistic {
+func (this *accountStatisticAoModel) GetWeekTypeStatistic(userId int) []AccountStatistic {
 	statistic := this.AccountDb.GetWeekTypStatisticByUser(userId)
 	enums := AccountTypeEnum.Datas()
 
@@ -40,7 +40,7 @@ func (this *AccountStatisticAoModel) GetWeekTypeStatistic(userId int) []AccountS
 	}).([]AccountStatistic)
 }
 
-func (this *AccountStatisticAoModel) GetWeekTypeStatisticDetail(userId int, year int, week int, accountType int) []AccountStatisticDetail {
+func (this *accountStatisticAoModel) GetWeekTypeStatisticDetail(userId int, year int, week int, accountType int) []AccountStatisticDetail {
 	statistic := this.AccountDb.GetWeekTypeStatisticDetailByUser(userId, year, week, accountType)
 	category := this.CategoryAo.Search(userId, Category{}, CommonPage{}).Data
 
@@ -55,7 +55,7 @@ func (this *AccountStatisticAoModel) GetWeekTypeStatisticDetail(userId int, year
 	}).([]AccountStatisticDetail)
 }
 
-func (this *AccountStatisticAoModel) GetWeekCardStatistic(userId int) []AccountStatistic {
+func (this *accountStatisticAoModel) GetWeekCardStatistic(userId int) []AccountStatistic {
 	statistic := this.AccountDb.GetWeekCardStatisticByUser(userId)
 	card := this.CardAo.Search(userId, Card{}, CommonPage{}).Data
 	card = QueryReverse(card).([]Card)
@@ -103,7 +103,7 @@ func (this *AccountStatisticAoModel) GetWeekCardStatistic(userId int) []AccountS
 	return QueryReverse(statistic).([]AccountStatistic)
 }
 
-func (this *AccountStatisticAoModel) GetWeekCardStatisticDetail(userId int, year int, week int, cardId int) []AccountStatisticDetail {
+func (this *accountStatisticAoModel) GetWeekCardStatisticDetail(userId int, year int, week int, cardId int) []AccountStatisticDetail {
 	statistic := this.AccountDb.GetWeekCardStatisticDetailByUser(userId, year, week, cardId)
 	enums := AccountTypeEnum.Datas()
 

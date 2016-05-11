@@ -2,10 +2,100 @@ package blog
 
 import (
 	. "github.com/fishedee/language"
+	. "github.com/fishedee/web"
 	. "mymanager/models/common"
 )
 
-func (this *BlogCsdnAoModel) Sync_WithError(accessToken string, syncType int, src Blog, progressUpdater BlogSyncProgress) (_fishgenErr Exception) {
+type BlogCsdnAoModel interface {
+	Sync(accessToken string, syncType int, src Blog, progressUpdater BlogSyncProgress)
+	Sync_WithError(accessToken string, syncType int, src Blog, progressUpdater BlogSyncProgress) (_fishgenErr Exception)
+}
+
+type BlogCsdnCrawlAoModel interface {
+	Login(name string, password string)
+	Login_WithError(name string, password string) (_fishgenErr Exception)
+	GetCategoryList() (_fishgen1 []BlogCategory)
+	GetCategoryList_WithError() (_fishgen1 []BlogCategory, _fishgenErr Exception)
+	AddCategory(category BlogCategory)
+	AddCategory_WithError(category BlogCategory) (_fishgenErr Exception)
+	DelCategory(id int)
+	DelCategory_WithError(id int) (_fishgenErr Exception)
+	ModCategory(id int, data BlogCategory)
+	ModCategory_WithError(id int, data BlogCategory) (_fishgenErr Exception)
+	ModArticle(id int, data BlogArticle)
+	ModArticle_WithError(id int, data BlogArticle) (_fishgenErr Exception)
+	AddArticle(data BlogArticle) (_fishgen1 int)
+	AddArticle_WithError(data BlogArticle) (_fishgen1 int, _fishgenErr Exception)
+	DelArticle(id int)
+	DelArticle_WithError(id int) (_fishgenErr Exception)
+	GetArticle(id int, name string) (_fishgen1 BlogArticle)
+	GetArticle_WithError(id int, name string) (_fishgen1 BlogArticle, _fishgenErr Exception)
+	GetArticleList(page int) (_fishgen1 []BlogArticle, _fishgen2 int)
+	GetArticleList_WithError(page int) (_fishgen1 []BlogArticle, _fishgen2 int, _fishgenErr Exception)
+}
+
+type BlogCsdnCrawlAoTest interface {
+	TestBasic()
+}
+
+type BlogGitAoModel interface {
+	Get(gitUrl string, progressUpdater BlogSyncProgress) (_fishgen1 Blog)
+	Get_WithError(gitUrl string, progressUpdater BlogSyncProgress) (_fishgen1 Blog, _fishgenErr Exception)
+}
+
+type BlogGitAoTest interface {
+	TestMarkdown()
+	TestGit()
+}
+
+type BlogSyncAoModel interface {
+	SearchAuto(userId int, where BlogSyncAuto, limit CommonPage) (_fishgen1 BlogSyncAutos)
+	SearchAuto_WithError(userId int, where BlogSyncAuto, limit CommonPage) (_fishgen1 BlogSyncAutos, _fishgenErr Exception)
+	GetAuto(userId int, blogSyncAutoId int) (_fishgen1 BlogSyncAuto)
+	GetAuto_WithError(userId int, blogSyncAutoId int) (_fishgen1 BlogSyncAuto, _fishgenErr Exception)
+	DelAuto(userId int, blogSyncAutoId int)
+	DelAuto_WithError(userId int, blogSyncAutoId int) (_fishgenErr Exception)
+	AddAuto(userId int, blogSyncAuto BlogSyncAuto)
+	AddAuto_WithError(userId int, blogSyncAuto BlogSyncAuto) (_fishgenErr Exception)
+	ModAuto(userId int, blogSyncAutoId int, blogSyncAuto BlogSyncAuto)
+	ModAuto_WithError(userId int, blogSyncAutoId int, blogSyncAuto BlogSyncAuto) (_fishgenErr Exception)
+	SearchTask(userId int, where BlogSync, limit CommonPage) (_fishgen1 BlogSyncs)
+	SearchTask_WithError(userId int, where BlogSync, limit CommonPage) (_fishgen1 BlogSyncs, _fishgenErr Exception)
+	AddTask(userId int, accessToken string, gitUrl string, syncType int)
+	AddTask_WithError(userId int, accessToken string, gitUrl string, syncType int) (_fishgenErr Exception)
+	GetTask(userId int, blogSyncId int) (_fishgen1 BlogSync)
+	GetTask_WithError(userId int, blogSyncId int) (_fishgen1 BlogSync, _fishgenErr Exception)
+	RestartTask(userId int, blogSyncId int)
+	RestartTask_WithError(userId int, blogSyncId int) (_fishgenErr Exception)
+}
+
+type BlogSyncAutoDbModel interface {
+	Search(where BlogSyncAuto, limit CommonPage) (_fishgen1 BlogSyncAutos)
+	Search_WithError(where BlogSyncAuto, limit CommonPage) (_fishgen1 BlogSyncAutos, _fishgenErr Exception)
+	GetAll() (_fishgen1 []BlogSyncAuto)
+	GetAll_WithError() (_fishgen1 []BlogSyncAuto, _fishgenErr Exception)
+	Get(blogSyncAutoId int) (_fishgen1 BlogSyncAuto)
+	Get_WithError(blogSyncAutoId int) (_fishgen1 BlogSyncAuto, _fishgenErr Exception)
+	Add(blogSync BlogSyncAuto) (_fishgen1 int)
+	Add_WithError(blogSync BlogSyncAuto) (_fishgen1 int, _fishgenErr Exception)
+	Mod(blogSyncAutoId int, blogSync BlogSyncAuto)
+	Mod_WithError(blogSyncAutoId int, blogSync BlogSyncAuto) (_fishgenErr Exception)
+	Del(blogSyncAutoId int)
+	Del_WithError(blogSyncAutoId int) (_fishgenErr Exception)
+}
+
+type BlogSyncDbModel interface {
+	Search(where BlogSync, limit CommonPage) (_fishgen1 BlogSyncs)
+	Search_WithError(where BlogSync, limit CommonPage) (_fishgen1 BlogSyncs, _fishgenErr Exception)
+	Get(blogSyncId int) (_fishgen1 BlogSync)
+	Get_WithError(blogSyncId int) (_fishgen1 BlogSync, _fishgenErr Exception)
+	Add(blogSync BlogSync) (_fishgen1 int)
+	Add_WithError(blogSync BlogSync) (_fishgen1 int, _fishgenErr Exception)
+	Mod(blogSyncId int, blogSync BlogSync)
+	Mod_WithError(blogSyncId int, blogSync BlogSync) (_fishgenErr Exception)
+}
+
+func (this *blogCsdnAoModel) Sync_WithError(accessToken string, syncType int, src Blog, progressUpdater BlogSyncProgress) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -13,7 +103,7 @@ func (this *BlogCsdnAoModel) Sync_WithError(accessToken string, syncType int, sr
 	return
 }
 
-func (this *BlogCsdnCrawlAoModel) Login_WithError(name string, password string) (_fishgenErr Exception) {
+func (this *blogCsdnCrawlAoModel) Login_WithError(name string, password string) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -21,7 +111,7 @@ func (this *BlogCsdnCrawlAoModel) Login_WithError(name string, password string) 
 	return
 }
 
-func (this *BlogCsdnCrawlAoModel) GetCategoryList_WithError() (_fishgen1 []BlogCategory, _fishgenErr Exception) {
+func (this *blogCsdnCrawlAoModel) GetCategoryList_WithError() (_fishgen1 []BlogCategory, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -29,7 +119,7 @@ func (this *BlogCsdnCrawlAoModel) GetCategoryList_WithError() (_fishgen1 []BlogC
 	return
 }
 
-func (this *BlogCsdnCrawlAoModel) AddCategory_WithError(category BlogCategory) (_fishgenErr Exception) {
+func (this *blogCsdnCrawlAoModel) AddCategory_WithError(category BlogCategory) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -37,7 +127,7 @@ func (this *BlogCsdnCrawlAoModel) AddCategory_WithError(category BlogCategory) (
 	return
 }
 
-func (this *BlogCsdnCrawlAoModel) DelCategory_WithError(id int) (_fishgenErr Exception) {
+func (this *blogCsdnCrawlAoModel) DelCategory_WithError(id int) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -45,7 +135,7 @@ func (this *BlogCsdnCrawlAoModel) DelCategory_WithError(id int) (_fishgenErr Exc
 	return
 }
 
-func (this *BlogCsdnCrawlAoModel) ModCategory_WithError(id int, data BlogCategory) (_fishgenErr Exception) {
+func (this *blogCsdnCrawlAoModel) ModCategory_WithError(id int, data BlogCategory) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -53,7 +143,7 @@ func (this *BlogCsdnCrawlAoModel) ModCategory_WithError(id int, data BlogCategor
 	return
 }
 
-func (this *BlogCsdnCrawlAoModel) ModArticle_WithError(id int, data BlogArticle) (_fishgenErr Exception) {
+func (this *blogCsdnCrawlAoModel) ModArticle_WithError(id int, data BlogArticle) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -61,7 +151,7 @@ func (this *BlogCsdnCrawlAoModel) ModArticle_WithError(id int, data BlogArticle)
 	return
 }
 
-func (this *BlogCsdnCrawlAoModel) AddArticle_WithError(data BlogArticle) (_fishgen1 int, _fishgenErr Exception) {
+func (this *blogCsdnCrawlAoModel) AddArticle_WithError(data BlogArticle) (_fishgen1 int, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -69,7 +159,7 @@ func (this *BlogCsdnCrawlAoModel) AddArticle_WithError(data BlogArticle) (_fishg
 	return
 }
 
-func (this *BlogCsdnCrawlAoModel) DelArticle_WithError(id int) (_fishgenErr Exception) {
+func (this *blogCsdnCrawlAoModel) DelArticle_WithError(id int) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -77,7 +167,7 @@ func (this *BlogCsdnCrawlAoModel) DelArticle_WithError(id int) (_fishgenErr Exce
 	return
 }
 
-func (this *BlogCsdnCrawlAoModel) GetArticle_WithError(id int, name string) (_fishgen1 BlogArticle, _fishgenErr Exception) {
+func (this *blogCsdnCrawlAoModel) GetArticle_WithError(id int, name string) (_fishgen1 BlogArticle, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -85,7 +175,7 @@ func (this *BlogCsdnCrawlAoModel) GetArticle_WithError(id int, name string) (_fi
 	return
 }
 
-func (this *BlogCsdnCrawlAoModel) GetArticleList_WithError(page int) (_fishgen1 []BlogArticle, _fishgen2 int, _fishgenErr Exception) {
+func (this *blogCsdnCrawlAoModel) GetArticleList_WithError(page int) (_fishgen1 []BlogArticle, _fishgen2 int, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -93,7 +183,7 @@ func (this *BlogCsdnCrawlAoModel) GetArticleList_WithError(page int) (_fishgen1 
 	return
 }
 
-func (this *BlogGitAoModel) Get_WithError(gitUrl string, progressUpdater BlogSyncProgress) (_fishgen1 Blog, _fishgenErr Exception) {
+func (this *blogGitAoModel) Get_WithError(gitUrl string, progressUpdater BlogSyncProgress) (_fishgen1 Blog, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -101,7 +191,7 @@ func (this *BlogGitAoModel) Get_WithError(gitUrl string, progressUpdater BlogSyn
 	return
 }
 
-func (this *BlogSyncAoModel) SearchAuto_WithError(userId int, where BlogSyncAuto, limit CommonPage) (_fishgen1 BlogSyncAutos, _fishgenErr Exception) {
+func (this *blogSyncAoModel) SearchAuto_WithError(userId int, where BlogSyncAuto, limit CommonPage) (_fishgen1 BlogSyncAutos, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -109,7 +199,7 @@ func (this *BlogSyncAoModel) SearchAuto_WithError(userId int, where BlogSyncAuto
 	return
 }
 
-func (this *BlogSyncAoModel) GetAuto_WithError(userId int, blogSyncAutoId int) (_fishgen1 BlogSyncAuto, _fishgenErr Exception) {
+func (this *blogSyncAoModel) GetAuto_WithError(userId int, blogSyncAutoId int) (_fishgen1 BlogSyncAuto, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -117,7 +207,7 @@ func (this *BlogSyncAoModel) GetAuto_WithError(userId int, blogSyncAutoId int) (
 	return
 }
 
-func (this *BlogSyncAoModel) DelAuto_WithError(userId int, blogSyncAutoId int) (_fishgenErr Exception) {
+func (this *blogSyncAoModel) DelAuto_WithError(userId int, blogSyncAutoId int) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -125,7 +215,7 @@ func (this *BlogSyncAoModel) DelAuto_WithError(userId int, blogSyncAutoId int) (
 	return
 }
 
-func (this *BlogSyncAoModel) AddAuto_WithError(userId int, blogSyncAuto BlogSyncAuto) (_fishgenErr Exception) {
+func (this *blogSyncAoModel) AddAuto_WithError(userId int, blogSyncAuto BlogSyncAuto) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -133,7 +223,7 @@ func (this *BlogSyncAoModel) AddAuto_WithError(userId int, blogSyncAuto BlogSync
 	return
 }
 
-func (this *BlogSyncAoModel) ModAuto_WithError(userId int, blogSyncAutoId int, blogSyncAuto BlogSyncAuto) (_fishgenErr Exception) {
+func (this *blogSyncAoModel) ModAuto_WithError(userId int, blogSyncAutoId int, blogSyncAuto BlogSyncAuto) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -141,7 +231,7 @@ func (this *BlogSyncAoModel) ModAuto_WithError(userId int, blogSyncAutoId int, b
 	return
 }
 
-func (this *BlogSyncAoModel) SearchTask_WithError(userId int, where BlogSync, limit CommonPage) (_fishgen1 BlogSyncs, _fishgenErr Exception) {
+func (this *blogSyncAoModel) SearchTask_WithError(userId int, where BlogSync, limit CommonPage) (_fishgen1 BlogSyncs, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -149,7 +239,7 @@ func (this *BlogSyncAoModel) SearchTask_WithError(userId int, where BlogSync, li
 	return
 }
 
-func (this *BlogSyncAoModel) AddTask_WithError(userId int, accessToken string, gitUrl string, syncType int) (_fishgenErr Exception) {
+func (this *blogSyncAoModel) AddTask_WithError(userId int, accessToken string, gitUrl string, syncType int) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -157,7 +247,7 @@ func (this *BlogSyncAoModel) AddTask_WithError(userId int, accessToken string, g
 	return
 }
 
-func (this *BlogSyncAoModel) GetTask_WithError(userId int, blogSyncId int) (_fishgen1 BlogSync, _fishgenErr Exception) {
+func (this *blogSyncAoModel) GetTask_WithError(userId int, blogSyncId int) (_fishgen1 BlogSync, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -165,7 +255,7 @@ func (this *BlogSyncAoModel) GetTask_WithError(userId int, blogSyncId int) (_fis
 	return
 }
 
-func (this *BlogSyncAoModel) RestartTask_WithError(userId int, blogSyncId int) (_fishgenErr Exception) {
+func (this *blogSyncAoModel) RestartTask_WithError(userId int, blogSyncId int) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -173,7 +263,7 @@ func (this *BlogSyncAoModel) RestartTask_WithError(userId int, blogSyncId int) (
 	return
 }
 
-func (this *BlogSyncAutoDbModel) Search_WithError(where BlogSyncAuto, limit CommonPage) (_fishgen1 BlogSyncAutos, _fishgenErr Exception) {
+func (this *blogSyncAutoDbModel) Search_WithError(where BlogSyncAuto, limit CommonPage) (_fishgen1 BlogSyncAutos, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -181,7 +271,7 @@ func (this *BlogSyncAutoDbModel) Search_WithError(where BlogSyncAuto, limit Comm
 	return
 }
 
-func (this *BlogSyncAutoDbModel) GetAll_WithError() (_fishgen1 []BlogSyncAuto, _fishgenErr Exception) {
+func (this *blogSyncAutoDbModel) GetAll_WithError() (_fishgen1 []BlogSyncAuto, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -189,7 +279,7 @@ func (this *BlogSyncAutoDbModel) GetAll_WithError() (_fishgen1 []BlogSyncAuto, _
 	return
 }
 
-func (this *BlogSyncAutoDbModel) Get_WithError(blogSyncAutoId int) (_fishgen1 BlogSyncAuto, _fishgenErr Exception) {
+func (this *blogSyncAutoDbModel) Get_WithError(blogSyncAutoId int) (_fishgen1 BlogSyncAuto, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -197,7 +287,7 @@ func (this *BlogSyncAutoDbModel) Get_WithError(blogSyncAutoId int) (_fishgen1 Bl
 	return
 }
 
-func (this *BlogSyncAutoDbModel) Add_WithError(blogSync BlogSyncAuto) (_fishgen1 int, _fishgenErr Exception) {
+func (this *blogSyncAutoDbModel) Add_WithError(blogSync BlogSyncAuto) (_fishgen1 int, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -205,7 +295,7 @@ func (this *BlogSyncAutoDbModel) Add_WithError(blogSync BlogSyncAuto) (_fishgen1
 	return
 }
 
-func (this *BlogSyncAutoDbModel) Mod_WithError(blogSyncAutoId int, blogSync BlogSyncAuto) (_fishgenErr Exception) {
+func (this *blogSyncAutoDbModel) Mod_WithError(blogSyncAutoId int, blogSync BlogSyncAuto) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -213,7 +303,7 @@ func (this *BlogSyncAutoDbModel) Mod_WithError(blogSyncAutoId int, blogSync Blog
 	return
 }
 
-func (this *BlogSyncAutoDbModel) Del_WithError(blogSyncAutoId int) (_fishgenErr Exception) {
+func (this *blogSyncAutoDbModel) Del_WithError(blogSyncAutoId int) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -221,7 +311,7 @@ func (this *BlogSyncAutoDbModel) Del_WithError(blogSyncAutoId int) (_fishgenErr 
 	return
 }
 
-func (this *BlogSyncDbModel) Search_WithError(where BlogSync, limit CommonPage) (_fishgen1 BlogSyncs, _fishgenErr Exception) {
+func (this *blogSyncDbModel) Search_WithError(where BlogSync, limit CommonPage) (_fishgen1 BlogSyncs, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -229,7 +319,7 @@ func (this *BlogSyncDbModel) Search_WithError(where BlogSync, limit CommonPage) 
 	return
 }
 
-func (this *BlogSyncDbModel) Get_WithError(blogSyncId int) (_fishgen1 BlogSync, _fishgenErr Exception) {
+func (this *blogSyncDbModel) Get_WithError(blogSyncId int) (_fishgen1 BlogSync, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -237,7 +327,7 @@ func (this *BlogSyncDbModel) Get_WithError(blogSyncId int) (_fishgen1 BlogSync, 
 	return
 }
 
-func (this *BlogSyncDbModel) Add_WithError(blogSync BlogSync) (_fishgen1 int, _fishgenErr Exception) {
+func (this *blogSyncDbModel) Add_WithError(blogSync BlogSync) (_fishgen1 int, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -245,10 +335,28 @@ func (this *BlogSyncDbModel) Add_WithError(blogSync BlogSync) (_fishgen1 int, _f
 	return
 }
 
-func (this *BlogSyncDbModel) Mod_WithError(blogSyncId int, blogSync BlogSync) (_fishgenErr Exception) {
+func (this *blogSyncDbModel) Mod_WithError(blogSyncId int, blogSync BlogSync) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
 	this.Mod(blogSyncId, blogSync)
 	return
+}
+func init() {
+	v0 := BlogCsdnAoModel(&blogCsdnAoModel{})
+	InitModel(&v0)
+	v1 := BlogCsdnCrawlAoModel(&blogCsdnCrawlAoModel{})
+	InitModel(&v1)
+	v2 := BlogCsdnCrawlAoTest(&blogCsdnCrawlAoTest{})
+	InitTest(&v2)
+	v3 := BlogGitAoModel(&blogGitAoModel{})
+	InitModel(&v3)
+	v4 := BlogGitAoTest(&blogGitAoTest{})
+	InitTest(&v4)
+	v5 := BlogSyncAoModel(&blogSyncAoModel{})
+	InitModel(&v5)
+	v6 := BlogSyncAutoDbModel(&blogSyncAutoDbModel{})
+	InitModel(&v6)
+	v7 := BlogSyncDbModel(&blogSyncDbModel{})
+	InitModel(&v7)
 }

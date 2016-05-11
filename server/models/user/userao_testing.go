@@ -6,13 +6,13 @@ import (
 	"strconv"
 )
 
-type UserAoTest struct {
+type userAoTest struct {
 	Test
 	UserAo      UserAoModel
 	UserLoginAo UserLoginAoModel
 }
 
-func (this *UserAoTest) InitEmpty() {
+func (this *userAoTest) InitEmpty() {
 	var where User
 	limit := CommonPage{
 		PageSize:  1000,
@@ -24,7 +24,7 @@ func (this *UserAoTest) InitEmpty() {
 	}
 }
 
-func (this *UserAoTest) InitSample() {
+func (this *userAoTest) InitSample() {
 	this.InitEmpty()
 	users := []User{
 		User{
@@ -44,7 +44,7 @@ func (this *UserAoTest) InitSample() {
 		this.UserAo.Add(singleUser)
 	}
 }
-func (this *UserAoTest) testAdd(userFish *User, userEdward *User) {
+func (this *userAoTest) testAdd(userFish *User, userEdward *User) {
 	//添加用户
 	*userFish = User{
 		UserId:   10001,
@@ -77,7 +77,7 @@ func (this *UserAoTest) testAdd(userFish *User, userEdward *User) {
 
 }
 
-func (this *UserAoTest) testSearch(userFish User, userEdward User) {
+func (this *userAoTest) testSearch(userFish User, userEdward User) {
 	//搜索所有用户
 	var where2 User
 	limit2 := CommonPage{
@@ -100,7 +100,7 @@ func (this *UserAoTest) testSearch(userFish User, userEdward User) {
 
 }
 
-func (this *UserAoTest) testmod(userEdward *User) {
+func (this *userAoTest) testmod(userEdward *User) {
 	//修改类型
 	this.UserAo.ModType(userEdward.UserId, 1)
 	userEdward.Type = 1
@@ -109,7 +109,7 @@ func (this *UserAoTest) testmod(userEdward *User) {
 
 }
 
-func (this *UserAoTest) testPassword(userEdward User) {
+func (this *userAoTest) testPassword(userEdward User) {
 	//验证用户旧密码 改为新密码
 	this.UserAo.ModPasswordByOld(userEdward.UserId, "123", "666")
 	this.UserLoginAo.Login("edward", "666")
@@ -126,7 +126,7 @@ func (this *UserAoTest) testPassword(userEdward User) {
 	UserData2 := this.UserLoginAo.IsLogin()
 	this.AssertEqual(UserData2.Name, "edward")
 }
-func (this *UserAoTest) testDel(userEdward User) {
+func (this *userAoTest) testDel(userEdward User) {
 	//删除用户
 	this.UserAo.Del(userEdward.UserId)
 	_, err3 := this.UserAo.Get_WithError(userEdward.UserId)
@@ -139,7 +139,7 @@ func (this *UserAoTest) testDel(userEdward User) {
 	this.AssertError(err4, 1, "密码不正确")
 
 }
-func (this *UserAoTest) TestBasic() {
+func (this *userAoTest) TestBasic() {
 	this.InitEmpty()
 
 	userFish := User{}
@@ -151,8 +151,4 @@ func (this *UserAoTest) TestBasic() {
 	this.testPassword(userEdward)
 	this.testDel(userEdward)
 
-}
-
-func init() {
-	InitTest(&UserAoTest{})
 }

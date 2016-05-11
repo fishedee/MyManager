@@ -7,11 +7,11 @@ import (
 	"strconv"
 )
 
-type BlogSyncAutoDbModel struct {
+type blogSyncAutoDbModel struct {
 	Model
 }
 
-func (this *BlogSyncAutoDbModel) Search(where BlogSyncAuto, limit CommonPage) BlogSyncAutos {
+func (this *blogSyncAutoDbModel) Search(where BlogSyncAuto, limit CommonPage) BlogSyncAutos {
 	db := this.DB.NewSession()
 
 	if limit.PageSize == 0 && limit.PageIndex == 0 {
@@ -45,7 +45,7 @@ func (this *BlogSyncAutoDbModel) Search(where BlogSyncAuto, limit CommonPage) Bl
 	}
 }
 
-func (this *BlogSyncAutoDbModel) GetAll() []BlogSyncAuto {
+func (this *blogSyncAutoDbModel) GetAll() []BlogSyncAuto {
 	var data []BlogSyncAuto
 	err := this.DB.Find(&data)
 	if err != nil {
@@ -54,7 +54,7 @@ func (this *BlogSyncAutoDbModel) GetAll() []BlogSyncAuto {
 	return data
 }
 
-func (this *BlogSyncAutoDbModel) Get(blogSyncAutoId int) BlogSyncAuto {
+func (this *blogSyncAutoDbModel) Get(blogSyncAutoId int) BlogSyncAuto {
 	var blogSyncs []BlogSyncAuto
 	err := this.DB.Where("blogSyncAutoId = ?", blogSyncAutoId).Find(&blogSyncs)
 	if err != nil {
@@ -66,7 +66,7 @@ func (this *BlogSyncAutoDbModel) Get(blogSyncAutoId int) BlogSyncAuto {
 	return blogSyncs[0]
 }
 
-func (this *BlogSyncAutoDbModel) Add(blogSync BlogSyncAuto) int {
+func (this *blogSyncAutoDbModel) Add(blogSync BlogSyncAuto) int {
 	_, err := this.DB.Insert(&blogSync)
 	if err != nil {
 		panic(err)
@@ -74,14 +74,14 @@ func (this *BlogSyncAutoDbModel) Add(blogSync BlogSyncAuto) int {
 	return blogSync.BlogSyncAutoId
 }
 
-func (this *BlogSyncAutoDbModel) Mod(blogSyncAutoId int, blogSync BlogSyncAuto) {
+func (this *blogSyncAutoDbModel) Mod(blogSyncAutoId int, blogSync BlogSyncAuto) {
 	_, err := this.DB.Where("blogSyncAutoId = ?", blogSyncAutoId).Update(&blogSync)
 	if err != nil {
 		panic(err)
 	}
 }
 
-func (this *BlogSyncAutoDbModel) Del(blogSyncAutoId int) {
+func (this *blogSyncAutoDbModel) Del(blogSyncAutoId int) {
 	_, err := this.DB.Where("blogSyncAutoId = ?", blogSyncAutoId).Delete(&BlogSyncAuto{})
 	if err != nil {
 		panic(err)

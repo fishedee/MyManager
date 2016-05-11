@@ -6,12 +6,12 @@ import (
 	"strings"
 )
 
-type BlogCsdnAoModel struct {
+type blogCsdnAoModel struct {
 	Model
 	BlogCsdnCrawlAo BlogCsdnCrawlAoModel
 }
 
-func (this *BlogCsdnAoModel) login(accessToken string) string {
+func (this *blogCsdnAoModel) login(accessToken string) string {
 	accessTokenArray := strings.Split(accessToken, ",")
 	if len(accessTokenArray) != 2 {
 		Throw(1, "请输入用逗号分割的accessToken")
@@ -25,7 +25,7 @@ func (this *BlogCsdnAoModel) login(accessToken string) string {
 	return username
 }
 
-func (this *BlogCsdnAoModel) getData(username string) Blog {
+func (this *blogCsdnAoModel) getData(username string) Blog {
 	//获取category数据
 	categoryList := this.BlogCsdnCrawlAo.GetCategoryList()
 
@@ -50,7 +50,7 @@ func (this *BlogCsdnAoModel) getData(username string) Blog {
 	}
 }
 
-func (this *BlogCsdnAoModel) diffData(src Blog, dist Blog, syncType int) BlogDiff {
+func (this *blogCsdnAoModel) diffData(src Blog, dist Blog, syncType int) BlogDiff {
 	result := BlogDiff{}
 
 	//比较Category
@@ -102,7 +102,7 @@ func (this *BlogCsdnAoModel) diffData(src Blog, dist Blog, syncType int) BlogDif
 	return result
 }
 
-func (this *BlogCsdnAoModel) setData(username string, diff BlogDiff) {
+func (this *blogCsdnAoModel) setData(username string, diff BlogDiff) {
 	//添加category
 	for _, singleCategory := range diff.AddCategorys {
 		this.BlogCsdnCrawlAo.AddCategory(BlogCategory{
@@ -131,7 +131,7 @@ func (this *BlogCsdnAoModel) setData(username string, diff BlogDiff) {
 	}
 }
 
-func (this *BlogCsdnAoModel) Sync(accessToken string, syncType int, src Blog, progressUpdater BlogSyncProgress) {
+func (this *blogCsdnAoModel) Sync(accessToken string, syncType int, src Blog, progressUpdater BlogSyncProgress) {
 	//登录csdn博客中
 	progressUpdater("正在登录博客账号中")
 	user := this.login(accessToken)

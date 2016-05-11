@@ -4,11 +4,11 @@ import (
 	. "github.com/fishedee/web"
 )
 
-type AccountStatisticDbModel struct {
+type accountStatisticDbModel struct {
 	Model
 }
 
-func (this *AccountStatisticDbModel) GetWeekTypStatisticByUser(userId int) []AccountStatistic {
+func (this *accountStatisticDbModel) GetWeekTypStatisticByUser(userId int) []AccountStatistic {
 	var data []AccountStatistic
 	err := this.DB.
 		Select("DATE_FORMAT(createTime,'%x') as year,TRIM( LEADING '0' From DATE_FORMAT(createTime,'%v')) as week,type,SUM(money) as money").
@@ -23,7 +23,7 @@ func (this *AccountStatisticDbModel) GetWeekTypStatisticByUser(userId int) []Acc
 	return data
 }
 
-func (this *AccountStatisticDbModel) GetWeekTypeStatisticDetailByUser(userId int, year int, week int, accountType int) []AccountStatisticDetail {
+func (this *accountStatisticDbModel) GetWeekTypeStatisticDetailByUser(userId int, year int, week int, accountType int) []AccountStatisticDetail {
 	var data []AccountStatisticDetail
 	err := this.DB.
 		Select("categoryId , sum(money) as money").
@@ -37,7 +37,7 @@ func (this *AccountStatisticDbModel) GetWeekTypeStatisticDetailByUser(userId int
 	return data
 }
 
-func (this *AccountStatisticDbModel) GetWeekCardStatisticByUser(userId int) []AccountStatistic {
+func (this *accountStatisticDbModel) GetWeekCardStatisticByUser(userId int) []AccountStatistic {
 	var data []AccountStatistic
 	err := this.DB.
 		Where("userId = ?", userId).
@@ -52,7 +52,7 @@ func (this *AccountStatisticDbModel) GetWeekCardStatisticByUser(userId int) []Ac
 	return data
 }
 
-func (this *AccountStatisticDbModel) GetWeekCardStatisticDetailByUser(userId int, year int, week int, cardId int) []AccountStatisticDetail {
+func (this *accountStatisticDbModel) GetWeekCardStatisticDetailByUser(userId int, year int, week int, cardId int) []AccountStatisticDetail {
 	var data []AccountStatisticDetail
 	err := this.DB.
 		Select("type , sum(money) as money").

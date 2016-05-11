@@ -5,12 +5,12 @@ import (
 	. "github.com/fishedee/web"
 )
 
-type UploadAoTest struct {
+type uploadAoTest struct {
 	Test
 	UploadAo UploadAoModel
 }
 
-func (this *UploadAoTest) TestFile() {
+func (this *uploadAoTest) TestFile() {
 	testCase := []string{
 		"",
 		"helloworld",
@@ -26,8 +26,4 @@ func (this *UploadAoTest) TestFile() {
 		this.AssertEqual(err == nil, true, singleTestCase)
 		this.AssertEqual(data, singleTestCase, singleTestCase)
 	}
-}
-
-func init() {
-	InitTest(&UploadAoTest{})
 }

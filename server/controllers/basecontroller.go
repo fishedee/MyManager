@@ -6,7 +6,7 @@ import (
 	. "github.com/fishedee/web"
 )
 
-type BaseController struct {
+type baseController struct {
 	Controller
 }
 
@@ -16,7 +16,7 @@ type baseControllerResult struct {
 	Msg  string
 }
 
-func (this *BaseController) jsonRender(result baseControllerResult) {
+func (this *baseController) jsonRender(result baseControllerResult) {
 	resultString, err := EncodeJson(result)
 	if err != nil {
 		panic(err)
@@ -24,7 +24,7 @@ func (this *BaseController) jsonRender(result baseControllerResult) {
 	this.Ctx.Write(resultString)
 }
 
-func (this *BaseController) AutoRender(returnValue interface{}, viewname string) {
+func (this *baseController) AutoRender(returnValue interface{}, viewname string) {
 	result := baseControllerResult{}
 	resultError, ok := returnValue.(Exception)
 	if ok {

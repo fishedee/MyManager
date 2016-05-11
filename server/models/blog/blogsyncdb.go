@@ -7,11 +7,11 @@ import (
 	"strconv"
 )
 
-type BlogSyncDbModel struct {
+type blogSyncDbModel struct {
 	Model
 }
 
-func (this *BlogSyncDbModel) Search(where BlogSync, limit CommonPage) BlogSyncs {
+func (this *blogSyncDbModel) Search(where BlogSync, limit CommonPage) BlogSyncs {
 	db := this.DB.NewSession()
 
 	if limit.PageSize == 0 && limit.PageIndex == 0 {
@@ -51,7 +51,7 @@ func (this *BlogSyncDbModel) Search(where BlogSync, limit CommonPage) BlogSyncs 
 	}
 }
 
-func (this *BlogSyncDbModel) Get(blogSyncId int) BlogSync {
+func (this *blogSyncDbModel) Get(blogSyncId int) BlogSync {
 	var blogSyncs []BlogSync
 	err := this.DB.Where("blogSyncId = ?", blogSyncId).Find(&blogSyncs)
 	if err != nil {
@@ -63,7 +63,7 @@ func (this *BlogSyncDbModel) Get(blogSyncId int) BlogSync {
 	return blogSyncs[0]
 }
 
-func (this *BlogSyncDbModel) Add(blogSync BlogSync) int {
+func (this *blogSyncDbModel) Add(blogSync BlogSync) int {
 	_, err := this.DB.Insert(&blogSync)
 	if err != nil {
 		panic(err)
@@ -71,7 +71,7 @@ func (this *BlogSyncDbModel) Add(blogSync BlogSync) int {
 	return blogSync.BlogSyncId
 }
 
-func (this *BlogSyncDbModel) Mod(blogSyncId int, blogSync BlogSync) {
+func (this *blogSyncDbModel) Mod(blogSyncId int, blogSync BlogSync) {
 	_, err := this.DB.Where("blogSyncId = ?", blogSyncId).Update(&blogSync)
 	if err != nil {
 		panic(err)

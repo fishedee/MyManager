@@ -2,10 +2,70 @@ package user
 
 import (
 	. "github.com/fishedee/language"
+	. "github.com/fishedee/web"
 	. "mymanager/models/common"
 )
 
-func (this *UserAoModel) CheckMustVaildPassword_WithError(password string, passwordHash string) (_fishgenErr Exception) {
+type UserAoModel interface {
+	CheckMustVaildPassword(password string, passwordHash string)
+	CheckMustVaildPassword_WithError(password string, passwordHash string) (_fishgenErr Exception)
+	Search(user User, pageInfo CommonPage) (_fishgen1 Users)
+	Search_WithError(user User, pageInfo CommonPage) (_fishgen1 Users, _fishgenErr Exception)
+	Get(userId int) (_fishgen1 User)
+	Get_WithError(userId int) (_fishgen1 User, _fishgenErr Exception)
+	GetByName(name string) (_fishgen1 []User)
+	GetByName_WithError(name string) (_fishgen1 []User, _fishgenErr Exception)
+	Del(userId int)
+	Del_WithError(userId int) (_fishgenErr Exception)
+	Add(user User)
+	Add_WithError(user User) (_fishgenErr Exception)
+	ModType(userId int, userType int)
+	ModType_WithError(userId int, userType int) (_fishgenErr Exception)
+	ModPassword(userId int, password string)
+	ModPassword_WithError(userId int, password string) (_fishgenErr Exception)
+	ModPasswordByOld(userId int, oldPassword string, newPassword string)
+	ModPasswordByOld_WithError(userId int, oldPassword string, newPassword string) (_fishgenErr Exception)
+}
+
+type UserAoTest interface {
+	InitEmpty()
+	InitSample()
+	TestBasic()
+}
+
+type UserDbModel interface {
+	Search(where User, limit CommonPage) (_fishgen1 Users)
+	Search_WithError(where User, limit CommonPage) (_fishgen1 Users, _fishgenErr Exception)
+	Get(id int) (_fishgen1 User)
+	Get_WithError(id int) (_fishgen1 User, _fishgenErr Exception)
+	GetByName(name string) (_fishgen1 []User)
+	GetByName_WithError(name string) (_fishgen1 []User, _fishgenErr Exception)
+	Del(id int)
+	Del_WithError(id int) (_fishgenErr Exception)
+	Add(user User)
+	Add_WithError(user User) (_fishgenErr Exception)
+	Mod(id int, user User)
+	Mod_WithError(id int, user User) (_fishgenErr Exception)
+}
+
+type UserLoginAoModel interface {
+	IsLogin() (_fishgen1 User)
+	IsLogin_WithError() (_fishgen1 User, _fishgenErr Exception)
+	CheckMustLogin() (_fishgen1 User)
+	CheckMustLogin_WithError() (_fishgen1 User, _fishgenErr Exception)
+	CheckMustAdmin() (_fishgen1 User)
+	CheckMustAdmin_WithError() (_fishgen1 User, _fishgenErr Exception)
+	Logout()
+	Logout_WithError() (_fishgenErr Exception)
+	Login(name string, password string)
+	Login_WithError(name string, password string) (_fishgenErr Exception)
+}
+
+type UserLoginAoTest interface {
+	TestBasic()
+}
+
+func (this *userAoModel) CheckMustVaildPassword_WithError(password string, passwordHash string) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -13,7 +73,7 @@ func (this *UserAoModel) CheckMustVaildPassword_WithError(password string, passw
 	return
 }
 
-func (this *UserAoModel) Search_WithError(user User, pageInfo CommonPage) (_fishgen1 Users, _fishgenErr Exception) {
+func (this *userAoModel) Search_WithError(user User, pageInfo CommonPage) (_fishgen1 Users, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -21,7 +81,7 @@ func (this *UserAoModel) Search_WithError(user User, pageInfo CommonPage) (_fish
 	return
 }
 
-func (this *UserAoModel) Get_WithError(userId int) (_fishgen1 User, _fishgenErr Exception) {
+func (this *userAoModel) Get_WithError(userId int) (_fishgen1 User, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -29,7 +89,7 @@ func (this *UserAoModel) Get_WithError(userId int) (_fishgen1 User, _fishgenErr 
 	return
 }
 
-func (this *UserAoModel) GetByName_WithError(name string) (_fishgen1 []User, _fishgenErr Exception) {
+func (this *userAoModel) GetByName_WithError(name string) (_fishgen1 []User, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -37,7 +97,7 @@ func (this *UserAoModel) GetByName_WithError(name string) (_fishgen1 []User, _fi
 	return
 }
 
-func (this *UserAoModel) Del_WithError(userId int) (_fishgenErr Exception) {
+func (this *userAoModel) Del_WithError(userId int) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -45,7 +105,7 @@ func (this *UserAoModel) Del_WithError(userId int) (_fishgenErr Exception) {
 	return
 }
 
-func (this *UserAoModel) Add_WithError(user User) (_fishgenErr Exception) {
+func (this *userAoModel) Add_WithError(user User) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -53,7 +113,7 @@ func (this *UserAoModel) Add_WithError(user User) (_fishgenErr Exception) {
 	return
 }
 
-func (this *UserAoModel) ModType_WithError(userId int, userType int) (_fishgenErr Exception) {
+func (this *userAoModel) ModType_WithError(userId int, userType int) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -61,7 +121,7 @@ func (this *UserAoModel) ModType_WithError(userId int, userType int) (_fishgenEr
 	return
 }
 
-func (this *UserAoModel) ModPassword_WithError(userId int, password string) (_fishgenErr Exception) {
+func (this *userAoModel) ModPassword_WithError(userId int, password string) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -69,7 +129,7 @@ func (this *UserAoModel) ModPassword_WithError(userId int, password string) (_fi
 	return
 }
 
-func (this *UserAoModel) ModPasswordByOld_WithError(userId int, oldPassword string, newPassword string) (_fishgenErr Exception) {
+func (this *userAoModel) ModPasswordByOld_WithError(userId int, oldPassword string, newPassword string) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -77,7 +137,7 @@ func (this *UserAoModel) ModPasswordByOld_WithError(userId int, oldPassword stri
 	return
 }
 
-func (this *UserDbModel) Search_WithError(where User, limit CommonPage) (_fishgen1 Users, _fishgenErr Exception) {
+func (this *userDbModel) Search_WithError(where User, limit CommonPage) (_fishgen1 Users, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -85,7 +145,7 @@ func (this *UserDbModel) Search_WithError(where User, limit CommonPage) (_fishge
 	return
 }
 
-func (this *UserDbModel) Get_WithError(id int) (_fishgen1 User, _fishgenErr Exception) {
+func (this *userDbModel) Get_WithError(id int) (_fishgen1 User, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -93,7 +153,7 @@ func (this *UserDbModel) Get_WithError(id int) (_fishgen1 User, _fishgenErr Exce
 	return
 }
 
-func (this *UserDbModel) GetByName_WithError(name string) (_fishgen1 []User, _fishgenErr Exception) {
+func (this *userDbModel) GetByName_WithError(name string) (_fishgen1 []User, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -101,7 +161,7 @@ func (this *UserDbModel) GetByName_WithError(name string) (_fishgen1 []User, _fi
 	return
 }
 
-func (this *UserDbModel) Del_WithError(id int) (_fishgenErr Exception) {
+func (this *userDbModel) Del_WithError(id int) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -109,7 +169,7 @@ func (this *UserDbModel) Del_WithError(id int) (_fishgenErr Exception) {
 	return
 }
 
-func (this *UserDbModel) Add_WithError(user User) (_fishgenErr Exception) {
+func (this *userDbModel) Add_WithError(user User) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -117,7 +177,7 @@ func (this *UserDbModel) Add_WithError(user User) (_fishgenErr Exception) {
 	return
 }
 
-func (this *UserDbModel) Mod_WithError(id int, user User) (_fishgenErr Exception) {
+func (this *userDbModel) Mod_WithError(id int, user User) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -125,7 +185,7 @@ func (this *UserDbModel) Mod_WithError(id int, user User) (_fishgenErr Exception
 	return
 }
 
-func (this *UserLoginAoModel) IsLogin_WithError() (_fishgen1 User, _fishgenErr Exception) {
+func (this *userLoginAoModel) IsLogin_WithError() (_fishgen1 User, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -133,7 +193,7 @@ func (this *UserLoginAoModel) IsLogin_WithError() (_fishgen1 User, _fishgenErr E
 	return
 }
 
-func (this *UserLoginAoModel) CheckMustLogin_WithError() (_fishgen1 User, _fishgenErr Exception) {
+func (this *userLoginAoModel) CheckMustLogin_WithError() (_fishgen1 User, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -141,7 +201,7 @@ func (this *UserLoginAoModel) CheckMustLogin_WithError() (_fishgen1 User, _fishg
 	return
 }
 
-func (this *UserLoginAoModel) CheckMustAdmin_WithError() (_fishgen1 User, _fishgenErr Exception) {
+func (this *userLoginAoModel) CheckMustAdmin_WithError() (_fishgen1 User, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -149,7 +209,7 @@ func (this *UserLoginAoModel) CheckMustAdmin_WithError() (_fishgen1 User, _fishg
 	return
 }
 
-func (this *UserLoginAoModel) Logout_WithError() (_fishgenErr Exception) {
+func (this *userLoginAoModel) Logout_WithError() (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -157,10 +217,23 @@ func (this *UserLoginAoModel) Logout_WithError() (_fishgenErr Exception) {
 	return
 }
 
-func (this *UserLoginAoModel) Login_WithError(name string, password string) (_fishgenErr Exception) {
+func (this *userLoginAoModel) Login_WithError(name string, password string) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
 	this.Login(name, password)
 	return
+}
+
+func init() {
+	v0 := UserAoModel(&userAoModel{})
+	InitModel(&v0)
+	v1 := UserAoTest(&userAoTest{})
+	InitTest(&v1)
+	v2 := UserDbModel(&userDbModel{})
+	InitModel(&v2)
+	v3 := UserLoginAoModel(&userLoginAoModel{})
+	InitModel(&v3)
+	v4 := UserLoginAoTest(&userLoginAoTest{})
+	InitTest(&v4)
 }

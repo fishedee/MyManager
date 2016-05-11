@@ -4,13 +4,13 @@ import (
 	. "github.com/fishedee/web"
 )
 
-type UserLoginAoTest struct {
+type userLoginAoTest struct {
 	Test
 	UserLoginAo UserLoginAoModel
 	UserAoTest  UserAoTest
 }
 
-func (this *UserLoginAoTest) TestBasic() {
+func (this *userLoginAoTest) TestBasic() {
 	this.UserAoTest.InitSample()
 
 	//没有登录
@@ -58,8 +58,4 @@ func (this *UserLoginAoTest) TestBasic() {
 	UserData7 := this.UserLoginAo.IsLogin()
 	this.AssertEqual(UserData7.Name, "edward")
 
-}
-
-func init() {
-	InitTest(&UserLoginAoTest{})
 }

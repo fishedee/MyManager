@@ -5,17 +5,17 @@ import (
 	. "mymanager/models/user"
 )
 
-type UserController struct {
-	BaseController
+type userController struct {
+	baseController
 	UserLoginAo UserLoginAoModel
 	UserAo      UserAoModel
 }
 
-func (this *UserController) GetType_Json() interface{} {
+func (this *userController) GetType_Json() interface{} {
 	return UserTypeEnum.Names()
 }
 
-func (this *UserController) Search_Json() interface{} {
+func (this *userController) Search_Json() interface{} {
 	//检查输入参数
 	var where User
 	this.CheckGet(&where)
@@ -30,7 +30,7 @@ func (this *UserController) Search_Json() interface{} {
 	return this.UserAo.Search(where, limit)
 }
 
-func (this *UserController) Get_Json() interface{} {
+func (this *userController) Get_Json() interface{} {
 	//检查输入参数
 	var user User
 	this.CheckGet(&user)
@@ -42,7 +42,7 @@ func (this *UserController) Get_Json() interface{} {
 	return this.UserAo.Get(user.UserId)
 }
 
-func (this *UserController) Add_Json() {
+func (this *userController) Add_Json() {
 	//检查输入参数
 	var user User
 	this.CheckPost(&user)
@@ -54,7 +54,7 @@ func (this *UserController) Add_Json() {
 	this.UserAo.Add(user)
 }
 
-func (this *UserController) Del_Json() {
+func (this *userController) Del_Json() {
 	//检查输入参数
 	var user User
 	this.CheckPost(&user)
@@ -66,7 +66,7 @@ func (this *UserController) Del_Json() {
 	this.UserAo.Del(user.UserId)
 }
 
-func (this *UserController) ModType_Json() {
+func (this *userController) ModType_Json() {
 	//检查输入参数
 	var user User
 	this.CheckPost(&user)
@@ -78,7 +78,7 @@ func (this *UserController) ModType_Json() {
 	this.UserAo.ModType(user.UserId, user.Type)
 }
 
-func (this *UserController) ModPassword_Json() {
+func (this *userController) ModPassword_Json() {
 	//检查输入参数
 	var user User
 	this.CheckPost(&user)
@@ -90,7 +90,7 @@ func (this *UserController) ModPassword_Json() {
 	this.UserAo.ModPassword(user.UserId, user.Password)
 }
 
-func (this *UserController) ModMyPassword_Json() {
+func (this *userController) ModMyPassword_Json() {
 	//检查输入参数
 	var input struct {
 		OldPassword string

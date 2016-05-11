@@ -1,18 +1,18 @@
 package controllers
 
 import (
-	. "mymanager/models/common"
 	. "mymanager/models/category"
+	. "mymanager/models/common"
 	. "mymanager/models/user"
 )
 
-type CategoryController struct {
-	BaseController
-	CategoryAo CategoryAoModel
+type categoryController struct {
+	baseController
+	CategoryAo  CategoryAoModel
 	UserLoginAo UserLoginAoModel
 }
 
-func (this *CategoryController) Search_Json() interface{} {
+func (this *categoryController) Search_Json() interface{} {
 	//检查输入参数
 	var where Category
 	this.CheckGet(&where)
@@ -24,10 +24,10 @@ func (this *CategoryController) Search_Json() interface{} {
 	loginUser := this.UserLoginAo.CheckMustLogin()
 
 	//执行业务逻辑
-	return this.CategoryAo.Search(loginUser.UserId,where, limit)
+	return this.CategoryAo.Search(loginUser.UserId, where, limit)
 }
 
-func (this *CategoryController) Get_Json() interface{} {
+func (this *categoryController) Get_Json() interface{} {
 	//检查输入参数
 	var category Category
 	this.CheckGet(&category)
@@ -36,10 +36,10 @@ func (this *CategoryController) Get_Json() interface{} {
 	loginUser := this.UserLoginAo.CheckMustLogin()
 
 	//执行业务逻辑
-	return this.CategoryAo.Get(loginUser.UserId,category.CategoryId)
+	return this.CategoryAo.Get(loginUser.UserId, category.CategoryId)
 }
 
-func (this *CategoryController) Add_Json() {
+func (this *categoryController) Add_Json() {
 	//检查输入参数
 	var category Category
 	this.CheckPost(&category)
@@ -48,10 +48,10 @@ func (this *CategoryController) Add_Json() {
 	loginUser := this.UserLoginAo.CheckMustLogin()
 
 	//执行业务逻辑
-	this.CategoryAo.Add(loginUser.UserId,category)
+	this.CategoryAo.Add(loginUser.UserId, category)
 }
 
-func (this *CategoryController) Del_Json() {
+func (this *categoryController) Del_Json() {
 	//检查输入参数
 	var category Category
 	this.CheckPost(&category)
@@ -60,10 +60,10 @@ func (this *CategoryController) Del_Json() {
 	loginUser := this.UserLoginAo.CheckMustLogin()
 
 	//执行业务逻辑
-	this.CategoryAo.Del(loginUser.UserId,category.CategoryId)
+	this.CategoryAo.Del(loginUser.UserId, category.CategoryId)
 }
 
-func (this *CategoryController) Mod_Json() {
+func (this *categoryController) Mod_Json() {
 	//检查输入参数
 	var category Category
 	this.CheckPost(&category)
@@ -72,5 +72,5 @@ func (this *CategoryController) Mod_Json() {
 	loginUser := this.UserLoginAo.CheckMustLogin()
 
 	//执行业务逻辑
-	this.CategoryAo.Mod(loginUser.UserId, category.CategoryId,category)
+	this.CategoryAo.Mod(loginUser.UserId, category.CategoryId, category)
 }

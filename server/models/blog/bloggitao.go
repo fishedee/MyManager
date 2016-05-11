@@ -17,12 +17,12 @@ import (
 	"strings"
 )
 
-type BlogGitAoModel struct {
+type blogGitAoModel struct {
 	Model
 	UploadAo UploadAoModel
 }
 
-func (this *BlogGitAoModel) getFileContent(fileAddress string) string {
+func (this *blogGitAoModel) getFileContent(fileAddress string) string {
 	data, err := ioutil.ReadFile(fileAddress)
 	if err != nil {
 		panic(err)
@@ -30,7 +30,7 @@ func (this *BlogGitAoModel) getFileContent(fileAddress string) string {
 	return string(data)
 }
 
-func (this *BlogGitAoModel) markdownToHtml(data string) string {
+func (this *blogGitAoModel) markdownToHtml(data string) string {
 	htmlOption := 0 |
 		blackfriday.HTML_USE_XHTML |
 		blackfriday.HTML_USE_SMARTYPANTS |
@@ -54,7 +54,7 @@ func (this *BlogGitAoModel) markdownToHtml(data string) string {
 	return string(result)
 }
 
-func (this *BlogGitAoModel) convertImage(dir string, content string) string {
+func (this *blogGitAoModel) convertImage(dir string, content string) string {
 	doc, err := goquery.NewDocumentFromReader(bytes.NewReader([]byte(content)))
 	if err != nil {
 		panic(err)
@@ -82,7 +82,7 @@ func (this *BlogGitAoModel) convertImage(dir string, content string) string {
 	return docHtml
 }
 
-func (this *BlogGitAoModel) analyseSingleDir(fileAddress string) []BlogArticle {
+func (this *blogGitAoModel) analyseSingleDir(fileAddress string) []BlogArticle {
 	category := path.Base(fileAddress)
 
 	dirFileInfo, err := ioutil.ReadDir(fileAddress)
@@ -115,7 +115,7 @@ func (this *BlogGitAoModel) analyseSingleDir(fileAddress string) []BlogArticle {
 	return result
 }
 
-func (this *BlogGitAoModel) analyse(dir string) Blog {
+func (this *blogGitAoModel) analyse(dir string) Blog {
 	dirFileInfo, err := ioutil.ReadDir(dir)
 	if err != nil {
 		panic(err)
@@ -147,7 +147,7 @@ func (this *BlogGitAoModel) analyse(dir string) Blog {
 	return result
 }
 
-func (this *BlogGitAoModel) download(gitUrl string, tempDir string) string {
+func (this *blogGitAoModel) download(gitUrl string, tempDir string) string {
 	if strings.HasPrefix(gitUrl, "https://github.com") == false {
 		Throw(1, "请输入https://github.com开头的git仓库地址")
 	}
@@ -171,7 +171,7 @@ func (this *BlogGitAoModel) download(gitUrl string, tempDir string) string {
 	return gitDir + "/" + gitFile
 }
 
-func (this *BlogGitAoModel) Get(gitUrl string, progressUpdater BlogSyncProgress) Blog {
+func (this *blogGitAoModel) Get(gitUrl string, progressUpdater BlogSyncProgress) Blog {
 	tempDir, err := CreateTempFile("mymanager", "-git")
 	defer os.RemoveAll(tempDir)
 	if err != nil {

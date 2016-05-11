@@ -2,10 +2,69 @@ package account
 
 import (
 	. "github.com/fishedee/language"
+	. "github.com/fishedee/web"
 	. "mymanager/models/common"
 )
 
-func (this *AccountAoModel) Search_WithError(userId int, where Account, limit CommonPage) (_fishgen1 Accounts, _fishgenErr Exception) {
+type AccountAoModel interface {
+	Search(userId int, where Account, limit CommonPage) (_fishgen1 Accounts)
+	Search_WithError(userId int, where Account, limit CommonPage) (_fishgen1 Accounts, _fishgenErr Exception)
+	Get(userId int, accountId int) (_fishgen1 Account)
+	Get_WithError(userId int, accountId int) (_fishgen1 Account, _fishgenErr Exception)
+	Del(userId int, accountId int)
+	Del_WithError(userId int, accountId int) (_fishgenErr Exception)
+	Add(userId int, account Account)
+	Add_WithError(userId int, account Account) (_fishgenErr Exception)
+	Mod(userId int, accountId int, account Account)
+	Mod_WithError(userId int, accountId int, account Account) (_fishgenErr Exception)
+}
+
+type AccountAoTest interface {
+	InitEmpty()
+	TestBasic()
+	TestStatistic()
+}
+
+type AccountDbModel interface {
+	Search(where Account, limit CommonPage) (_fishgen1 Accounts)
+	Search_WithError(where Account, limit CommonPage) (_fishgen1 Accounts, _fishgenErr Exception)
+	Get(accountId int) (_fishgen1 Account)
+	Get_WithError(accountId int) (_fishgen1 Account, _fishgenErr Exception)
+	Del(accountId int)
+	Del_WithError(accountId int) (_fishgenErr Exception)
+	Add(account Account)
+	Add_WithError(account Account) (_fishgenErr Exception)
+	Mod(accountId int, account Account)
+	Mod_WithError(accountId int, account Account) (_fishgenErr Exception)
+	ResetCategory(categoryId int)
+	ResetCategory_WithError(categoryId int) (_fishgenErr Exception)
+	ResetCard(cardId int)
+	ResetCard_WithError(cardId int) (_fishgenErr Exception)
+}
+
+type AccountStatisticAoModel interface {
+	GetWeekTypeStatistic(userId int) (_fishgen1 []AccountStatistic)
+	GetWeekTypeStatistic_WithError(userId int) (_fishgen1 []AccountStatistic, _fishgenErr Exception)
+	GetWeekTypeStatisticDetail(userId int, year int, week int, accountType int) (_fishgen1 []AccountStatisticDetail)
+	GetWeekTypeStatisticDetail_WithError(userId int, year int, week int, accountType int) (_fishgen1 []AccountStatisticDetail, _fishgenErr Exception)
+	GetWeekCardStatistic(userId int) (_fishgen1 []AccountStatistic)
+	GetWeekCardStatistic_WithError(userId int) (_fishgen1 []AccountStatistic, _fishgenErr Exception)
+	GetWeekCardStatisticDetail(userId int, year int, week int, cardId int) (_fishgen1 []AccountStatisticDetail)
+	GetWeekCardStatisticDetail_WithError(userId int, year int, week int, cardId int) (_fishgen1 []AccountStatisticDetail, _fishgenErr Exception)
+}
+
+type AccountStatisticDbModel interface {
+	GetWeekTypStatisticByUser(userId int) (_fishgen1 []AccountStatistic)
+	GetWeekTypStatisticByUser_WithError(userId int) (_fishgen1 []AccountStatistic, _fishgenErr Exception)
+	GetWeekTypeStatisticDetailByUser(userId int, year int, week int, accountType int) (_fishgen1 []AccountStatisticDetail)
+	GetWeekTypeStatisticDetailByUser_WithError(userId int, year int, week int, accountType int) (_fishgen1 []AccountStatisticDetail, _fishgenErr Exception)
+	GetWeekCardStatisticByUser(userId int) (_fishgen1 []AccountStatistic)
+	GetWeekCardStatisticByUser_WithError(userId int) (_fishgen1 []AccountStatistic, _fishgenErr Exception)
+	GetWeekCardStatisticDetailByUser(userId int, year int, week int, cardId int) (_fishgen1 []AccountStatisticDetail)
+	GetWeekCardStatisticDetailByUser_WithError(userId int, year int, week int, cardId int) (_fishgen1 []AccountStatisticDetail, _fishgenErr Exception)
+}
+
+func (this *accountAoModel) Search_WithError(userId int, where Account, limit CommonPage) (_fishgen1 Accounts, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -13,7 +72,7 @@ func (this *AccountAoModel) Search_WithError(userId int, where Account, limit Co
 	return
 }
 
-func (this *AccountAoModel) Get_WithError(userId int, accountId int) (_fishgen1 Account, _fishgenErr Exception) {
+func (this *accountAoModel) Get_WithError(userId int, accountId int) (_fishgen1 Account, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -21,7 +80,7 @@ func (this *AccountAoModel) Get_WithError(userId int, accountId int) (_fishgen1 
 	return
 }
 
-func (this *AccountAoModel) Del_WithError(userId int, accountId int) (_fishgenErr Exception) {
+func (this *accountAoModel) Del_WithError(userId int, accountId int) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -29,7 +88,7 @@ func (this *AccountAoModel) Del_WithError(userId int, accountId int) (_fishgenEr
 	return
 }
 
-func (this *AccountAoModel) Add_WithError(userId int, account Account) (_fishgenErr Exception) {
+func (this *accountAoModel) Add_WithError(userId int, account Account) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -37,7 +96,7 @@ func (this *AccountAoModel) Add_WithError(userId int, account Account) (_fishgen
 	return
 }
 
-func (this *AccountAoModel) Mod_WithError(userId int, accountId int, account Account) (_fishgenErr Exception) {
+func (this *accountAoModel) Mod_WithError(userId int, accountId int, account Account) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -45,7 +104,7 @@ func (this *AccountAoModel) Mod_WithError(userId int, accountId int, account Acc
 	return
 }
 
-func (this *AccountDbModel) Search_WithError(where Account, limit CommonPage) (_fishgen1 Accounts, _fishgenErr Exception) {
+func (this *accountDbModel) Search_WithError(where Account, limit CommonPage) (_fishgen1 Accounts, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -53,7 +112,7 @@ func (this *AccountDbModel) Search_WithError(where Account, limit CommonPage) (_
 	return
 }
 
-func (this *AccountDbModel) Get_WithError(accountId int) (_fishgen1 Account, _fishgenErr Exception) {
+func (this *accountDbModel) Get_WithError(accountId int) (_fishgen1 Account, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -61,7 +120,7 @@ func (this *AccountDbModel) Get_WithError(accountId int) (_fishgen1 Account, _fi
 	return
 }
 
-func (this *AccountDbModel) Del_WithError(accountId int) (_fishgenErr Exception) {
+func (this *accountDbModel) Del_WithError(accountId int) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -69,7 +128,7 @@ func (this *AccountDbModel) Del_WithError(accountId int) (_fishgenErr Exception)
 	return
 }
 
-func (this *AccountDbModel) Add_WithError(account Account) (_fishgenErr Exception) {
+func (this *accountDbModel) Add_WithError(account Account) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -77,7 +136,7 @@ func (this *AccountDbModel) Add_WithError(account Account) (_fishgenErr Exceptio
 	return
 }
 
-func (this *AccountDbModel) Mod_WithError(accountId int, account Account) (_fishgenErr Exception) {
+func (this *accountDbModel) Mod_WithError(accountId int, account Account) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -85,7 +144,7 @@ func (this *AccountDbModel) Mod_WithError(accountId int, account Account) (_fish
 	return
 }
 
-func (this *AccountDbModel) ResetCategory_WithError(categoryId int) (_fishgenErr Exception) {
+func (this *accountDbModel) ResetCategory_WithError(categoryId int) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -93,7 +152,7 @@ func (this *AccountDbModel) ResetCategory_WithError(categoryId int) (_fishgenErr
 	return
 }
 
-func (this *AccountDbModel) ResetCard_WithError(cardId int) (_fishgenErr Exception) {
+func (this *accountDbModel) ResetCard_WithError(cardId int) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -101,7 +160,7 @@ func (this *AccountDbModel) ResetCard_WithError(cardId int) (_fishgenErr Excepti
 	return
 }
 
-func (this *AccountStatisticAoModel) GetWeekTypeStatistic_WithError(userId int) (_fishgen1 []AccountStatistic, _fishgenErr Exception) {
+func (this *accountStatisticAoModel) GetWeekTypeStatistic_WithError(userId int) (_fishgen1 []AccountStatistic, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -109,7 +168,7 @@ func (this *AccountStatisticAoModel) GetWeekTypeStatistic_WithError(userId int) 
 	return
 }
 
-func (this *AccountStatisticAoModel) GetWeekTypeStatisticDetail_WithError(userId int, year int, week int, accountType int) (_fishgen1 []AccountStatisticDetail, _fishgenErr Exception) {
+func (this *accountStatisticAoModel) GetWeekTypeStatisticDetail_WithError(userId int, year int, week int, accountType int) (_fishgen1 []AccountStatisticDetail, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -117,7 +176,7 @@ func (this *AccountStatisticAoModel) GetWeekTypeStatisticDetail_WithError(userId
 	return
 }
 
-func (this *AccountStatisticAoModel) GetWeekCardStatistic_WithError(userId int) (_fishgen1 []AccountStatistic, _fishgenErr Exception) {
+func (this *accountStatisticAoModel) GetWeekCardStatistic_WithError(userId int) (_fishgen1 []AccountStatistic, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -125,7 +184,7 @@ func (this *AccountStatisticAoModel) GetWeekCardStatistic_WithError(userId int) 
 	return
 }
 
-func (this *AccountStatisticAoModel) GetWeekCardStatisticDetail_WithError(userId int, year int, week int, cardId int) (_fishgen1 []AccountStatisticDetail, _fishgenErr Exception) {
+func (this *accountStatisticAoModel) GetWeekCardStatisticDetail_WithError(userId int, year int, week int, cardId int) (_fishgen1 []AccountStatisticDetail, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -133,7 +192,7 @@ func (this *AccountStatisticAoModel) GetWeekCardStatisticDetail_WithError(userId
 	return
 }
 
-func (this *AccountStatisticDbModel) GetWeekTypStatisticByUser_WithError(userId int) (_fishgen1 []AccountStatistic, _fishgenErr Exception) {
+func (this *accountStatisticDbModel) GetWeekTypStatisticByUser_WithError(userId int) (_fishgen1 []AccountStatistic, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -141,7 +200,7 @@ func (this *AccountStatisticDbModel) GetWeekTypStatisticByUser_WithError(userId 
 	return
 }
 
-func (this *AccountStatisticDbModel) GetWeekTypeStatisticDetailByUser_WithError(userId int, year int, week int, accountType int) (_fishgen1 []AccountStatisticDetail, _fishgenErr Exception) {
+func (this *accountStatisticDbModel) GetWeekTypeStatisticDetailByUser_WithError(userId int, year int, week int, accountType int) (_fishgen1 []AccountStatisticDetail, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -149,7 +208,7 @@ func (this *AccountStatisticDbModel) GetWeekTypeStatisticDetailByUser_WithError(
 	return
 }
 
-func (this *AccountStatisticDbModel) GetWeekCardStatisticByUser_WithError(userId int) (_fishgen1 []AccountStatistic, _fishgenErr Exception) {
+func (this *accountStatisticDbModel) GetWeekCardStatisticByUser_WithError(userId int) (_fishgen1 []AccountStatistic, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
@@ -157,10 +216,22 @@ func (this *AccountStatisticDbModel) GetWeekCardStatisticByUser_WithError(userId
 	return
 }
 
-func (this *AccountStatisticDbModel) GetWeekCardStatisticDetailByUser_WithError(userId int, year int, week int, cardId int) (_fishgen1 []AccountStatisticDetail, _fishgenErr Exception) {
+func (this *accountStatisticDbModel) GetWeekCardStatisticDetailByUser_WithError(userId int, year int, week int, cardId int) (_fishgen1 []AccountStatisticDetail, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
 	_fishgen1 = this.GetWeekCardStatisticDetailByUser(userId, year, week, cardId)
 	return
+}
+func init() {
+	v0 := AccountAoModel(&accountAoModel{})
+	InitModel(&v0)
+	v1 := AccountAoTest(&accountAoTest{})
+	InitTest(&v1)
+	v2 := AccountDbModel(&accountDbModel{})
+	InitModel(&v2)
+	v3 := AccountStatisticAoModel(&accountStatisticAoModel{})
+	InitModel(&v3)
+	v4 := AccountStatisticDbModel(&accountStatisticDbModel{})
+	InitModel(&v4)
 }

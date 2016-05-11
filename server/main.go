@@ -5,7 +5,7 @@ import (
 	_ "mymanager/routers"
 )
 
-//go:generate fishgen ^./models/.*(ao|db)\.go$
+//go:generate fishgen -force ^.*(ao|db|_testing|controller)\.go$
 func main() {
 	web.Run()
 }

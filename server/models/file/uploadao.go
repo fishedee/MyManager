@@ -13,11 +13,11 @@ const (
 	host           = "http://image.fishedee.com/"
 )
 
-type UploadAoModel struct {
+type uploadAoModel struct {
 	Model
 }
 
-func (this *UploadAoModel) UploadFile(data []byte) string {
+func (this *uploadAoModel) UploadFile(data []byte) string {
 	qiniuSdk := QiniuSdk{
 		AccessKey: qiniuAccessKey,
 		SecretKey: qiniuSecretKey,
@@ -29,7 +29,7 @@ func (this *UploadAoModel) UploadFile(data []byte) string {
 	return host + fileNameHash
 }
 
-func (this *UploadAoModel) UploadFileFromLocal(fileAddress string) string {
+func (this *uploadAoModel) UploadFileFromLocal(fileAddress string) string {
 	data, err := ioutil.ReadFile(fileAddress)
 	if err != nil {
 		panic(err)

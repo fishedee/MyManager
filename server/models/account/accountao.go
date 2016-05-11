@@ -9,14 +9,14 @@ import (
 	. "mymanager/models/common"
 )
 
-type AccountAoModel struct {
+type accountAoModel struct {
 	Model
 	AccountDb  AccountDbModel
 	CategoryAo CategoryAoModel
 	CardAo     CardAoModel
 }
 
-func (this *AccountAoModel) checkAccountData(userId int, account Account) {
+func (this *accountAoModel) checkAccountData(userId int, account Account) {
 	//校验分类ID
 	this.CategoryAo.Get(userId, account.CategoryId)
 
@@ -34,12 +34,12 @@ func (this *AccountAoModel) checkAccountData(userId int, account Account) {
 	}
 }
 
-func (this *AccountAoModel) Search(userId int, where Account, limit CommonPage) Accounts {
+func (this *accountAoModel) Search(userId int, where Account, limit CommonPage) Accounts {
 	where.UserId = userId
 	return this.AccountDb.Search(where, limit)
 }
 
-func (this *AccountAoModel) Get(userId int, accountId int) Account {
+func (this *accountAoModel) Get(userId int, accountId int) Account {
 	account := this.AccountDb.Get(accountId)
 
 	if account.UserId != userId {
@@ -48,20 +48,20 @@ func (this *AccountAoModel) Get(userId int, accountId int) Account {
 	return account
 }
 
-func (this *AccountAoModel) Del(userId int, accountId int) {
+func (this *accountAoModel) Del(userId int, accountId int) {
 	this.Get(userId, accountId)
 
 	this.AccountDb.Del(accountId)
 }
 
-func (this *AccountAoModel) Add(userId int, account Account) {
+func (this *accountAoModel) Add(userId int, account Account) {
 	this.checkAccountData(userId, account)
 
 	account.UserId = userId
 	this.AccountDb.Add(account)
 }
 
-func (this *AccountAoModel) Mod(userId int, accountId int, account Account) {
+func (this *accountAoModel) Mod(userId int, accountId int, account Account) {
 	this.checkAccountData(userId, account)
 
 	this.Get(userId, accountId)
@@ -69,16 +69,16 @@ func (this *AccountAoModel) Mod(userId int, accountId int, account Account) {
 	this.AccountDb.Mod(accountId, account)
 }
 
-func (this *AccountAoModel) whenCategoryDelete(categoryId int) {
+func (this *accountAoModel) whenCategoryDelete(categoryId int) {
 	this.AccountDb.ResetCategory(categoryId)
 }
 
-func (this *AccountAoModel) whenCardDelete(cardId int) {
+func (this *accountAoModel) whenCardDelete(cardId int) {
 	this.AccountDb.ResetCard(cardId)
 }
 
 func init() {
-	InitDaemon(func(this *AccountAoModel) {
+	InitDaemon(func(this *accountAoModel) {
 		this.Queue.Subscribe(CategoryQueueEnum.EVENT_DEL, this.whenCategoryDelete)
 		this.Queue.Subscribe(CardQueueEnum.EVENT_DEL, this.whenCardDelete)
 	})
