@@ -332,13 +332,16 @@ module.exports = {
 				return;
 			}
 			var escapeDiv = $("<div/>");
-			var temp = result.data[_option.data];
-			for( var i in temp ){
-				var singleTemp = temp[i];
-				for( var j in singleTemp){
-					singleTemp[j] = escapeDiv.text(singleTemp[j]).html();
-				}
-			}
+ 			var temp = result.data[_option.data];
+ 			for( var i in temp ){
+ 				var singleTemp = temp[i];
+ 				for( var j in singleTemp){
+ 					var singleTempData = singleTemp[j];
+ 					if( typeof singleTempData == 'string'){
+ 						singleTemp[j] = escapeDiv.text(singleTempData).html();
+ 					}
+ 				}
+ 			}
 			dt = GRI.initDataTable({
 				resultObj: result,
 				name: _option.data,
@@ -407,6 +410,51 @@ module.exports = {
 			});
 			return singleData;
 		}
+		function exportData(type,title,url){
+			var urlInfo = $.url.toInfo(url)
+			//设置格式化数据
+			var _viewFormat = {}
+			for( var i in _option.fields ){
+				_viewFormat[i] = _option.fields[i].thText
+			}
+			//导出
+			var form = "";
+			form += '<form action="'+urlInfo.originpathname+'" method="get" style="display:none">';
+			for( i in urlInfo.search ){
+				var key = i;
+				var value = urlInfo.search[i];
+				form += '<input type="text" name="'+key+'" class="input-small" value="'+encodeURIComponent(value)+'"/>';
+			}
+			form += '<input type="text" name="_viewTitle" class="input-small" value="'+encodeURIComponent(title)+'"/>';
+			form += '<input type="text" name="_view" class="input-small" value="'+encodeURIComponent(type)+'"/>';
+			form += '<input type="text" name="_viewFormat" class="input-small" value="'+encodeURIComponent(JSON.stringify(_viewFormat))+'"/>';
+			form += '</form>';
+			form = $(form);
+			$('body').append(form);
+			form.submit();
+		}
+		function exportDataAsync(type,title,pageIndex,pageSize){
+			//设置格式化数据
+			var _viewFormat = {}
+			for( var i in _option.fields ){
+				_viewFormat[i] = _option.fields[i].thText
+			}
+			//导出
+			$.get('/export/'+type,{
+				source:sendUrl,
+				pageIndex:pageIndex,
+				pageSize:pageSize,
+				viewTitle:title,
+				viewFormat:JSON.stringify(_viewFormat)
+			},function(data){
+				data = $.JSON.parse(data);
+				if( data.code != 0 ){
+					dialog.message(data.msg);
+					return;
+				}
+				dialog.message("导出数据成功，请稍候留意邮箱！");
+			})
+		}
 		return {
 			getCheckData:function(){
 				var target = $('#'+defaultOption.id+' .gri_td_checkbox:checked');
@@ -416,7 +464,46 @@ module.exports = {
 					data.push(getSingleRowData(parent));
 				});
 				return data;
-			}
+			},
+			exportDataToTxt:function(title){
+				dialog.input('请输入需要导出txt的页数（不填代表导出本页数据）',function(pageSize){
+					if( pageSize == '')
+						pageSize = 1;
+					pageSize = defaultOption.pageSize * pageSize;
+					var url = sendUrl+"&pageIndex="+defaultOption.pageIndex+"&pageSize="+pageSize;
+					exportData(
+						'txt',
+						title,
+						url
+					);
+				});
+			},
+			exportDataToExcel:function(title){
+				dialog.input('请输入需要导出excel的页数（不填代表导出本页数据）',function(pageSize){
+					if( pageSize == '')
+						pageSize = 1;
+					pageSize = defaultOption.pageSize * pageSize;
+					var url = sendUrl+"&pageIndex="+defaultOption.pageIndex+"&pageSize="+pageSize;
+					exportData(
+						'excel',
+						title,
+						url
+					);
+				});
+			},
+			exportDataToExcelAsync:function(title){
+				dialog.input('请输入需要导出excel的页数（不填代表导出本页数据）',function(pageSize){
+					if( pageSize == '')
+						pageSize = 1;
+					pageSize = defaultOption.pageSize * pageSize;
+					exportDataAsync(
+						'excel',
+						title,
+						defaultOption.pageIndex,
+						pageSize
+					);
+				});
+			},
 		};
 	},
 	

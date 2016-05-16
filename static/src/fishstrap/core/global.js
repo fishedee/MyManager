@@ -492,7 +492,7 @@ $.addCssToHead = function(str_css) {
 			if( search[i] == '')
 				continue;
 
-			result.push( search[i] );
+			result.push( decodeURIComponent(search[i]) );
 		}
 		return result;
 	}
@@ -518,7 +518,7 @@ $.addCssToHead = function(str_css) {
 					url += '&';
 				url += i + '='+ encodeURIComponent(urlArgv[i]);
 			}
-			return encodeURI(url);
+			return url;
 		},
 		toInfo:function(url){
 			if( typeof(url) != 'string' ){
@@ -537,7 +537,6 @@ $.addCssToHead = function(str_css) {
 				};
 			}
 			//正则提取
-			url = decodeURI(url);
 			var regex = /^(?:([a-zA-Z]+):\/\/)?([^?#\/:]*)?(?::([0-9]+))?(?:(\/[^?#]*))?(\?[^#]*)?(#.*)?$/;
 			var regexInfo = regex.exec(url);
 
@@ -659,7 +658,7 @@ $.addCssToHead = function(str_css) {
 			for( var i in argv ){
 				hash += i+'='+encodeURIComponent(argv[i])+'&';
 			}
-			window.location.hash = '#'+encodeURI(hash);
+			window.location.hash = '#'+hash;
 		},
 		redirect:function(a){
 			location.href = a;
