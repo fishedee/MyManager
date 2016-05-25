@@ -1,7 +1,6 @@
 package category
 
 import (
-	"fmt"
 	. "github.com/fishedee/language"
 	. "github.com/fishedee/web"
 	. "mymanager/models/common"
@@ -43,14 +42,4 @@ func (this *CategoryAoModel) Mod(userId int, categoryId int, categoryInfo Catego
 
 	categoryInfo.UserId = userId
 	this.CategoryDb.Mod(categoryId, categoryInfo)
-}
-
-func (this *CategoryAoModel) TestQueue(id int, str string) {
-	fmt.Println(id, str)
-}
-
-func init() {
-	InitDaemon(func(this *CategoryAoModel) {
-		this.Queue.Consume("uu", this.TestQueue)
-	})
 }

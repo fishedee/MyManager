@@ -121,7 +121,7 @@ func (this *BlogSyncAoModel) syncAuto() {
 
 func init() {
 	InitDaemon(func(this *BlogSyncAoModel) {
-		this.Queue.Consume("blog_sync", this.sync)
-		this.Timer.Cron("0 0 23 * *", this.syncAuto)
+		this.Queue.Consume("blog_sync", (*BlogSyncAoModel).sync)
+		this.Timer.Cron("0 0 23 * *", (*BlogSyncAoModel).syncAuto)
 	})
 }

@@ -1,7 +1,7 @@
 watch:
-	-pkill -9 bee
+	-pkill -9 fishcmd
 	-pkill -9 mymanager
-	nohup bee run &
+	fishcmd run --watch &
 	tail -f nohup.out
 release:
 	go install mymanager
@@ -11,7 +11,7 @@ release:
 	sudo tail -f ../data/log/access.log
 stop:
 	sudo supervisorctl stop mymanager_server 
-	-pkill -9 bee
+	-pkill -9 fishcmd
 	-pkill -9 mymanager
 gen:
 	go generate

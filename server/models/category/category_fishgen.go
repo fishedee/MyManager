@@ -45,14 +45,6 @@ func (this *CategoryAoModel) Mod_WithError(userId int, categoryId int, categoryI
 	return
 }
 
-func (this *CategoryAoModel) TestQueue_WithError(id int, str string) (_fishgenErr Exception) {
-	defer Catch(func(exception Exception) {
-		_fishgenErr = exception
-	})
-	this.TestQueue(id, str)
-	return
-}
-
 func (this *CategoryDbModel) Search_WithError(where Category, limit CommonPage) (_fishgen1 Categorys, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
