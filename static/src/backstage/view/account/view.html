@@ -19,7 +19,7 @@
 		var types = {1:'收入',2:'支出',3:'转账收入',4:'转账支出',5:'借还账收入',6:'借还账支出'};
 		var account = {};
 		function getCategory(nextStep){
-			$.get('/category/search',{},function(data){
+			$.get('/category/search',{pageIndex:-1,pageSize:-1},function(data){
 				data = $.JSON.parse(data);
 				if( data.code != 0 ){
 					dialog.message( data.msg );
@@ -32,7 +32,7 @@
 			});
 		}
 		function getCard(nextStep){
-			$.get('/card/search',{},function(data){
+			$.get('/card/search',{pageIndex:-1,pageSize:-1},function(data){
 				data = $.JSON.parse(data);
 				if( data.code != 0 ){
 					dialog.message( data.msg );
