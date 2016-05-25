@@ -42,7 +42,7 @@ func (this *AccountStatisticAoModel) GetWeekTypeStatistic(userId int) []AccountS
 
 func (this *AccountStatisticAoModel) GetWeekTypeStatisticDetail(userId int, year int, week int, accountType int) []AccountStatisticDetail {
 	statistic := this.AccountDb.GetWeekTypeStatisticDetailByUser(userId, year, week, accountType)
-	category := this.CategoryAo.Search(userId, Category{}, CommonPage{}).Data
+	category := this.CategoryAo.Search(userId, Category{}, CommonAllPage).Data
 
 	totalMoney := QuerySum(QueryColumn(statistic, "Money")).(int)
 	return QueryLeftJoin(statistic, category, "CategoryId = CategoryId", func(left AccountStatisticDetail, right Category) AccountStatisticDetail {
@@ -57,7 +57,7 @@ func (this *AccountStatisticAoModel) GetWeekTypeStatisticDetail(userId int, year
 
 func (this *AccountStatisticAoModel) GetWeekCardStatistic(userId int) []AccountStatistic {
 	statistic := this.AccountDb.GetWeekCardStatisticByUser(userId)
-	card := this.CardAo.Search(userId, Card{}, CommonPage{}).Data
+	card := this.CardAo.Search(userId, Card{}, CommonAllPage).Data
 	card = QueryReverse(card).([]Card)
 
 	statistic = QueryGroup(statistic, "Year desc,Week desc,CardId desc", func(weekStatistic []AccountStatistic) []AccountStatistic {
