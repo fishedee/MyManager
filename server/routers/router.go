@@ -3,6 +3,8 @@ package routers
 import (
 	. "github.com/fishedee/web"
 	. "mymanager/controllers"
+
+	_ "mymanager/models/register"
 )
 
 func init() {
