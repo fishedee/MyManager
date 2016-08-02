@@ -5,7 +5,7 @@ import (
 	. "github.com/fishedee/sdk"
 	. "github.com/fishedee/web"
 	. "github.com/fishedee/encoding"
-	//"strings"
+	"strings"
 	"errors"
 	"strconv"
 	"time"
@@ -64,9 +64,9 @@ func (this *RegisterAoModel) checkValidDoctor(data []RegisterResult)[]RegisterRe
 	result := []RegisterResult{}
 
 	for _,singleData := range data{
-		//if strings.Index(singleData.DoctorName,"助产门诊") != -1 {
-		//	continue
-		//}
+		if strings.Index(singleData.DoctorName,"助产门诊") != -1 {
+			continue
+		}
 		if singleData.LeftCount == 0{
 			continue
 		}
@@ -105,7 +105,7 @@ func (this *RegisterAoModel) notify(date string,data []RegisterResult){
 func (this *RegisterAoModel) checkDoctor(){
 	now := time.Now()
 
-	for i := 1 ; i != 2 ; i++{
+	for i := 0 ; i != 14 ; i++{
 		date := now.AddDate(0,0,i).Format("2006-01-02")
 		data,err := this.getDoctorRegister(
 			"2015070900161782",
@@ -130,6 +130,6 @@ func (this *RegisterAoModel) checkDoctor(){
 
 func init(){
 	InitDaemon(func(this *RegisterAoModel){
-		this.checkDoctor()
+		this.Timer.Cron("*/30 * * * *",(*RegisterAoModel).checkDoctor)
 	})
 }
