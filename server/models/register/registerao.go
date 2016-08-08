@@ -67,7 +67,7 @@ func (this *RegisterAoModel) checkValidDoctor(data []RegisterResult)[]RegisterRe
 		if strings.Index(singleData.DoctorName,"助产门诊") != -1 {
 			continue
 		}
-		if singleData.LeftCount == 0{
+		if singleData.LeftCount <= 0{
 			continue
 		}
 		result = append(result,singleData)
@@ -128,8 +128,14 @@ func (this *RegisterAoModel) checkDoctor(){
 	}
 }
 
+func (this *RegisterAoModel) addDoctor(){
+
+}
+
 func init(){
+	/*
 	InitDaemon(func(this *RegisterAoModel){
-		this.Timer.Cron("*/30 * * * *",(*RegisterAoModel).checkDoctor)
+		this.Timer.Cron("30 * * * *",(*RegisterAoModel).checkDoctor)
 	})
+	*/
 }
