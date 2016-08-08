@@ -8,6 +8,6 @@ MyManager
 *   多帐套
 
 #架构
-*   前端:bootstrap,jquery
-*   后端:php ci
+*   前端:fishfront
+*   后端:fishgo
 *   数据库:mysql
