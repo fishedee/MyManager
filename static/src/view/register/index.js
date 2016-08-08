@@ -15,11 +15,11 @@ function go(){
 			{id:'mail',type:'text',name:'提醒邮箱'},
 			{id:'needDealType',type:'enum',name:'是否需要自动挂号',map:needDealType},
 			{id:'haveDealType',type:'enum',name:'是否已经自动挂号',map:haveDealType},
-			{id:'haveDealTime',type:'text',name:'已经自动挂号时间'},
+			{id:'haveDealResult',type:'text',name:'自动挂号结果'},
 			{id:'createTime',type:'text',name:'创建时间'},
 			{id:'modifyTime',type:'text',name:'修改时间'},
 		],
-		queryColumn:['gitUrl','syncType','state'],
+		queryColumn:['name'],
 		operate:[
 		{
 			name:'编辑',

@@ -1,141 +1,179 @@
 package register
 
 import (
-	. "github.com/fishedee/util"
-	. "github.com/fishedee/sdk"
-	. "github.com/fishedee/web"
-	. "github.com/fishedee/encoding"
-	"strings"
 	"errors"
+	. "github.com/fishedee/encoding"
+	. "github.com/fishedee/language"
+	. "github.com/fishedee/sdk"
+	. "github.com/fishedee/util"
+	. "github.com/fishedee/web"
+	. "mymanager/models/common"
 	"strconv"
+	"strings"
 	"time"
 )
 
 type RegisterAoModel struct {
 	Model
+	RegisterDb RegisterDbModel
 }
 
-func (this *RegisterAoModel) getDoctorRegister(appId string,openId string,branchCode string,deptCode string,date string) ([]RegisterResult,error) {
+func (this *RegisterAoModel) Search(userId int, where Register, limit CommonPage) Registers {
+	where.UserId = userId
+	return this.RegisterDb.Search(where, limit)
+}
+
+func (this *RegisterAoModel) Get(userId int, registerId int) Register {
+	registerInfo := this.RegisterDb.Get(registerId)
+	if registerInfo.UserId != userId {
+		Throw(1, "你没有权利查看或编辑等操作")
+	}
+	return registerInfo
+}
+
+func (this *RegisterAoModel) Del(userId int, registerId int) {
+	this.Get(userId, registerId)
+
+	this.RegisterDb.Del(registerId)
+}
+
+func (this *RegisterAoModel) Add(userId int, register Register) {
+	register.UserId = userId
+	register.HaveDealType = RegisterHaveDealType.NO
+	register.HaveDealResult = ""
+	this.RegisterDb.Add(register)
+}
+
+func (this *RegisterAoModel) Mod(userId int, registerId int, registerInfo Register) {
+	this.Get(userId, registerId)
+
+	registerInfo.UserId = userId
+	registerInfo.HaveDealType = 0
+	registerInfo.HaveDealResult = ""
+	this.RegisterDb.Mod(registerId, registerInfo)
+}
+
+func (this *RegisterAoModel) getDoctorRegister(appId string, openId string, branchCode string, deptCode string, date string) ([]RegisterResult, error) {
 	var byteResult []byte
 	err := DefaultAjaxPool.Get(&Ajax{
-		Url:"http://cs7.yx129.net/registrationfy/loadResInfo",
-		Data:map[string]string{
-			"appId":appId,
-			"openId":openId,
-			"branchCode":branchCode,
-			"deptCode":deptCode,
-			"beginDate":date,
-			"endDate":date,
+		Url: "http://cs7.yx129.net/registrationfy/loadResInfo",
+		Data: map[string]string{
+			"appId":      appId,
+			"openId":     openId,
+			"branchCode": branchCode,
+			"deptCode":   deptCode,
+			"beginDate":  date,
+			"endDate":    date,
 		},
-		ResponseData:&byteResult,
+		ResponseData: &byteResult,
 	})
-	if err != nil{
-		return nil,err
+	if err != nil {
+		return nil, err
 	}
 
-	var errorResult struct{
+	var errorResult struct {
 		Content string
-		Type string
+		Type    string
 	}
-	err = DecodeJson(byteResult,&errorResult)
-	if err == nil && errorResult.Type == "error"{
-		return nil,errors.New(errorResult.Content)
+	err = DecodeJson(byteResult, &errorResult)
+	if err == nil && errorResult.Type == "error" {
+		return nil, errors.New(errorResult.Content)
 	}
 
-	var doctorResult struct{
+	var doctorResult struct {
 		Doctorls []RegisterResult
 	}
-	var successResult struct{
+	var successResult struct {
 		Content interface{}
-		Type string
+		Type    string
 	}
 	successResult.Content = &doctorResult
-	err = DecodeJson(byteResult,&successResult)
+	err = DecodeJson(byteResult, &successResult)
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
-	if successResult.Type != "success"{
-		return nil,errors.New("奇怪的返回值 "+string(byteResult))
+	if successResult.Type != "success" {
+		return nil, errors.New("奇怪的返回值 " + string(byteResult))
 	}
-	return doctorResult.Doctorls,nil
+	return doctorResult.Doctorls, nil
 }
 
-func (this *RegisterAoModel) checkValidDoctor(data []RegisterResult)[]RegisterResult{
+func (this *RegisterAoModel) checkValidDoctor(data []RegisterResult) []RegisterResult {
 	result := []RegisterResult{}
 
-	for _,singleData := range data{
-		if strings.Index(singleData.DoctorName,"助产门诊") != -1 {
+	for _, singleData := range data {
+		if strings.Index(singleData.DoctorName, "助产门诊") != -1 {
 			continue
 		}
-		if singleData.LeftCount <= 0{
+		if singleData.LeftCount <= 0 {
 			continue
 		}
-		result = append(result,singleData)
+		result = append(result, singleData)
 	}
 	return result
 }
 
-func (this *RegisterAoModel) notify(date string,data []RegisterResult){
-	if len(data) == 0{
+func (this *RegisterAoModel) notify(date string, data []RegisterResult) {
+	if len(data) == 0 {
 		return
 	}
 
 	notifyResult := "恭喜你，目前佛山市第一人民医院以下医生有号：<br/>"
-	for _,singleData := range data{
-		notifyResult += "日期："+date+"，科室："+singleData.DeptName+"，医生："+singleData.DoctorName+"，剩余数量："+strconv.Itoa(singleData.LeftCount)+"<br/>"
+	for _, singleData := range data {
+		notifyResult += "日期：" + date + "，科室：" + singleData.DeptName + "，医生：" + singleData.DoctorName + "，剩余数量：" + strconv.Itoa(singleData.LeftCount) + "<br/>"
 	}
-	
+
 	smtp := &SmtpSdk{
-		Host:"smtp.163.com:25",
+		Host: "smtp.163.com:25",
 	}
 	err := smtp.Send(SmtpSdkMailAuth{
-		UserName:"15018749403@163.com",
-		Password:"9616966",
-	},SmtpSdkMail{
-		From:"15018749403@163.com",
-		To:[]string{"306766045@qq.com"},
-		Subject:"佛山市一挂号",
-		Body:notifyResult,
+		UserName: "15018749403@163.com",
+		Password: "9616966",
+	}, SmtpSdkMail{
+		From:    "15018749403@163.com",
+		To:      []string{"306766045@qq.com"},
+		Subject: "佛山市一挂号",
+		Body:    notifyResult,
 	})
-	if err != nil{
+	if err != nil {
 		panic(err)
 	}
 }
 
-func (this *RegisterAoModel) checkDoctor(){
+func (this *RegisterAoModel) checkDoctor() {
 	now := time.Now()
 
-	for i := 0 ; i != 14 ; i++{
-		date := now.AddDate(0,0,i).Format("2006-01-02")
-		data,err := this.getDoctorRegister(
+	for i := 0; i != 14; i++ {
+		date := now.AddDate(0, 0, i).Format("2006-01-02")
+		data, err := this.getDoctorRegister(
 			"2015070900161782",
 			"20880005665009381053113102715391",
 			"1",
 			"3100",
 			date,
 		)
-		if err != nil{
-			if err.Error() != "查询his号源信息出错"{
-				this.Log.Error("查询挂号失败%v",err)
+		if err != nil {
+			if err.Error() != "查询his号源信息出错" {
+				this.Log.Error("查询挂号失败%v", err)
 			}
 			continue
 		}
-		this.Log.Debug("查询挂号时间%v,信息为：%v",date,data)
+		this.Log.Debug("查询挂号时间%v,信息为：%v", date, data)
 
 		data = this.checkValidDoctor(data)
 
-		this.notify(date,data)
+		this.notify(date, data)
 	}
 }
 
-func (this *RegisterAoModel) addDoctor(){
+func (this *RegisterAoModel) addDoctor() {
 
 }
 
-func init(){
+func init() {
 	/*
-	InitDaemon(func(this *RegisterAoModel){
-		this.Timer.Cron("30 * * * *",(*RegisterAoModel).checkDoctor)
-	})
+		InitDaemon(func(this *RegisterAoModel){
+			this.Timer.Cron("30 * * * *",(*RegisterAoModel).checkDoctor)
+		})
 	*/
 }

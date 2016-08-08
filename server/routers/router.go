@@ -3,8 +3,6 @@ package routers
 import (
 	. "github.com/fishedee/web"
 	. "mymanager/controllers"
-
-	_ "mymanager/models/register"
 )
 
 func init() {
@@ -14,4 +12,5 @@ func init() {
 	InitRoute("card", &CardController{})
 	InitRoute("account", &AccountController{})
 	InitRoute("blog", &BlogController{})
+	InitRoute("register", &RegisterController{})
 }

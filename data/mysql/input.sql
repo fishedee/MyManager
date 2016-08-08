@@ -92,6 +92,24 @@ create table t_blog_sync_auto(
 
 alter table t_blog_sync_auto add index userIdIndex(userId);
 
+#创建市一产科挂号表
+create table t_register(
+	registerId integer not null auto_increment,
+	userId integer not null,
+	name varchar(128) not null,
+	beginTime timestamp not null,
+	endTime timestamp not null,
+	mail varchar(128) not null,
+	needDealType integer not null,
+	haveDealType integer not null,
+	haveDealResult varchar(1024) not null,
+	createTime timestamp not null default CURRENT_TIMESTAMP,
+	modifyTime timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP, 
+	primary key( registerId )
+)engine=innodb default charset=utf8 auto_increment = 10001;
+
+alter table t_register add index nameIndex(name);
+
 #创建session表
 CREATE TABLE IF NOT EXISTS `ci_sessions` (
     `id` varchar(40) NOT NULL,

@@ -8,14 +8,11 @@ function go(value){
 	input.verticalInput({
 		id:'container',
 		field:[
-			{id:'registerId',type:'text',name:'挂号ID'},
 			{id:'name',type:'text',name:'姓名'},
-			{id:'beginTime',type:'text',name:'开始时间'},
-			{id:'endTime',type:'text',name:'结束时间'},
+			{id:'beginTime',type:'time',name:'开始时间'},
+			{id:'endTime',type:'time',name:'结束时间'},
 			{id:'mail',type:'text',name:'提醒邮箱'},
 			{id:'needDealType',type:'enum',name:'是否需要自动挂号',map:needDealType},
-			{id:'haveDealType',type:'enum',name:'是否已经自动挂号',map:haveDealType},
-			{id:'haveDealTime',type:'text',name:'已经自动挂号时间'},
 		],
 		value:value,
 		submit:function(data){
