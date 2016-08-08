@@ -38,6 +38,15 @@ func (this *RegisterDbModel) Search(where Register, limit CommonPage) Registers 
 	}
 }
 
+func (this *RegisterDbModel) GetAll() []Register {
+	var registers []Register
+	err := this.DB.Find(&registers)
+	if err != nil {
+		panic(err)
+	}
+	return registers
+}
+
 func (this *RegisterDbModel) Get(registerId int) Register {
 	var registers []Register
 	err := this.DB.Where("registerId = ?", registerId).Find(&registers)

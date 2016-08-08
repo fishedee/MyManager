@@ -23,10 +23,23 @@ type Registers struct {
 	Data  []Register
 }
 
+type RegisterListResult struct {
+	BeginTime string
+	EndTime   string
+	LeftCount int
+}
+
 type RegisterResult struct {
 	DeptCode   string
 	DeptName   string
 	DoctorCode string
 	DoctorName string
 	LeftCount  int
+	ListTi     []RegisterListResult
+}
+
+type RegisterMatch struct {
+	Need   Register
+	Doctor RegisterResult
+	Time   RegisterListResult
 }

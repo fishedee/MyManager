@@ -53,6 +53,14 @@ func (this *RegisterDbModel) Search_WithError(where Register, limit CommonPage) 
 	return
 }
 
+func (this *RegisterDbModel) GetAll_WithError() (_fishgen1 []Register, _fishgenErr Exception) {
+	defer Catch(func(exception Exception) {
+		_fishgenErr = exception
+	})
+	_fishgen1 = this.GetAll()
+	return
+}
+
 func (this *RegisterDbModel) Get_WithError(registerId int) (_fishgen1 Register, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
