@@ -13,4 +13,5 @@ func init() {
 	InitRoute("account", &AccountController{})
 	InitRoute("blog", &BlogController{})
 	InitRoute("register", &RegisterController{})
+	InitRoute("brush", &BrushController{})
 }

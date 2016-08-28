@@ -110,6 +110,40 @@ create table t_register(
 
 alter table t_register add index nameIndex(name);
 
+#创建刷爬虫任务表
+create table t_brush_task(
+	brushTaskId integer not null auto_increment,
+	userId integer not null,
+	url varchar(128) not null,
+	type integer not null,
+	totalNum integer not null,
+	successNum integer not null,
+	failNum integer not null,
+	state integer not null,
+	stateMessage varchar(128) not null,
+	createTime timestamp not null default CURRENT_TIMESTAMP,
+	modifyTime timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP, 
+	primary key( brushTaskId )
+)engine=innodb default charset=utf8 auto_increment = 10001;
+
+alter table t_brush_task add index typeIndex(type);
+
+#创建刷爬虫爬取表
+create table t_brush_crawl(
+	brushCrawlId integer not null auto_increment,
+	brushTaskId integer not null,
+	userId integer not null,
+	proxy varchar(128) not null,
+	retryNum integer not null,
+	state integer not null,
+	stateMessage varchar(128) not null,
+	createTime timestamp not null default CURRENT_TIMESTAMP,
+	modifyTime timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP, 
+	primary key( brushCrawlId )
+)engine=innodb default charset=utf8 auto_increment = 10001;
+
+alter table t_brush_crawl add index brushTaskIdIndex(brushTaskId);
+
 #创建session表
 CREATE TABLE IF NOT EXISTS `ci_sessions` (
     `id` varchar(40) NOT NULL,

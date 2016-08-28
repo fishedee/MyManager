@@ -43,6 +43,9 @@ indexPage.use({
 				{name:'自动同步',url:'view/blog/indexAuto.html'},
 				{name:'一键同步',url:'view/blog/index.html'},
 			],
+			'刷榜工具':[
+				{name:'自动刷榜',url:'view/brush/index.html'},
+			],
 			'市一产科挂号':[
 				{name:'自动挂号',url:'view/register/index.html'},
 			],
