@@ -45,6 +45,14 @@ func (this *BrushCrawlDbModel) Search_WithError(where BrushCrawl, limit CommonPa
 	return
 }
 
+func (this *BrushCrawlDbModel) GetByState_WithError(state int) (_fishgen1 []BrushCrawl, _fishgenErr Exception) {
+	defer Catch(func(exception Exception) {
+		_fishgenErr = exception
+	})
+	_fishgen1 = this.GetByState(state)
+	return
+}
+
 func (this *BrushCrawlDbModel) Get_WithError(brushCrawlId int) (_fishgen1 BrushCrawl, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
@@ -69,6 +77,22 @@ func (this *BrushCrawlDbModel) Mod_WithError(brushCrawlId int, task BrushCrawl) 
 	return
 }
 
+func (this *BrushCrawlDbModel) IncrRetryNum_WithError(brushCrawlId int) (_fishgenErr Exception) {
+	defer Catch(func(exception Exception) {
+		_fishgenErr = exception
+	})
+	this.IncrRetryNum(brushCrawlId)
+	return
+}
+
+func (this *BrushProxyAoModel) GetXiciProxy_WithError() (_fishgen1 string, _fishgenErr Exception) {
+	defer Catch(func(exception Exception) {
+		_fishgenErr = exception
+	})
+	_fishgen1 = this.GetXiciProxy()
+	return
+}
+
 func (this *BrushTaskDbModel) Search_WithError(where BrushTask, limit CommonPage) (_fishgen1 BrushTasks, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
@@ -82,6 +106,14 @@ func (this *BrushTaskDbModel) Get_WithError(brushTaskId int) (_fishgen1 BrushTas
 		_fishgenErr = exception
 	})
 	_fishgen1 = this.Get(brushTaskId)
+	return
+}
+
+func (this *BrushTaskDbModel) GetByIds_WithError(brushTaskIds []int) (_fishgen1 []BrushTask, _fishgenErr Exception) {
+	defer Catch(func(exception Exception) {
+		_fishgenErr = exception
+	})
+	_fishgen1 = this.GetByIds(brushTaskIds)
 	return
 }
 

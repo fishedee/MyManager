@@ -5,13 +5,13 @@ import (
 	. "github.com/fishedee/web"
 )
 
-var BushTaskTypeEnum struct {
+var BrushTaskTypeEnum struct {
 	EnumStruct
-	DIRECT int `enum:"1,直接连接"`
-	PROXY  int `enum:"2,代理连接"`
+	DIRECT     int `enum:"1,直接连接"`
+	PROXY_XICI int `enum:"2,XICI代理连接"`
 }
 
-var BushTaskStateEnum struct {
+var BrushTaskStateEnum struct {
 	EnumStruct
 	STATE_BEGIN    int `enum:"1,未开始"`
 	STATE_PROGRESS int `enum:"2,进行中"`
@@ -19,7 +19,7 @@ var BushTaskStateEnum struct {
 	STATE_SUCCESS  int `enum:"4,成功"`
 }
 
-var BushCrawlStateEnum struct {
+var BrushCrawlStateEnum struct {
 	EnumStruct
 	STATE_BEGIN    int `enum:"1,未开始"`
 	STATE_PROGRESS int `enum:"2,进行中"`
@@ -35,11 +35,12 @@ var BrushQueueEnum struct {
 }
 
 func init() {
-	InitEnumStruct(&BushTaskTypeEnum)
-	InitEnumStruct(&BushTaskStateEnum)
-	InitEnumStruct(&BushCrawlStateEnum)
+	InitEnumStruct(&BrushTaskTypeEnum)
+	InitEnumStruct(&BrushTaskStateEnum)
+	InitEnumStruct(&BrushCrawlStateEnum)
 	InitEnumStructString(&BrushQueueEnum)
 	InitDaemon(func(this *BrushAoModel) {
+		this.Timer.Cron("* * * * * *", (*BrushAoModel).handleCrawlRetry)
 		this.Queue.Consume(BrushQueueEnum.TASK_ADD, (*BrushAoModel).handleAddTask)
 		this.Queue.Consume(BrushQueueEnum.TASK_CRAWL, (*BrushAoModel).handleCrawlTask)
 	})

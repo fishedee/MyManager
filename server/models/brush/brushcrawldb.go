@@ -47,6 +47,15 @@ func (this *BrushCrawlDbModel) Search(where BrushCrawl, limit CommonPage) BrushC
 	}
 }
 
+func (this *BrushCrawlDbModel) GetByState(state int) []BrushCrawl {
+	var tasks []BrushCrawl
+	err := this.DB.Where("state=?", state).Find(&tasks)
+	if err != nil {
+		panic(err)
+	}
+	return tasks
+}
+
 func (this *BrushCrawlDbModel) Get(brushCrawlId int) BrushCrawl {
 	var tasks []BrushCrawl
 	err := this.DB.Where("brushCrawlId=?", brushCrawlId).Find(&tasks)
@@ -69,6 +78,13 @@ func (this *BrushCrawlDbModel) Add(task BrushCrawl) int {
 
 func (this *BrushCrawlDbModel) Mod(brushCrawlId int, task BrushCrawl) {
 	_, err := this.DB.Where("brushCrawlId = ?", brushCrawlId).Update(&task)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func (this *BrushCrawlDbModel) IncrRetryNum(brushCrawlId int) {
+	_, err := this.DB.Where("brushCrawlId = ?", brushCrawlId).Incr("retryNum").Update(&BrushCrawl{})
 	if err != nil {
 		panic(err)
 	}

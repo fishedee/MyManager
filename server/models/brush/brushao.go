@@ -5,11 +5,11 @@ import (
 	. "github.com/fishedee/util"
 	. "github.com/fishedee/web"
 	. "mymanager/models/common"
-	"strconv"
 )
 
 type BrushAoModel struct {
 	Model
+	BrushProxyAo BrushProxyAoModel
 	BrushTaskDb  BrushTaskDbModel
 	BrushCrawlDb BrushCrawlDbModel
 }
@@ -34,9 +34,12 @@ func (this *BrushAoModel) AddTask(userId int, data BrushTask) {
 	if data.Url == "" {
 		Throw(1, "任务链接为空")
 	}
+	if data.RetryNum < 0 {
+		Throw(1, "任务重试次数需要大于或等于0")
+	}
 
 	data.UserId = userId
-	data.State = BushTaskStateEnum.STATE_BEGIN
+	data.State = BrushTaskStateEnum.STATE_BEGIN
 	data.StateMessage = ""
 	brushTaskId := this.BrushTaskDb.Add(data)
 	this.Log.Debug("addTask %v", brushTaskId)
@@ -57,7 +60,7 @@ func (this *BrushAoModel) refreshTask(taskId int, isSuccess bool) {
 	task := this.BrushTaskDb.Get(taskId)
 	if task.SuccessNum+task.FailNum == task.TotalNum {
 		this.BrushTaskDb.Mod(taskId, BrushTask{
-			State:        BushTaskStateEnum.STATE_SUCCESS,
+			State:        BrushTaskStateEnum.STATE_SUCCESS,
 			StateMessage: "成功",
 		})
 	}
@@ -66,60 +69,92 @@ func (this *BrushAoModel) refreshTask(taskId int, isSuccess bool) {
 func (this *BrushAoModel) handleAddTask(taskId int) {
 	defer CatchCrash(func(e Exception) {
 		this.BrushTaskDb.Mod(taskId, BrushTask{
-			State:        BushTaskStateEnum.STATE_FAIL,
+			State:        BrushTaskStateEnum.STATE_FAIL,
 			StateMessage: "失败：" + e.GetMessage(),
 		})
 		panic(e)
 	})
 	this.BrushTaskDb.Mod(taskId, BrushTask{
-		State:        BushTaskStateEnum.STATE_PROGRESS,
+		State:        BrushTaskStateEnum.STATE_PROGRESS,
 		StateMessage: "进行中",
 	})
 	task := this.BrushTaskDb.Get(taskId)
-	if task.Type == BushTaskTypeEnum.DIRECT {
-		for i := 0; i != task.TotalNum; i++ {
-			brushCrawlId := this.BrushCrawlDb.Add(BrushCrawl{
-				BrushTaskId:  taskId,
-				UserId:       task.UserId,
-				Proxy:        "",
-				RetryNum:     0,
-				State:        BushCrawlStateEnum.STATE_BEGIN,
-				StateMessage: "",
-			})
-			this.Queue.Produce(BrushQueueEnum.TASK_CRAWL, brushCrawlId, task)
-		}
-	} else {
-		Throw(1, "不合法或仍未实现的task type ["+strconv.Itoa(task.Type)+"]")
+	for i := 0; i != task.TotalNum; i++ {
+		brushCrawlId := this.BrushCrawlDb.Add(BrushCrawl{
+			BrushTaskId:  taskId,
+			UserId:       task.UserId,
+			Proxy:        "",
+			RetryNum:     0,
+			State:        BrushCrawlStateEnum.STATE_BEGIN,
+			StateMessage: "",
+		})
+		this.Queue.Produce(BrushQueueEnum.TASK_CRAWL, brushCrawlId, task)
 	}
 }
 
 func (this *BrushAoModel) handleCrawlTask(brushCrawlId int, task BrushTask) {
+	crawl := this.BrushCrawlDb.Get(brushCrawlId)
 	defer CatchCrash(func(e Exception) {
-		this.BrushCrawlDb.Mod(brushCrawlId, BrushCrawl{
-			State:        BushCrawlStateEnum.STATE_FAIL,
-			StateMessage: "失败：" + e.GetMessage(),
-		})
-		this.refreshTask(task.BrushTaskId, false)
+		if crawl.RetryNum >= task.RetryNum {
+			this.BrushCrawlDb.Mod(brushCrawlId, BrushCrawl{
+				State:        BrushCrawlStateEnum.STATE_FAIL,
+				StateMessage: "失败：" + e.GetMessage(),
+			})
+			this.refreshTask(task.BrushTaskId, false)
+		} else {
+			this.BrushCrawlDb.Mod(brushCrawlId, BrushCrawl{
+				State:        BrushCrawlStateEnum.STATE_RETRY,
+				StateMessage: "失败重试中：" + e.GetMessage(),
+			})
+			this.BrushCrawlDb.IncrRetryNum(brushCrawlId)
+		}
 		panic(e)
 	})
 	this.BrushCrawlDb.Mod(brushCrawlId, BrushCrawl{
-		State:        BushCrawlStateEnum.STATE_PROGRESS,
+		State:        BrushCrawlStateEnum.STATE_PROGRESS,
 		StateMessage: "进行中",
 	})
-	crawl := this.BrushCrawlDb.Get(brushCrawlId)
-	if crawl.Proxy == "" {
-		err := DefaultAjaxPool.Get(&Ajax{
-			Url: task.Url,
+	var ajaxPool *AjaxPool
+	var proxy string
+	if task.Type == BrushTaskTypeEnum.DIRECT {
+		proxy = ""
+		ajaxPool = DefaultAjaxPool
+	} else if task.Type == BrushTaskTypeEnum.PROXY_XICI {
+		proxy = this.BrushProxyAo.GetXiciProxy()
+		ajaxPool = NewAjaxPool(&AjaxPoolOption{
+			Proxy: proxy,
 		})
-		if err != nil {
-			panic(err)
-		}
 	} else {
-		Throw(1, "不合法或仍未实现的crawl的代理")
+		panic("不合法的task type")
+	}
+	err := ajaxPool.Get(&Ajax{
+		Url: task.Url,
+	})
+	if err != nil {
+		panic(err)
 	}
 	this.BrushCrawlDb.Mod(brushCrawlId, BrushCrawl{
-		State:        BushCrawlStateEnum.STATE_SUCCESS,
+		Proxy:        proxy,
+		State:        BrushCrawlStateEnum.STATE_SUCCESS,
 		StateMessage: "成功",
 	})
 	this.refreshTask(task.BrushTaskId, true)
+}
+
+func (this *BrushAoModel) handleCrawlRetry() {
+	crawls := this.BrushCrawlDb.GetByState(BrushCrawlStateEnum.STATE_RETRY)
+	if len(crawls) == 0 {
+		return
+	}
+
+	brushTaskIds := ArrayUnique(QueryColumn(crawls, "BrushTaskId")).([]int)
+	tasks := this.BrushTaskDb.GetByIds(brushTaskIds)
+	tasksMap := ArrayColumnMap(tasks, "BrushTaskId").(map[int]BrushTask)
+
+	for _, singleCrawl := range crawls {
+		brushCrawlId := singleCrawl.BrushCrawlId
+		brushTaskId := singleCrawl.BrushTaskId
+		task := tasksMap[brushTaskId]
+		this.Queue.Produce(BrushQueueEnum.TASK_CRAWL, brushCrawlId, task)
+	}
 }

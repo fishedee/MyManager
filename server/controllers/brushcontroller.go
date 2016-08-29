@@ -13,15 +13,15 @@ type BrushController struct {
 }
 
 func (this *BrushController) GetTaskType_Json() interface{} {
-	return BushTaskTypeEnum.Names()
+	return BrushTaskTypeEnum.Names()
 }
 
 func (this *BrushController) GetTaskState_Json() interface{} {
-	return BushTaskStateEnum.Names()
+	return BrushTaskStateEnum.Names()
 }
 
 func (this *BrushController) GetCrawlState_Json() interface{} {
-	return BushCrawlStateEnum.Names()
+	return BrushCrawlStateEnum.Names()
 }
 
 func (this *BrushController) SearchTask_Json() interface{} {

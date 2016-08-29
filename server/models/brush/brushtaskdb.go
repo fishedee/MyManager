@@ -60,6 +60,15 @@ func (this *BrushTaskDbModel) Get(brushTaskId int) BrushTask {
 	return tasks[0]
 }
 
+func (this *BrushTaskDbModel) GetByIds(brushTaskIds []int) []BrushTask {
+	var tasks []BrushTask
+	err := this.DB.In("brushTaskId", brushTaskIds).Find(&tasks)
+	if err != nil {
+		panic(err)
+	}
+	return tasks
+}
+
 func (this *BrushTaskDbModel) Add(task BrushTask) int {
 	_, err := this.DB.Insert(&task)
 	if err != nil {

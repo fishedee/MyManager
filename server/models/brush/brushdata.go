@@ -9,6 +9,7 @@ type BrushTask struct {
 	UserId       int
 	Url          string
 	Type         int
+	RetryNum     int
 	TotalNum     int
 	SuccessNum   int
 	FailNum      int

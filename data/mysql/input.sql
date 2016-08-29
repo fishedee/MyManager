@@ -116,6 +116,7 @@ create table t_brush_task(
 	userId integer not null,
 	url varchar(128) not null,
 	type integer not null,
+	retryNum integer not null,
 	totalNum integer not null,
 	successNum integer not null,
 	failNum integer not null,
