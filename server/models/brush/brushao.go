@@ -42,7 +42,6 @@ func (this *BrushAoModel) AddTask(userId int, data BrushTask) {
 	data.State = BrushTaskStateEnum.STATE_BEGIN
 	data.StateMessage = ""
 	brushTaskId := this.BrushTaskDb.Add(data)
-	this.Log.Debug("addTask %v", brushTaskId)
 	this.Queue.Produce(BrushQueueEnum.TASK_ADD, brushTaskId)
 }
 
@@ -79,8 +78,9 @@ func (this *BrushAoModel) handleAddTask(taskId int) {
 		StateMessage: "进行中",
 	})
 	task := this.BrushTaskDb.Get(taskId)
+	addIds := []int{}
 	for i := 0; i != task.TotalNum; i++ {
-		brushCrawlId := this.BrushCrawlDb.Add(BrushCrawl{
+		addId := this.BrushCrawlDb.Add(BrushCrawl{
 			BrushTaskId:  taskId,
 			UserId:       task.UserId,
 			Proxy:        "",
@@ -88,7 +88,10 @@ func (this *BrushAoModel) handleAddTask(taskId int) {
 			State:        BrushCrawlStateEnum.STATE_BEGIN,
 			StateMessage: "",
 		})
-		this.Queue.Produce(BrushQueueEnum.TASK_CRAWL, brushCrawlId, task)
+		addIds = append(addIds, addId)
+	}
+	for _, singleCrawl := range addIds {
+		this.Queue.Produce(BrushQueueEnum.TASK_CRAWL, singleCrawl, task)
 	}
 }
 
@@ -146,6 +149,11 @@ func (this *BrushAoModel) handleCrawlRetry() {
 	if len(crawls) == 0 {
 		return
 	}
+	crawlIds := QueryColumn(crawls, "BrushCrawlId").([]int)
+	this.BrushCrawlDb.ModByIds(crawlIds, BrushCrawl{
+		State:        BrushCrawlStateEnum.STATE_BEGIN,
+		StateMessage: "",
+	})
 
 	brushTaskIds := ArrayUnique(QueryColumn(crawls, "BrushTaskId")).([]int)
 	tasks := this.BrushTaskDb.GetByIds(brushTaskIds)

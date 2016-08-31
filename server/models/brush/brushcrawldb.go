@@ -76,8 +76,22 @@ func (this *BrushCrawlDbModel) Add(task BrushCrawl) int {
 	return task.BrushCrawlId
 }
 
+func (this *BrushCrawlDbModel) AddBatch(task []BrushCrawl) {
+	_, err := this.DB.Insert(&task)
+	if err != nil {
+		panic(err)
+	}
+}
+
 func (this *BrushCrawlDbModel) Mod(brushCrawlId int, task BrushCrawl) {
 	_, err := this.DB.Where("brushCrawlId = ?", brushCrawlId).Update(&task)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func (this *BrushCrawlDbModel) ModByIds(brushCrawlIds []int, task BrushCrawl) {
+	_, err := this.DB.In("brushCrawlId", brushCrawlIds).Update(&task)
 	if err != nil {
 		panic(err)
 	}
