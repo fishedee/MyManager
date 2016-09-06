@@ -129,7 +129,7 @@ func (this *RegisterAoModel) getDoctorRegisterByDate(date string) ([]RegisterRes
 		"2015070900161782",
 		"20880005665009381053113102715391",
 		"1",
-		"0760", //3100是产科，0760是神经内科
+		"3100", //3100是产科，0760是神经内科
 		date,
 	)
 	if err != nil {
