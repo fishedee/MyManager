@@ -239,6 +239,6 @@ func (this *RegisterAoModel) dealDoctor(date time.Time, need Register) {
 
 func init() {
 	InitDaemon(func(this *RegisterAoModel) {
-		this.Timer.Cron("*/30 * * * *", (*RegisterAoModel).checkDoctor)
+		//this.Timer.Cron("*/30 * * * *", (*RegisterAoModel).checkDoctor)
 	})
 }

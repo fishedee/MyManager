@@ -43,6 +43,6 @@ func init() {
 	InitDaemon(func(this *BrushAoModel) {
 		this.Timer.Cron("* * * * * *", (*BrushAoModel).handleCrawlRetry)
 		this.Queue.Consume(BrushQueueEnum.TASK_ADD, (*BrushAoModel).handleAddTask)
-		this.Queue.ConsumeInPool(BrushQueueEnum.TASK_CRAWL, (*BrushAoModel).handleCrawlTask,50)
+		this.Queue.ConsumeInPool(BrushQueueEnum.TASK_CRAWL, (*BrushAoModel).handleCrawlTask, 100)
 	})
 }
