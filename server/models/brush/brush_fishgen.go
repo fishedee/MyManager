@@ -85,6 +85,14 @@ func (this *BrushCrawlDbModel) IncrRetryNum_WithError(brushCrawlId int) (_fishge
 	return
 }
 
+func (this *BrushProxyAoModel) GetMimvpProxy_WithError() (_fishgen1 string, _fishgenErr Exception) {
+	defer Catch(func(exception Exception) {
+		_fishgenErr = exception
+	})
+	_fishgen1 = this.GetMimvpProxy()
+	return
+}
+
 func (this *BrushProxyAoModel) GetXiciProxy_WithError() (_fishgen1 string, _fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception

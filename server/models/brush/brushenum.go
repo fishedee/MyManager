@@ -7,8 +7,9 @@ import (
 
 var BrushTaskTypeEnum struct {
 	EnumStruct
-	DIRECT     int `enum:"1,直接连接"`
-	PROXY_XICI int `enum:"2,XICI代理连接"`
+	DIRECT      int `enum:"1,直接连接"`
+	PROXY_XICI  int `enum:"2,XICI代理连接"`
+	PROXY_MIMVP int `enum:"3,MIMVP代理连接"`
 }
 
 var BrushTaskStateEnum struct {

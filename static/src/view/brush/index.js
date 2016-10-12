@@ -7,7 +7,7 @@ query.simpleQuery({
 	column:[
 		{id:'brushTaskId',type:'text',name:'任务ID'},
 		{id:'url',type:'text',name:'链接'},
-		{id:'type',type:'enum',name:'类型',map:{'1':'直接抓取','2':'xici代理抓取'}},
+		{id:'type',type:'enum',name:'类型',map:{'1':'直接抓取','2':'xici代理抓取','3':'mimvp代理抓取'}},
 		{id:'retryNum',type:'text',name:'最大重试次数'},
 		{id:'successNum',type:'text',name:'成功数'},
 		{id:'failNum',type:'text',name:'失败数'},

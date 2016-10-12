@@ -127,6 +127,11 @@ func (this *BrushAoModel) handleCrawlTask(brushCrawlId int, task BrushTask) {
 		ajaxPool = NewAjaxPool(&AjaxPoolOption{
 			Proxy: proxy,
 		})
+	} else if task.Type == BrushTaskTypeEnum.PROXY_MIMVP {
+		proxy = this.BrushProxyAo.GetMimvpProxy()
+		ajaxPool = NewAjaxPool(&AjaxPoolOption{
+			Proxy: proxy,
+		})
 	} else {
 		panic("不合法的task type")
 	}
