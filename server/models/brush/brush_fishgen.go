@@ -69,11 +69,27 @@ func (this *BrushCrawlDbModel) Add_WithError(task BrushCrawl) (_fishgen1 int, _f
 	return
 }
 
+func (this *BrushCrawlDbModel) AddBatch_WithError(task []BrushCrawl) (_fishgenErr Exception) {
+	defer Catch(func(exception Exception) {
+		_fishgenErr = exception
+	})
+	this.AddBatch(task)
+	return
+}
+
 func (this *BrushCrawlDbModel) Mod_WithError(brushCrawlId int, task BrushCrawl) (_fishgenErr Exception) {
 	defer Catch(func(exception Exception) {
 		_fishgenErr = exception
 	})
 	this.Mod(brushCrawlId, task)
+	return
+}
+
+func (this *BrushCrawlDbModel) ModByIds_WithError(brushCrawlIds []int, task BrushCrawl) (_fishgenErr Exception) {
+	defer Catch(func(exception Exception) {
+		_fishgenErr = exception
+	})
+	this.ModByIds(brushCrawlIds, task)
 	return
 }
 
