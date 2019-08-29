@@ -24,12 +24,13 @@ fn main() {
         	.register_data(data.clone())
             .service(web::scope("/user").configure(user::router));
     })
-    .keep_alive(75);
+    .keep_alive(75)
+    .workers(8);
 
     server = if let Some(l) = listenfd.take_tcp_listener(0).unwrap() {
         server.listen(l).unwrap()
     } else {
-        server.bind("127.0.0.1:8088").unwrap()
+        server.bind("127.0.0.1:8180").unwrap()
     };
 
     server.run().unwrap();
