@@ -10,6 +10,7 @@ pub struct Error{
 
 impl Error{
 	pub fn new<T:fmt::Display>(code:i32,msg:T)->Error{
+		println!("new code:{},msg:{}",code,msg);
 		return Error{
 			code:code,
 			msg:format!("{}",msg)
@@ -30,6 +31,7 @@ impl error::ResponseError for Error{
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
     	if self.code == 500{
+    		println!("critical error {}",self.msg);
     		return write!(f,"Internal Server Error");
     	}else{
     		let body = serde_json::to_string(&self).unwrap();

@@ -44,7 +44,7 @@ pub fn get(db:&Pool,userId:i32)->impl Future<Item=User,Error=Error>{
 			})
 			.and_then(|(_,mut data)|{
 				if data.len() == 0{
-					return err(Error::new(1,"不存在该用户"));
+					return err(Error::new(1,"user dos not exist!"));
 				}else{
 					let single = data.pop().unwrap();
 					return ok(User{
@@ -56,9 +56,6 @@ pub fn get(db:&Pool,userId:i32)->impl Future<Item=User,Error=Error>{
 						modifyTime:single.5,
 					});
 				}
-			})
-			.map_err(|e|{
-				return Error::new(500,format!("{:?}",e));
 			});
 	});
 }
