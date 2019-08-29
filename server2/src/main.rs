@@ -1,8 +1,9 @@
 use listenfd::ListenFd;
-use actix_web::{web, App, Error,HttpRequest, HttpServer, Responder,HttpResponse,error};
+use actix_web::{web, App, HttpServer};
 
 mod util;
 mod controller;
+mod model;
 
 use crate::util::db;
 use crate::util::logger;

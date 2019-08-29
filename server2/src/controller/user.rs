@@ -1,18 +1,18 @@
 use crate::util::data::WebData;
+use crate::util::error::Error;
+use crate::model::userAo;
 use actix_web::web;
-use actix_web::get;
+use futures::future::{ok,err,Future};
 
 pub fn router(cfg:&mut web::ServiceConfig){
-	cfg.service(search)
-		.service(get);
+	cfg.route("/search",web::get().to(search))
+		.route("/get",web::get().to_async(get));
 }
 
-#[get("/search")]
-fn search(data:web::Data<WebData>)->String{
-	"123".to_string()
+fn search(data:web::Data<WebData>)->Result<String,Error>{
+	return Err(Error::new(1,"sadf"));
 }
 
-#[get("/get")]
-fn get(data:web::Data<WebData>)->String{
-	"456".to_string()
+fn get(data:web::Data<WebData>)->impl Future<Item=userAo::User,Error=Error>{
+	return userAo::get(&data.pool,10001);
 }
