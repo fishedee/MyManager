@@ -4,3 +4,4 @@ pub mod logger;
 pub mod session;
 pub mod error;
 pub mod response;
+pub mod string;

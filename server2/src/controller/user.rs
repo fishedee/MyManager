@@ -6,12 +6,15 @@ use actix_web::web;
 use futures::future::Future;
 
 pub fn router(cfg:&mut web::ServiceConfig){
-	cfg.route("/search",web::get().to(search))
+	cfg.route("/search",web::get().to_async(search))
 		.route("/get",web::get().to_async(get));
 }
 
-fn search(data:web::Data<WebData>)->Result<String,Error>{
-	return Err(Error::new(1,"sadf"));
+fn search(data:web::Data<WebData>,query:web::Query<userAo::UserSearch>)->impl Future<Item=JsonResponse<userAo::Users>,Error=Error>{
+	return userAo::search(&data.pool,&query)
+		.map(|data|{
+			JsonResponse::new(data)
+		});
 }
 
 fn get(data:web::Data<WebData>)->impl Future<Item=JsonResponse<userAo::User>,Error=Error>{
