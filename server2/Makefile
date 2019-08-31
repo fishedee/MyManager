@@ -7,4 +7,4 @@ release:
 	cp target/release/server .
 	./server
 bench:
-	wrk -t12 -c100 -d20s http://127.0.0.1:8180/user/get
+	wrk -t12 -c100 -d20s http://0.0.0.0:8180/user/get
