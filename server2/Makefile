@@ -1,5 +1,6 @@
 .PHONY:watch release
 watch:
+	-pkill cargo-watch
 	systemfd --no-pid -s http::8180 -- cargo watch -x run
 release:
 	-pkill server

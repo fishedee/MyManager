@@ -6,13 +6,14 @@ use actix_web::web;
 use futures::future::Future;
 
 pub fn router(cfg:&mut web::ServiceConfig){
-	cfg.route("/search",web::get().to_async(search))
-		.route("/get",web::get().to_async(get))
-		.route("/add",web::post().to_async(add))
-		.route("/mod",web::post().to_async(r#mod))
-		.route("/del",web::post().to_async(del));
+	cfg//.route("/search",web::get().to_async(search))
+		//.route("/get",web::get().to_async(get))
+		//.route("/add",web::post().to_async(add))
+		//.route("/mod",web::post().to_async(r#mod))
+		.route("/modType",web::post().to_async(modType));
 }
 
+/*
 fn search(data:web::Data<WebData>,query:web::Query<userAo::UserSearch>)->impl Future<Item=JsonResponse<userAo::Users>,Error=Error>{
 	return userAo::search(&data.pool,&query)
 		.map(|data|{
@@ -32,18 +33,19 @@ fn add(data:web::Data<WebData>,form:web::Form<userAo::UserAdd>)->impl Future<Ite
 		.map(|data|{
 			JsonResponse::new(data)
 		});
-}
+}*/
 
-fn r#mod(data:web::Data<WebData>,form:web::Form<userAo::UserMod>)->impl Future<Item=JsonResponse<()>,Error=Error>{
-	return userAo::r#mod(&data.pool,&form)
+fn r#modType(data:web::Data<WebData>,form:web::Form<userAo::UserModType>)->impl Future<Item=JsonResponse<()>,Error=Error>{
+	return userAo::r#modType(&data.pool,&form)
 		.map(|data|{
 			JsonResponse::new(data)
 		});
 }
 
+/*
 fn del(data:web::Data<WebData>,form:web::Form<u64>)->impl Future<Item=JsonResponse<()>,Error=Error>{
 	return userAo::del(&data.pool,*form)
 		.map(|data|{
 			JsonResponse::new(data)
 		});
-}
+}*/
