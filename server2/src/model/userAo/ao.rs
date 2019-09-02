@@ -58,6 +58,23 @@ pub fn add<'a>(db:&'a Pool,userAdd:&'a data::UserAdd)->impl Future<Item=u64,Erro
 		});
 }*/
 
+pub fn modType<'a>(prev:impl Future<Item=(&'a Pool,&'a data::UserModType),Error=Error>)->impl Future<Item=(),Error=Error>+'a{
+	return prev.and_then(|(db,userModType)|{
+		let userFuture = db::get(ok::<_,Error>((db,userModType.userId)));
+		let next = ok((db,userModType));
+		return userFuture.join(next)
+			.and_then(|(user,(db,userModType))|{
+				let userMod = &data::UserMod{
+					userId:user.userId,
+					r#type:userModType.r#type,
+					password:user.password,
+					name:user.name,
+				};
+				return db::r#mod(ok::<_,Error>((db,userMod)));
+			});
+	});
+}
+/*
 pub fn modType(db:& Pool,userModType:&data::UserModType)->impl Future<Item=(),Error=Error> {
 	return db::get(db,userModType.userId)
 		.and_then(|user|{
@@ -69,6 +86,7 @@ pub fn modType(db:& Pool,userModType:&data::UserModType)->impl Future<Item=(),Er
 			});
 		});
 }
+*/
 
 /*
 pub fn modPassword<'a>(db:&'a Pool,userId:u64,password:&'a str)->impl Future<Item=(),Error=Error>+'a{

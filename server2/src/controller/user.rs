@@ -3,7 +3,7 @@ use crate::util::error::Error;
 use crate::util::response::JsonResponse;
 use crate::model::userAo;
 use actix_web::web;
-use futures::future::Future;
+use futures::future::{ok,Future};
 
 pub fn router(cfg:&mut web::ServiceConfig){
 	cfg//.route("/search",web::get().to_async(search))
@@ -36,10 +36,16 @@ fn add(data:web::Data<WebData>,form:web::Form<userAo::UserAdd>)->impl Future<Ite
 }*/
 
 fn r#modType(data:web::Data<WebData>,form:web::Form<userAo::UserModType>)->impl Future<Item=JsonResponse<()>,Error=Error>{
-	return userAo::r#modType(&data.pool,&form)
-		.map(|data|{
-			JsonResponse::new(data)
-		});
+	return ok::<(),Error>(()).and_then(move|_|{
+		let pool = &data.pool;
+		let form:&userAo::UserModType = &form;
+		return ok::<_,Error>((pool,form))
+			.and_then(|(pool,form)|{
+				return userAo::r#modType(ok::<_,Error>((pool,form)));
+			}).map(|_|{
+				return JsonResponse::new(());
+			});
+	});
 }
 
 /*
