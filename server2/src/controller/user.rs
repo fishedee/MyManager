@@ -1,9 +1,10 @@
 use crate::util::data::WebData;
+use crate::util::db::Pool;
 use crate::util::error::Error;
 use crate::util::response::JsonResponse;
 use crate::model::userAo;
 use actix_web::web;
-use futures::future::Future;
+use futures::future::{ok,Future};
 
 pub fn router(cfg:&mut web::ServiceConfig){
 	cfg//.route("/search",web::get().to_async(search))
@@ -13,7 +14,6 @@ pub fn router(cfg:&mut web::ServiceConfig){
 		.route("/modType",web::post().to_async(modType));
 }
 
-/*
 fn search(data:web::Data<WebData>,query:web::Query<userAo::UserSearch>)->impl Future<Item=JsonResponse<userAo::Users>,Error=Error>{
 	return userAo::search(&data.pool,&query)
 		.map(|data|{
@@ -33,19 +33,19 @@ fn add(data:web::Data<WebData>,form:web::Form<userAo::UserAdd>)->impl Future<Ite
 		.map(|data|{
 			JsonResponse::new(data)
 		});
-}*/
+}
 
-fn r#modType(data:web::Data<WebData>,form:web::Form<userAo::UserModType>)->impl Future<Item=JsonResponse<()>,Error=Error>{
+fn r#modType<'a>(data: web::Data<WebData>,form:web::Form<userAo::UserModType>)->impl Future<Item=JsonResponse<()>,Error=Error>+'a{
 	return userAo::r#modType(&data.pool,&form)
 		.map(|data|{
 			JsonResponse::new(data)
 		});
+		
 }
 
-/*
 fn del(data:web::Data<WebData>,form:web::Form<u64>)->impl Future<Item=JsonResponse<()>,Error=Error>{
 	return userAo::del(&data.pool,*form)
 		.map(|data|{
 			JsonResponse::new(data)
 		});
-}*/
+}

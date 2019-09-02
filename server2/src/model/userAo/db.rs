@@ -5,17 +5,18 @@ use mysql_async::prelude::*;
 use futures::future::{ok,err,Future};
 use super::data;
 
-/*
-pub fn add<'a>(db:&'a Pool,userAdd:&'a data::UserAdd)->impl Future<Item=u64,Error=Error>+'a{
+pub fn add(db:&Pool,userAdd:&data::UserAdd)->impl Future<Item=u64,Error=Error>{
+	let sql = "insert into t_user value(?,?,?)";
+	let argv = (userAdd.name.clone(),userAdd.password.clone(),userAdd.r#type);
 	let conn = db.get_conn();
 	return conn.and_then(move|conn|{
-		conn.prep_exec("insert into t_user value(?,?,?)",(userAdd.name,userAdd.password,userAdd.r#type))
+		conn.prep_exec(sql,argv)
 	}).map(|result|{
 		result.last_insert_id().unwrap()
 	}).map_err(|e|{
 		Error::new(500,format!("{:?}",e))
 	});
-}*/
+}
 
 pub fn r#mod(db:& Pool,userMod:& data::UserMod)->impl Future<Item=(),Error=Error>{
 	let sql = "update t_user set name = ? and password = ? and type = ? where userId = ?";
@@ -29,7 +30,7 @@ pub fn r#mod(db:& Pool,userMod:& data::UserMod)->impl Future<Item=(),Error=Error
 		Error::new(500,format!("{:?}",e))
 	});
 }
-/*
+
 pub fn r#del(db:&Pool,userId:u64)->impl Future<Item=(),Error=Error>{
 	let conn = db.get_conn();
 	return conn.and_then(move|conn|{
@@ -95,7 +96,7 @@ pub fn search(db:&Pool,search:&data::UserSearch)->impl Future<Item=data::Users,E
 	}).map_err(|e|{
 		return Error::new(500,format!("{:?}",e));
 	});
-}*/
+}
 
 pub fn get(db:&Pool,userId:u64)->impl Future<Item=data::User,Error=Error>{
 	let conn = db.get_conn();
@@ -126,12 +127,12 @@ pub fn get(db:&Pool,userId:u64)->impl Future<Item=data::User,Error=Error>{
 	});
 }
 
-/*
-
-pub fn getByName<'a>(db:&'a Pool,name:&'a str)->impl Future<Item=Vec<data::User>,Error=Error>+'a {
+pub fn getByName(db:& Pool,name:& str)->impl Future<Item=Vec<data::User>,Error=Error> {
+	let sql = "select userId,name,password,type,createTime,modifyTime from t_user where name = ?";
+	let argv = (name.to_owned(),);
 	let conn = db.get_conn();
 	return conn.and_then(move|conn|{
-		return conn.prep_exec("select userId,name,password,type,createTime,modifyTime from t_user where name = ?",(name,))
+		return conn.prep_exec(sql,argv);
 	}).map_err(|e|{
 		return Error::new(500,format!("{:?}",e));
 	}).and_then(|data|{
@@ -139,7 +140,7 @@ pub fn getByName<'a>(db:&'a Pool,name:&'a str)->impl Future<Item=Vec<data::User>
 			.map_err(|e|{
 				return Error::new(500,format!("{:?}",e));
 			})
-			.map(|(_,mut data)|{
+			.map(|(_,data)|{
 				return data.into_iter().map(|single|{
 					return data::User{
 						userId:single.0,
@@ -152,4 +153,4 @@ pub fn getByName<'a>(db:&'a Pool,name:&'a str)->impl Future<Item=Vec<data::User>
 				}).collect::<Vec<data::User>>();
 			});
 	});
-}*/
+}
