@@ -74,10 +74,10 @@ pub fn modType(db:&Pool,userModType:& data::UserModType)->impl Future<Item=(),Er
 		});
 }
 
-pub fn modPassword(db:&Pool,userId:u64,password:& str)->impl Future<Item=(),Error=Error>{
-	let newPassword = password.to_owned();
+pub fn modPassword(db:&Pool,userModPassword:&data::UserModPassword)->impl Future<Item=(),Error=Error>{
+	let newPassword = userModPassword.password.clone();
 	let newDb = db.clone();
-	return db::get(db,userId)
+	return db::get(db,userModPassword.userId)
 		.and_then(move|user|{
 			return db::r#mod(&newDb,&data::UserMod{
 				userId:user.userId,
@@ -88,10 +88,10 @@ pub fn modPassword(db:&Pool,userId:u64,password:& str)->impl Future<Item=(),Erro
 		});
 }
 
-pub fn modPasswordByOld(db:& Pool,userId:u64,oldPassword:& str,newPassword:& str)->impl Future<Item=(),Error=Error>{
+pub fn modPasswordByOld(db:& Pool,userId:u64,userModMyPassword:&data::UserModMyPassword)->impl Future<Item=(),Error=Error>{
 	let newDb = db.clone();
-	let oldPassword = oldPassword.to_owned();
-	let newPassword = newPassword.to_owned();
+	let oldPassword = userModMyPassword.oldPassword.clone();
+	let newPassword = userModMyPassword.newPassword.clone();
 	return db::get(db,userId)
 		.and_then(move|user|{
 			let result = checkMustValidPassword(&oldPassword,&user.password);

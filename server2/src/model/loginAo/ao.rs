@@ -3,6 +3,7 @@ use crate::util::session::Session;
 use crate::util::error::Error;
 use crate::model::userAo;
 use futures::future::{ok,err,Future};
+use super::data;
 
 pub fn isLogin(db:&Pool,session:&Session)->impl Future<Item=userAo::User,Error=Error>{
 	let hasUserId = session.get::<u64>("userId").unwrap();
@@ -48,9 +49,18 @@ pub fn checkMustAdmin(db:&Pool,session:&Session)->impl Future<Item=userAo::User,
 		})
 }
 
-pub fn login(db:&Pool,session:&Session,name:&str,password:&str)->impl Future<Item=(),Error=Error>{
-	let name = name.to_owned();
-	let password = password.to_owned();
+pub fn logout(db:&Pool,session:&Session)->impl Future<Item=(),Error=Error>{
+	let session = session.clone();
+	return ok(())
+		.map(move|_|{
+			session.set("userId",0 as u64).unwrap();
+			return ();
+		})
+}
+
+pub fn login(db:&Pool,session:&Session,loginCheckIn:&data::LoginCheckIn)->impl Future<Item=(),Error=Error>{
+	let name = loginCheckIn.name.clone();
+	let password = loginCheckIn.password.clone();
 	let session = session.clone();
 	return userAo::getByName(db,&name)
 		.and_then(move|users|{

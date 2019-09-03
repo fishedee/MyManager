@@ -44,3 +44,15 @@ pub struct UserModType{
 	pub userId:u64,
 	pub r#type:u64,
 }
+
+#[derive(Deserialize)]
+pub struct UserModPassword{
+	pub userId:u64,
+	pub password:String,
+}
+
+#[derive(Deserialize)]
+pub struct UserModMyPassword{
+	pub oldPassword:String,
+	pub newPassword:String,
+}

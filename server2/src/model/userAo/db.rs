@@ -43,31 +43,39 @@ pub fn r#del(db:&Pool,userId:u64)->impl Future<Item=(),Error=Error>{
 }
 
 
-fn getWhere(search:&data::UserSearch)->String{
+fn getWhere(search:&data::UserSearch)->(String,Vec<String>){
 	let mut sql_vec:Vec<String> = Vec::new();
+	let mut argv_vec:Vec<String> = Vec::new();
 	if let Some(userId) = search.userId{
-		sql_vec.push(format!("userId = {}",userId));
+		sql_vec.push("userId = ?".to_string());
+		argv_vec.push(userId.to_string());
 	}
 	if let Some(r#type) = search.r#type{
-		sql_vec.push(format!("type = {}",r#type));
+		sql_vec.push("type = ?".to_string());
+		argv_vec.push(r#type.to_string());
 	}
 	let mut sql_str = implode(&sql_vec," and ");
 	if sql_str.len() != 0{
 		sql_str = "where ".to_string()+&sql_str;
 	}
-	return sql_str;
+	return (sql_str,argv_vec);
 }
 
 
 pub fn search(db:&Pool,search:&data::UserSearch)->impl Future<Item=data::Users,Error=Error>{
 
-	let whereSql = getWhere(&search);
-	let dataSql = format!("select userId,name,password,type,createTime,modifyTime from t_user {} limit {},{}",whereSql,search.pageIndex,search.pageSize);
+	let (whereSql,whereArgv) = getWhere(&search);
+	let dataSql = format!("select userId,name,password,type,createTime,modifyTime from t_user {} limit ?,?",whereSql);
+	let mut dataArgv = whereArgv.clone();
+	dataArgv.push(search.pageIndex.to_string());
+	dataArgv.push(search.pageSize.to_string());
+
 	let countSql = format!("select count(*) from t_user {}",whereSql);
+	let countArgv = whereArgv;
 
 	let conn = db.get_conn();
 	return conn.and_then(move|conn|{
-		return conn.query(dataSql).and_then(|data|{
+		return conn.prep_exec(dataSql,dataArgv).and_then(|data|{
 			data.collect_and_drop::<(u64,String,String,u64,String,String)>()
 		}).map(move|(conn, data)|{
 			let rows = data.into_iter().map(|single|{
@@ -83,7 +91,7 @@ pub fn search(db:&Pool,search:&data::UserSearch)->impl Future<Item=data::Users,E
 			return (conn,rows);
 		});
 	}).and_then(move|(conn,rows)|{
-			return conn.query(countSql)
+			return conn.prep_exec(countSql,countArgv)
 		.and_then(|data|{
 			data.collect::<u64>()
 		}).and_then(move|(_,mut data)|{
