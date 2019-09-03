@@ -11,8 +11,8 @@ use std::sync::{Mutex, Arc,RwLock};
 
 pub fn router(cfg:&mut web::ServiceConfig){
 	cfg.route("/islogin",web::get().to_async(isLogin))
-		.route("/checkin",web::get().to_async(checkIn))
-		.route("/checkout",web::post().to_async(checkOut));
+		.route("/checkin",web::post().to_async(checkIn))
+		.route("/checkout",web::get().to_async(checkOut));
 }
 
 fn isLogin(data:web::Data<WebData>,session:Session)->impl Future<Item=JsonResponse<userAo::User>,Error=Error>{
@@ -23,7 +23,7 @@ fn isLogin(data:web::Data<WebData>,session:Session)->impl Future<Item=JsonRespon
 		});
 }
 
-fn checkIn(data:web::Data<WebData>,form:web::Query<loginAo::LoginCheckIn>,session:Session)->impl Future<Item=JsonResponse<()>,Error=Error>{
+fn checkIn(data:web::Data<WebData>,form:web::Form<loginAo::LoginCheckIn>,session:Session)->impl Future<Item=JsonResponse<()>,Error=Error>{
 	let session = Arc::new(session);
 	return loginAo::login(&data.pool,&session,&form)
 		.map(|data|{

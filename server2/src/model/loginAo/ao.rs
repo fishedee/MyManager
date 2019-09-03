@@ -4,6 +4,7 @@ use crate::util::error::Error;
 use crate::model::userAo;
 use futures::future::{ok,err,Future};
 use super::data;
+use chrono::naive::NaiveDateTime;
 
 pub fn isLogin(db:&Pool,session:&Session)->impl Future<Item=userAo::User,Error=Error>{
 	let hasUserId = session.get::<u64>("userId").unwrap();
@@ -19,8 +20,8 @@ pub fn isLogin(db:&Pool,session:&Session)->impl Future<Item=userAo::User,Error=E
 					name:"".to_string(),
 					password:"".to_string(),
 					r#type:0,
-					createTime:"".to_string(),
-					modifyTime:"".to_string(),
+					createTime:NaiveDateTime::from_timestamp(0,0),
+					modifyTime:NaiveDateTime::from_timestamp(0,0),
 				})); 
 			}
 			return result;

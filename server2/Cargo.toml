@@ -18,3 +18,4 @@ futures = "0.1"
 mysql_async = "0.20.0"
 actix-session = "0.2.0"
 rust-crypto = "0.2.36"
+chrono = {version = "0.4.8",features = ["serde"]}

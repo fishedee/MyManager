@@ -1,8 +1,15 @@
 server {
-	listen   80;
+	listen   8181;
 
 	root /var/www/MyManager/;
-	server_name me.fishedee.com me.test.fishedee.com me.dev.fishedee.com;
+
+	rewrite ^/data/upload/(.*) /data/upload/$1 last;
+	rewrite ^/(.*\.html) /static/build/$1 last;
+	rewrite ^/(.*\.(css|js|map|jpg|jpeg|png|gif|mp3|midi|swf|ico)) /static/build/$1 last;
+
+	location ~ \.(html|css|js|map|jpg|jpeg|png|gif|mp3|midi|swf|ico){
+		try_files $uri =404;
+	}
 
 	location / {
 		proxy_pass http://localhost:8180;

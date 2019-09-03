@@ -1,13 +1,14 @@
 use serde::{Serialize,Deserialize};
+use chrono::prelude::*;
 
-#[derive(Serialize)]
+#[derive(Serialize,Debug)]
 pub struct User{
 	pub userId:u64,
 	pub name:String,
 	pub password:String,
 	pub r#type:u64,
-	pub createTime:String,
-	pub modifyTime:String,
+	pub createTime:NaiveDateTime,
+	pub modifyTime:NaiveDateTime,
 }
 
 #[derive(Serialize)]

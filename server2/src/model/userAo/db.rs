@@ -3,10 +3,11 @@ use crate::util::error::Error;
 use crate::util::string::implode;
 use mysql_async::prelude::*;
 use futures::future::{ok,err,Future};
+use chrono::prelude::*;
 use super::data;
 
 pub fn add(db:&Pool,userAdd:&data::UserAdd)->impl Future<Item=u64,Error=Error>{
-	let sql = "insert into t_user value(?,?,?)";
+	let sql = "insert into t_user(name,password,type) value(?,?,?)";
 	let argv = (userAdd.name.clone(),userAdd.password.clone(),userAdd.r#type);
 	let conn = db.get_conn();
 	return conn.and_then(move|conn|{
@@ -19,7 +20,7 @@ pub fn add(db:&Pool,userAdd:&data::UserAdd)->impl Future<Item=u64,Error=Error>{
 }
 
 pub fn r#mod(db:& Pool,userMod:& data::UserMod)->impl Future<Item=(),Error=Error>{
-	let sql = "update t_user set name = ? and password = ? and type = ? where userId = ?";
+	let sql = "update t_user set name = ? , password = ? , type = ? where userId = ?";
 	let argv = (userMod.name.clone(),userMod.password.clone(),userMod.r#type,userMod.userId);
 	let conn = db.get_conn();
 	return conn.and_then(move|conn|{
@@ -76,7 +77,7 @@ pub fn search(db:&Pool,search:&data::UserSearch)->impl Future<Item=data::Users,E
 	let conn = db.get_conn();
 	return conn.and_then(move|conn|{
 		return conn.prep_exec(dataSql,dataArgv).and_then(|data|{
-			data.collect_and_drop::<(u64,String,String,u64,String,String)>()
+			data.collect_and_drop::<(u64,String,String,u64,NaiveDateTime,NaiveDateTime)>()
 		}).map(move|(conn, data)|{
 			let rows = data.into_iter().map(|single|{
 				return data::User{
@@ -113,7 +114,7 @@ pub fn get(db:&Pool,userId:u64)->impl Future<Item=data::User,Error=Error>{
 	}).map_err(|e|{
 		return Error::new(500,format!("{:?}",e));
 	}).and_then(|data|{
-		return data.collect::<(u64,String,String,u64,String,String)>()
+		return data.collect::<(u64,String,String,u64,NaiveDateTime,NaiveDateTime)>()
 			.map_err(|e|{
 				return Error::new(500,format!("{:?}",e));
 			})
@@ -144,7 +145,7 @@ pub fn getByName(db:& Pool,name:& str)->impl Future<Item=Vec<data::User>,Error=E
 	}).map_err(|e|{
 		return Error::new(500,format!("{:?}",e));
 	}).and_then(|data|{
-		return data.collect::<(u64,String,String,u64,String,String)>()
+		return data.collect::<(u64,String,String,u64,NaiveDateTime,NaiveDateTime)>()
 			.map_err(|e|{
 				return Error::new(500,format!("{:?}",e));
 			})

@@ -10,6 +10,7 @@ use crate::util::logger;
 use crate::util::session;
 use crate::util::data;
 use crate::controller::user;
+use crate::controller::login;
 
 fn main() {
     logger::init();
@@ -22,7 +23,8 @@ fn main() {
         	.wrap(logger::get())
         	.wrap(session::get())
         	.register_data(data.clone())
-            .service(web::scope("/user").configure(user::router));
+            .service(web::scope("/user").configure(user::router))
+            .service(web::scope("/login").configure(login::router));
     })
     .keep_alive(75)
     .workers(8);

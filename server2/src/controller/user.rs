@@ -8,6 +8,7 @@ use actix_session::{Session};
 use actix_web::web;
 use futures::future::{ok,Future};
 use std::sync::{Mutex, Arc,RwLock};
+use serde::{Serialize,Deserialize};
 
 pub fn router(cfg:&mut web::ServiceConfig){
 	cfg.route("/search",web::get().to_async(search))
@@ -29,11 +30,16 @@ fn search(data:web::Data<WebData>,query:web::Query<userAo::UserSearch>,session:S
 		});
 }
 
-fn get(data:web::Data<WebData>,query:web::Query<u64>,session:Session)->impl Future<Item=JsonResponse<userAo::User>,Error=Error>{
+#[derive(Deserialize)]
+pub struct getQuery{
+	pub userId:u64,
+}
+
+fn get(data:web::Data<WebData>,query:web::Query<getQuery>,session:Session)->impl Future<Item=JsonResponse<userAo::User>,Error=Error>{
 	let session = Arc::new(session);
 	return loginAo::checkMustAdmin(&data.pool,&session)
 		.and_then(move|_|{
-			return userAo::get(&data.pool,*query);
+			return userAo::get(&data.pool,query.userId);
 		}).map(|data|{
 			JsonResponse::new(data)
 		});
@@ -84,7 +90,7 @@ fn modPassword(data: web::Data<WebData>,form:web::Form<userAo::UserModPassword>,
 fn modMyPassword(data: web::Data<WebData>,form:web::Form<userAo::UserModMyPassword>,session:Session)->impl Future<Item=JsonResponse<()>,Error=Error>{
 	let session = Arc::new(session);
 
-	return loginAo::checkMustAdmin(&data.pool,&session)
+	return loginAo::checkMustLogin(&data.pool,&session)
 		.and_then(move|user|{
 			userAo::modPasswordByOld(&data.pool,user.userId,&form)
 		}).map(|data|{
