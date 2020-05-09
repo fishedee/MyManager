@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/fishedee/app/router"
 	"github.com/fishedee/web"
+	_ "mymanager/middlewares"
 	_ "mymanager/routers"
 )
 

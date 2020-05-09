@@ -1,7 +1,7 @@
 watch:
 	-pkill -9 fishcmd
 	-pkill -9 mymanager
-	fishcmd run --watch &
+	fishcmd run --watch mymanager
 	tail -f nohup.out
 release:
 	go install mymanager
